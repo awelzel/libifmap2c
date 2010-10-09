@@ -1,7 +1,7 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-PROJECT(ifmap2)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+PROJECT(ifmap2c)
 
-add_definitions(-DLIBRARY_NAMESPACE=ifmap2c -Wall -Wextra -pedantic -O2) 
+add_definitions(-DLIBRARY_NAMESPACE=ifmap2c -Wall -Wextra -pedantic) 
 
 FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(CURL)
