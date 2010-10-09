@@ -36,9 +36,7 @@ class BasicXmlMarshalable : public XmlMarshalable {
 public:
 	BasicXmlMarshalable(const std::string& name,
 		const std::string& val,
-		const std::pair<std::string, std::string>& ns,
-		const std::list<std::pair<std::string, std::string> >& nsList = std::list<std::pair<std::string, std::string> >(),
-		const std::list<std::pair<std::string, std::string> >& attrList = std::list<std::pair<std::string, std::string> >());
+		const std::pair<std::string, std::string>& ns);
 
 	virtual ~BasicXmlMarshalable();
 

@@ -110,16 +110,14 @@ IfmapCommunication::containsSessionId(XmlMarshalable *req)
 XmlMarshalable *
 IfmapCommunication::buildEnvelope()
 {
-	STRPLIST namespaces;
-	STRPLIST attributes;
-	namespaces.push_back(STRP(SOAP_PREFIX, SOAP_HREF));
-	namespaces.push_back(STRP(IFMAP_PREFIX, IFMAP_HREF));
 
 	XmlMarshalable *envelope = new BasicXmlMarshalable(
 			ENVELOPE_ELEMENT_NAME,
 			EMPTY_VALUE,
-			SOAP_NSPAIR,
-			namespaces);
+			SOAP_NSPAIR);
+
+	envelope->addXmlNamespaceDefinition(STRP(SOAP_PREFIX, SOAP_HREF));
+	envelope->addXmlNamespaceDefinition(STRP(IFMAP_PREFIX, IFMAP_HREF));
 
 	XmlMarshalable *body = new BasicXmlMarshalable(
 			BODY_ELEMENT_NAME,

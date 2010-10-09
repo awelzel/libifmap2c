@@ -36,14 +36,10 @@ namespace LIBRARY_NAMESPACE {
 BasicXmlMarshalable::BasicXmlMarshalable(
 				const string& name,
 				const string& val,
-				const pair<string, string>& n,
-				const STRPLIST& nsList,
-				const STRPLIST& attrList) :
+				const pair<string, string>& n) :
 	  _xmlElementName(name)
 	, _xmlElementValue(val)
 	, _xmlNamespace(n)
-	, _xmlNamespaceDeclarations(nsList)
-	, _xmlAttributes(attrList)
 { }
 BasicXmlMarshalable::~BasicXmlMarshalable()
 {
