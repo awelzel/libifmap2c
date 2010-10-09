@@ -31,7 +31,7 @@
  *
  *
  *
- * 2010 Arne Welzel: Modified in order to work with libifmap2c
+ * 2010-10-10 Arne Welzel: Modified in order to work with libifmap2c
  */
 
 #include <iostream>
@@ -82,21 +82,22 @@ int main(int argc, char* argv[])
     if (strcmp(op, "update") == 0) {
 	ipmac = Metadata::createIpMac();
 	subReq = Requests::createPU(ipmac, ip, forever, mac);
-	pubReq = Requests::createPR(subReq);
     } else {
 	subReq = Requests::createPD("meta:ip-mac", ip, mac);
-	pubReq = Requests::createPR(subReq);
-	subReq = NULL;
     }
 
-    // no need to delete those, will be done when pubReq is delted
-    ipmac = NULL;
-    subReq = NULL;
-    ip = NULL; mac = NULL;
+    // create the publish request
+    pubReq = Requests::createPR(subReq);
 
     // declare the default meta namespace on the publish element
     // it's not there by default
     pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
+
+    // no need to delete those, will be done when pubReq is deleted
+    subReq = NULL;
+    ipmac = NULL;
+    ip = NULL; mac = NULL;
+
 
     try {
 	cout << "Doing newSession... ";
