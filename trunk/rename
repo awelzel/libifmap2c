@@ -1,8 +1,0 @@
-#!/bin/bash
-for i in *h *cpp
-do
-	ORIG=`echo $i | cut -d . -f 1`
-	ENDING=`echo $i | cut -d . -f 2`
-	NEWNAME=${ORIG}request.${ENDING}
-	mv $i $NEWNAME
-done
