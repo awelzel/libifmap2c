@@ -65,14 +65,14 @@ Identifiers::createDevName(const std::string& name)
 }
 
 Identity *
-Identifiers::createId(IdentityType type, const std::string& name,
+Identifiers::createIdentity(IdentityType type, const std::string& name,
 		const std::string& ad)
 {
 	return Identity::createIdentity(type, name, ad);
 }
 
 Identity *
-Identifiers::createOtherId(const std::string& otherTypeDef,
+Identifiers::createOtherIdentity(const std::string& otherTypeDef,
 			const std::string& name,
 			const std::string& ad)
 {

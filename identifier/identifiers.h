@@ -56,11 +56,11 @@ public:
 
 	static Device *createDevName(const std::string& name);
 
-	static Identity *createId(IdentityType type,
+	static Identity *createIdentity(IdentityType type,
 			const std::string& name,
 			const std::string& ad = "");
 
-	static Identity *createOtherId(const std::string& otherTypeDef,
+	static Identity *createOtherIdentity(const std::string& otherTypeDef,
 			const std::string& name,
 			const std::string& ad = "");
 };

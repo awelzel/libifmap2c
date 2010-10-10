@@ -22,18 +22,10 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-/*
- * SSRC.h
- *
- *  Created on: Oct 9, 2010
- *      Author: awelzel
- */
-
 #ifndef SSRC_H_
 #define SSRC_H_
 
 #include "ifmapcommunication.h"
-
 
 namespace ifmap2c {
 
@@ -56,7 +48,6 @@ public:
 			const std::string& mycert,
 			const std::string& capath);
 
-
 	virtual ~SSRC();
 
 	ARC *getARC(void);
@@ -77,6 +68,7 @@ public:
 	const std::string& getPublisherId(void) const;
 	const std::string& getMaxPollResultSize(void) const;
 
+
 private:
 	SSRC(const std::string& url,
 			const std::string& user,
@@ -92,7 +84,6 @@ private:
 	std::string _currentSessionId;
 	std::string _currentPublisherId;
 	std::string _currentMaxPollResSize;
-
 };
 
 

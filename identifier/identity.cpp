@@ -47,7 +47,10 @@ const string Identity::identityTypeNames[] = {
 
 Identity::Identity(IdentityType type, const string& name , const string& ad,
 		const string& ot) :
-	IdentifierWithAD(IDENTITY_ELEMENT_NAME, EMPTY_VALUE, ad)
+		IdentifierWithAD(IDENTITY_ELEMENT_NAME, EMPTY_VALUE, ad)
+		,_name(name)
+		,_otherDef(ot)
+		,_type(type)
 {
 	addXmlAttribute(STRP(IDENTITY_NAME_ATTR_NAME, name));
 	addXmlAttribute(STRP(IDENTITY_TYPE_ATTR_NAME, identityTypeNames[type]));

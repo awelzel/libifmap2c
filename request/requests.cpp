@@ -114,7 +114,7 @@ Requests::createPN(XmlMarshalable *const metadata,
 
 
 SearchRequest*
-Requests::createSR(const char *const matchLinksFilter,
+Requests::createSearchReq(const char *const matchLinksFilter,
 		const int maxDepth,
 		const char *const resultFilter,
 		const int maxResultSize,
