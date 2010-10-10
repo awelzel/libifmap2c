@@ -35,7 +35,7 @@
 #include "responseparseerror.h"
 #include "communicationerror.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 
 class IfmapCommunication {

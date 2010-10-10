@@ -26,7 +26,7 @@
 #define PUBLISHNOTIFY_H_
 #include "subpublish.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class PublishNotify : SubPublish {
 public:

@@ -25,7 +25,7 @@
 #ifndef PAYLOAD_H_
 #define PAYLOAD_H_
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class Payload {
 

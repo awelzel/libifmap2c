@@ -28,7 +28,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 PublishRequest *
 PublishRequest::createPublishRequest(const std::list<SubPublish *>& rList)

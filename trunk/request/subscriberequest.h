@@ -27,7 +27,7 @@
 #include "subsubscribe.h"
 #include <list>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class SubscribeRequest : public BasicXmlMarshalable {
 

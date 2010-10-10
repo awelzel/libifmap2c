@@ -24,7 +24,7 @@
 
 #include "communicationerror.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 CommunicationError::CommunicationError(const std::string& msg) :
 	_message(msg)

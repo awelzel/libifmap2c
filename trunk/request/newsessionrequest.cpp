@@ -30,7 +30,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 NewSessionRequest *
 NewSessionRequest::createNewSessionRequest(const string& maxPollResSize)

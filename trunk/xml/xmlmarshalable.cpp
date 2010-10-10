@@ -29,7 +29,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 static void putDepth(int depth) {
 	for (int i = 0; i < depth; i++) {

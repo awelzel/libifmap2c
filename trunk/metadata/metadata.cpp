@@ -28,7 +28,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 std::string Metadata::cardinalityNames[] = {
 	"singleValue",

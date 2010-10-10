@@ -29,7 +29,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 SubscribeUpdate*
 SubscribeUpdate::createSubscribeUpdate(const string& name,

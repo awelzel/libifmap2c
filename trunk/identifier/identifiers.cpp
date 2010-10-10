@@ -24,7 +24,7 @@
 
 #include "identifiers.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 AccessRequest *
 Identifiers::createAR(const std::string& name, const std::string ad)

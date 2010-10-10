@@ -32,7 +32,7 @@
 #include "accessrequest.h"
 #include "identity.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 /*
  * A factory class to create all kinds of identifiers.

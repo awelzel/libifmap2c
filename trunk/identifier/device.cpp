@@ -26,7 +26,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 Device::Device(const string& val, DeviceType type) :
 	Identifier (DEVICE_ELEMENT_NAME, EMPTY_VALUE), _value(val)

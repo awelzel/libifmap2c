@@ -26,7 +26,7 @@
 #define IDENTIFIERWITHAD_H_
 #include "identifier.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class IdentifierWithAD : public Identifier {
 public:

@@ -28,7 +28,7 @@
 #include "identifiers.h"
 #include "tcgifmapbase.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 /*
  * generalize with SearchRequest (TODO)
  */

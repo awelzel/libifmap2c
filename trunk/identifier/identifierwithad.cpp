@@ -27,7 +27,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 IdentifierWithAD::IdentifierWithAD(const string& name, const string& val,
 			const string& ad) : Identifier(name, val),

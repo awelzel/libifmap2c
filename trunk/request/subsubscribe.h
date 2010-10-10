@@ -27,7 +27,7 @@
 
 #include "basicxmlmarshalable.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class SubSubscribe : public BasicXmlMarshalable {
 public:

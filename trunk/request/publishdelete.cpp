@@ -26,7 +26,7 @@
 #include "typedefs.h"
 #include "tcgifmapbase.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 PublishDelete::PublishDelete(const char *const filter,
 		Identifier *const i1,

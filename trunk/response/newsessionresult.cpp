@@ -25,7 +25,7 @@
 #include "newsessionresult.h"
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 NewSessionResult::NewSessionResult(const string& sId, const string& pId,
 		const string& maxPs) :

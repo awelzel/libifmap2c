@@ -28,7 +28,7 @@
 #include "ifmapcommunication.h"
 #include "ssrc.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class ARC : public IfmapCommunication {
 public:

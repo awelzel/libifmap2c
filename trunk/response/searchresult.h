@@ -28,7 +28,7 @@
 #include <string>
 #include <list>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class SearchResult {
 public:

@@ -25,7 +25,7 @@
 #include "renewsessionrequest.h"
 #include "tcgifmapbase.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 RenewSessionRequest::RenewSessionRequest() :
 	BasicXmlMarshalable(RENEWSESSION_ELEMENT_NAME, EMPTY_VALUE,

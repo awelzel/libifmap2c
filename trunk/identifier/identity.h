@@ -26,7 +26,7 @@
 #define IDENTITY_H_
 #include "identifierwithad.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 enum IdentityType {
           aik_name,

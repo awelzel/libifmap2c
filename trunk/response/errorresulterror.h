@@ -26,7 +26,7 @@
 #define ERRORRESULTERROR_H_
 #include <string>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 enum ErrorCode {
         AccessDenied,

@@ -30,7 +30,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 SearchRequest *
 SearchRequest::createSearchRequest(const char *const matchLinksFilter,

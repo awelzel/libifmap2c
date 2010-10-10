@@ -25,7 +25,7 @@
 #include "subscribedelete.h"
 #include "tcgifmapbase.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 SubscribeDelete::SubscribeDelete(const std::string& name) :
 	SubSubscribe(SUBSCRIBE_DELETE_ELEMENT_NAME, name)

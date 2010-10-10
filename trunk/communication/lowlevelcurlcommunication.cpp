@@ -34,7 +34,7 @@ using namespace std;
 #define	CURL_DEBUG_VALUE 0
 #define	CURL_VERIFY_HOST 0
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 bool LowLevelCurlCommunication::initialized = false;
 

@@ -26,7 +26,7 @@
 #include "typedefs.h"
 #include "tcgifmapbase.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 SubSubscribe::SubSubscribe(const std::string& elementName,
 		const std::string& subName) :

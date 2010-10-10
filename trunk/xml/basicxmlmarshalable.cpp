@@ -31,7 +31,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 BasicXmlMarshalable::BasicXmlMarshalable(
 				const string& name,
