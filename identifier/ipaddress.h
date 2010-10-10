@@ -27,7 +27,7 @@
 
 #include "identifierwithad.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 enum IpAddressType { ipv4, ipv6 };
 

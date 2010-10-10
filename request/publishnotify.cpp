@@ -26,7 +26,7 @@
 #include "typedefs.h"
 #include "tcgifmapbase.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 PublishNotify::PublishNotify(const CLIST& mlist,
 		Identifier *const i1,

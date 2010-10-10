@@ -28,7 +28,7 @@
 #include "subpublish.h"
 #include <list>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 enum LifeTimeType {
 	session,

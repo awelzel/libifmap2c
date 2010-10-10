@@ -28,7 +28,7 @@
 #include "tcgifmapbase.h"
 #include "identifier.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 enum DeviceType {aik, name};
 

@@ -27,7 +27,7 @@
 #include "basicxmlmarshalable.h"
 #include "identifier.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class SearchRequest : public BasicXmlMarshalable {
 

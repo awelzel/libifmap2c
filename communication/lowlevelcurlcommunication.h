@@ -34,7 +34,7 @@ extern "C" {
 	#include <curl/curl.h>
 }
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class LowLevelCurlCommunication : public LowLevelCommunication {
 

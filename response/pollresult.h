@@ -29,7 +29,7 @@
 
 #include <list>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class PollResult {
 public:

@@ -35,7 +35,7 @@
 #include "ifmapcommunication.h"
 
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 // forward declaration
 class ARC;

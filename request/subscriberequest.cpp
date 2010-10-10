@@ -27,7 +27,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 SubscribeRequest::SubscribeRequest(const list<SubSubscribe *>& subList) :
 		BasicXmlMarshalable(SUBSCRIBE_ELEMENT_NAME, EMPTY_VALUE,

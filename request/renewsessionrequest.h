@@ -26,7 +26,7 @@
 #define RENEWSESSIONREQUEST_H_
 #include "basicxmlmarshalable.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class RenewSessionRequest : public BasicXmlMarshalable {
 

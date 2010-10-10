@@ -25,7 +25,7 @@
 #include "identifier.h"
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 Identifier::Identifier(const string& name, const string& val) :
 	BasicXmlMarshalable(name, val, IDENTIFIER_NSPAIR) { }

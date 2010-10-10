@@ -27,7 +27,7 @@
 
 #include "subpublish.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class PublishDelete : public SubPublish {
 

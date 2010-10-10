@@ -28,7 +28,7 @@
 #include "xmlmarshalable.h"
 #include "payload.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class XmlUnmarshalError {
 public:

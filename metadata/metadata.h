@@ -30,7 +30,7 @@
 
 enum CardinalityType { single, multi };
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class Metadata {
 

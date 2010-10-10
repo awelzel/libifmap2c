@@ -29,7 +29,7 @@
 
 #include <string>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class SubscribeDelete : public SubSubscribe {
 

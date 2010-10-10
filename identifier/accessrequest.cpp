@@ -27,7 +27,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 AccessRequest::AccessRequest(const string& name, const string& ad) :
 	IdentifierWithAD(ACCESSREQ_ELEMENT_NAME, EMPTY_VALUE, ad),

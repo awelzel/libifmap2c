@@ -30,7 +30,7 @@
 
 #include <list>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class PublishRequest : public BasicXmlMarshalable {
 

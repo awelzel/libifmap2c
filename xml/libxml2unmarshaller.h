@@ -35,7 +35,7 @@ extern "C" {
 	#include <libxml/tree.h>
 }
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class LibXml2Unmarshaller : public XmlUnmarshaller {
 

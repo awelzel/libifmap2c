@@ -25,7 +25,7 @@
 #include "resultitem.h"
 #include "typedefs.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 ResultItem::ResultItem() : numberIdentifiers(0),
 		_ip(NULL),

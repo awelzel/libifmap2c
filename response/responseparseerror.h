@@ -25,7 +25,7 @@
 #ifndef RESPONSEPARSEERROR_H_
 #define RESPONSEPARSEERROR_H_
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class ResponseParseError {
 public:

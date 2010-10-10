@@ -26,7 +26,7 @@
 #define LOWLEVELCOMMUNICATION_H_
 #include "payload.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class LowLevelCommunication {
 

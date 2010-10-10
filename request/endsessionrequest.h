@@ -26,7 +26,7 @@
 #define ENDSESSIONREQUEST_H_
 #include "basicxmlmarshalable.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class EndSessionRequest : public BasicXmlMarshalable {
 

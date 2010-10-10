@@ -26,7 +26,7 @@
 #define COMMUNICATIONERROR_H_
 #include <string>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class CommunicationError {
 

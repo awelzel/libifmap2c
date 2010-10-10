@@ -26,7 +26,7 @@
 #define IDENTIFIER_H_
 #include "basicxmlmarshalable.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class Identifier : public BasicXmlMarshalable {
 

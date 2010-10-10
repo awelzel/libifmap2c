@@ -30,7 +30,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 XmlMarshalable *
 LibXml2Unmarshaller::unmarshal(const Payload& p)

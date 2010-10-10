@@ -34,7 +34,7 @@ extern "C" {
 
 #include <list>
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class LibXml2Marshaller : public XmlMarshaller {
 

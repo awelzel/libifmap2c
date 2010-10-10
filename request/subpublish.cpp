@@ -27,7 +27,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 SubPublish::SubPublish(const string& name,
 		Identifier *const i1, Identifier *const i2) :

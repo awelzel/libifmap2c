@@ -36,7 +36,7 @@ extern "C" {
 	#include <libxml/tree.h>
 }
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 typedef std::pair<std::string, std::string> STRP;
 typedef std::list<STRP> STRPLIST;

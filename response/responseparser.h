@@ -30,7 +30,7 @@
 #include "errorresulterror.h"
 #include "responseparseerror.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class ResponseParser {
 public:

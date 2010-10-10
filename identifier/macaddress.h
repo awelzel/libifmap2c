@@ -26,7 +26,7 @@
 #define MACADDRESS_H_
 #include "identifierwithad.h"
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 class MacAddress : public IdentifierWithAD {
 

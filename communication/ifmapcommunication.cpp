@@ -38,7 +38,7 @@ using namespace std;
 
 #define NO_IN_OUT_DEBUG
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 IfmapCommunication::IfmapCommunication(const string& url,
 		const string& user,

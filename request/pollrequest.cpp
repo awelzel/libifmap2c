@@ -28,7 +28,7 @@
 
 using namespace std;
 
-namespace LIBRARY_NAMESPACE {
+namespace ifmap2c {
 
 PollRequest::PollRequest(const string& sessionId) :
 		BasicXmlMarshalable(POLLREQUEST_ELEMENT_NAME, EMPTY_VALUE,
