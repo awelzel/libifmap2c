@@ -140,10 +140,10 @@ int main()
 	ifmap2c::SSRC *ssrc = ifmap2c::SSRC::createSSRC("https://localhost:8443", "test", "test", "cadir");
 	ifmap2c::ARC *arc = ssrc->getARC();
 
-	Identifier *i1 = Identifiers::createAR("tnc:001");
-	Identifier *i11 = Identifiers::createAR("tnc:001");
-	Identifier *i12 = Identifiers::createAR("tnc:001");
-	Identifier *i2 = Identifiers::createId(username, "john");
+	Identifier *i1 = Identifiers::createAr("tnc:001");
+	Identifier *i11 = Identifiers::createAr("tnc:001");
+	Identifier *i12 = Identifiers::createAr("tnc:001");
+	Identifier *i2 = Identifiers::createIdentity(username, "john");
 
 
 	PollResult *pollRes = NULL;

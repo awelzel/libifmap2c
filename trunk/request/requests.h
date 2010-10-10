@@ -86,7 +86,20 @@ public:
 			Identifier *const i2 = NULL);
 
 
-	static SearchRequest *createSR(const char *const matchLinksFilter,
+	/*
+	 * Create a SearchRequest
+	 *
+	 * @param matchLinksFilter, use NULL if you want a match-all filter
+	 * @param maximumDepth, use -1 to not send this value to the server
+	 * @param resultFilter, use NULL if you want a match-all filter
+	 * @param maxResultSize, use -1 to not send this value to the server
+	 * @param i1, the identifier where the search will start
+	 *
+	 * @return Pointer to a SearchRequest object. The caller is responsible
+	 * 	to delete it.
+	 *
+	 */
+	static SearchRequest *createSearchReq(const char *const matchLinksFilter,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,

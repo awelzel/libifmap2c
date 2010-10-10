@@ -70,8 +70,8 @@ int main(int argc, char *argv[])
 	MacAddress *mac1 = MacAddress::createMacAddress("00:aa:bb:cc:ee:11");
 //	MacAddress *mac2 = MacAddress::createMacAddress("00:aa:bb:cc:ee:11", "mydomain");
 
-	SearchRequest *sr1 = Requests::createSR(NULL, 5, NULL, -1, ip1);
-	SearchRequest *sr2 = Requests::createSR(NULL, 5, NULL, -1, ip1);
+	SearchRequest *sr1 = Requests::createSearchReq(NULL, 5, NULL, -1, ip1);
+	SearchRequest *sr2 = Requests::createSearchReq(NULL, 5, NULL, -1, ip1);
 
 	sr1->addXmlNamespaceDefinition(META_NSPAIR);
 
