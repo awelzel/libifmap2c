@@ -413,6 +413,7 @@ ResponseParser::extractDevice(XmlMarshalable *const element)
 			if (compNameNs(*it, DEVICE_AIK_ELEMENT, DEVICE_AIK_HREF)) {
 				foundElement = true;
 				type = aik;
+				elementValue = (*it)->getXmlElementValue();
 
 			} else if (compNameNs(*it, DEVICE_NAME_ELEMENT, DEVICE_NAME_HREF)) {
 				foundElement = true;

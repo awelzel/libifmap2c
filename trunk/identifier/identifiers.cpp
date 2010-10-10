@@ -27,7 +27,7 @@
 namespace ifmap2c {
 
 AccessRequest *
-Identifiers::createAR(const std::string& name, const std::string ad)
+Identifiers::createAr(const std::string& name, const std::string ad)
 {
 	return AccessRequest::createAccessRequest(name, ad);
 
