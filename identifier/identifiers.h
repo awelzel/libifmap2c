@@ -40,7 +40,7 @@ namespace ifmap2c {
 class Identifiers {
 
 public:
-	static AccessRequest *createAR(const std::string& name,
+	static AccessRequest *createAr(const std::string& name,
 			const std::string ad = "");
 
 	static IpAddress *createIPv4(const std::string& value,

@@ -29,7 +29,7 @@ using namespace std;
 namespace ifmap2c {
 
 Device::Device(const string& val, DeviceType type) :
-	Identifier (DEVICE_ELEMENT_NAME, EMPTY_VALUE), _value(val)
+	Identifier (DEVICE_ELEMENT_NAME, EMPTY_VALUE), _value(val), _deviceType(type)
 {
 	BasicXmlMarshalable *child = NULL;
 	
