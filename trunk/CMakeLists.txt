@@ -47,7 +47,6 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	response/searchresult.cpp
 	response/responseparser.cpp
 	response/resultitem.cpp
-	response/searchresult.cpp
 	response/pollresult.cpp
 	xml/libxml2marshaller.cpp
 	xml/libxml2unmarshaller.cpp
