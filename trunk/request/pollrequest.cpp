@@ -30,18 +30,16 @@ using namespace std;
 
 namespace ifmap2c {
 
-PollRequest::PollRequest(const string& sessionId) :
+PollRequest::PollRequest() :
 		BasicXmlMarshalable(POLLREQUEST_ELEMENT_NAME, EMPTY_VALUE,
 				IFMAP_OPERATION_NSPAIR)
-{
-	addXmlAttribute(STRP(SESSIONID_ATTR_NAME, sessionId));
-}
+{ }
 
 
 PollRequest *
-PollRequest::createPollRequest(const std::string& sessionId)
+PollRequest::createPollRequest(void)
 {
-	return new PollRequest(sessionId);
+	return new PollRequest();
 }
 
 } // namespace

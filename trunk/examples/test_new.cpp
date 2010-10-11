@@ -80,14 +80,14 @@ int main(int argc, char *argv[])
 	XmlMarshalable *ipMac = Metadata::createIpMac();
 	XmlMarshalable *ipMac2 = Metadata::createIpMac("00201002", "20021", "theServer");
 
-	PublishUpdate *updateIpMac = Requests::createPU(ipMac, mac1, session, ip1);
-	PublishUpdate *updateIpMac2 = Requests::createPU(ipMac2, mac1, session, ip1);
-	PublishRequest *pr1 = Requests::createPR(updateIpMac);
-	PublishRequest *pr2 = Requests::createPR(updateIpMac2);
+	PublishUpdate *updateIpMac = Requests::createPublishUpdate(ipMac, mac1, session, ip1);
+	PublishUpdate *updateIpMac2 = Requests::createPublishUpdate(ipMac2, mac1, session, ip1);
+	PublishRequest *pr1 = Requests::createPublishReq(updateIpMac);
+	PublishRequest *pr2 = Requests::createPublishReq(updateIpMac2);
 
 
-	PublishDelete *del = Requests::createPD(NULL, mac1, ip1);
-	PublishRequest *pr3 = Requests::createPR(del);
+	PublishDelete *del = Requests::createPublishDelete(NULL, mac1, ip1);
+	PublishRequest *pr3 = Requests::createPublishReq(del);
 
 
 

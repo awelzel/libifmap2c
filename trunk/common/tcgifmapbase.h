@@ -101,6 +101,8 @@
 #define SEARCH_TERM_IDENT_ATTR_NAME	"terminal-identifier-type"
 #define SEARCH_MAX_SIZE_ATTR_NAME	"max-size"
 #define SEARCH_RESULT_FILTER_ATTR_NAME	"result-filter"
+#define SEARCH_NO_MAX_DEPTH		-1
+#define SEARCH_NO_MAX_RESULT_SIZE	-1
 
 #define SEARCHRESULT_ELEMENT_NAME	"searchResult"
 #define SEARCHRESULT_ELEMENT_HREF	NO_HREF
@@ -172,5 +174,9 @@
 #define ACCESSREQ_NAME_ATTR_NAME	"name"
 
 #define ADMIN_DOMAIN_ATTR_NAME		"administrative-domain"
+
+
+#define FILTER_MATCH_ALL		NULL
+#define FILTER_MATCH_NOTHING		""
 
 #endif /* TCGIFMAPBASE_H_ */

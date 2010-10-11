@@ -81,13 +81,13 @@ int main(int argc, char* argv[])
 
     if (strcmp(op, "update") == 0) {
 	ipmac = Metadata::createIpMac();
-	subReq = Requests::createPU(ipmac, ip, forever, mac);
+	subReq = Requests::createPublishUpdate(ipmac, ip, forever, mac);
     } else {
-	subReq = Requests::createPD("meta:ip-mac", ip, mac);
+	subReq = Requests::createPublishDelete("meta:ip-mac", ip, mac);
     }
 
     // create the publish request
-    pubReq = Requests::createPR(subReq);
+    pubReq = Requests::createPublishReq(subReq);
 
     // declare the default meta namespace on the publish element
     // it's not there by default

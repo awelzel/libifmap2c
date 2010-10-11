@@ -44,60 +44,124 @@
 
 namespace ifmap2c {
 
-/*
- * A factory class to create all kinds of requests.
+/**
+ * Class to be used by a user of the library to create different kinds
+ * off request objects.
  */
 class Requests {
 
 public:
-	static NewSessionRequest *createNSR(
+	/**
+	 * Used internally, not to be used by users of the library.
+	 */
+	static NewSessionRequest *createNewSessionReq(
 			const std::string& maxPollResSize = "");
 
-	static EndSessionRequest *createESR(void);
+	/**
+	 * Used internally, not to be used by users of the library.
+	 */
+	static EndSessionRequest *createEndSessionReq(void);
 
-	static RenewSessionRequest *createRNSR(void);
+	/**
+	 * Used internally, not to be used by users of the library.
+	 */
+	static RenewSessionRequest *createRenewSessionReq(void);
 
-	static PublishRequest *createPR(const std::list<SubPublish *>& reqs);
+	/**
+	 * Create a publish request object.
+	 *
+	 * @param reqs list of SubPublish objects
+	 * 	(PublishUpdate, PublishDelete or PublishNotify)
+	 */
+	static PublishRequest *createPublishReq(const std::list<SubPublish *>& reqs);
 
-	static PublishRequest *createPR(SubPublish *const  reqs);
+	/**
+	 * Create a publish request object.
+	 *
+	 * @param req SubPublish object
+	 * 	(PublishUpdate, PublishDelete or PublishNotify)
+	 */
+	static PublishRequest *createPublishReq(SubPublish *const  req);
 
-	static PublishUpdate *createPU(
-			const std::list<XmlMarshalable *>& metadata,
+	/**
+	 * Create a publish update object.
+	 *
+	 * @param mdlist a list of metadata objects associated with this update
+	 * @param i1 first identifier object
+	 * @param ltime lifetime of the metadata
+	 * @param i2 second identifier object (link)
+	 */
+	static PublishUpdate *createPublishUpdate(const std::list<XmlMarshalable *>& mdlist,
 			Identifier *const i1,
 			LifeTimeType lTime = session,
 			Identifier *const i2 = NULL);
 
-	static PublishUpdate *createPU(XmlMarshalable *const metadata,
-			Identifier *const i1,
-			LifeTimeType lTime = session,
-			Identifier *const i2 = NULL);
-
-	static PublishDelete *createPD(const char *const filter,
-			Identifier *const i1,
-			Identifier *const i2 = NULL);
-
-	static PublishNotify *createPN(
-			const std::list<XmlMarshalable *>& metadataList,
-			Identifier *const i1,
-			Identifier *const i2 = NULL);
-
-	static PublishNotify *createPN(XmlMarshalable *const metadata,
-			Identifier *const i1,
-			Identifier *const i2 = NULL);
-
-
-	/*
-	 * Create a SearchRequest
+	/**
+	 * Create a publish update object.
 	 *
-	 * @param matchLinksFilter, use NULL if you want a match-all filter
-	 * @param maximumDepth, use -1 to not send this value to the server
-	 * @param resultFilter, use NULL if you want a match-all filter
-	 * @param maxResultSize, use -1 to not send this value to the server
-	 * @param i1, the identifier where the search will start
+	 * @param md a single metadata object associated with this update
+	 * @param i1 first identifier object
+	 * @param ltime lifetime of the metadata
+	 * @param i2 second identifier object (link)
+	 */
+	static PublishUpdate *createPublishUpdate(XmlMarshalable *const md,
+			Identifier *const i1,
+			LifeTimeType ltime = session,
+			Identifier *const i2 = NULL);
+
+
+	/**
+	 * Create a publish delete object.
 	 *
-	 * @return Pointer to a SearchRequest object. The caller is responsible
-	 * 	to delete it.
+	 * If you create a publish delete object, be aware that if namespace
+	 * prefixes are used in the filter, e.g. "meta:role", the corresponding
+	 * namespace must be defined somewhere in the request.
+	 * Use addXmlNamespaceDefinition() on the returned object to achieve
+	 * this.
 	 *
+	 * @param filter filterstring, use FILTER_MATCH_ALL or FILTER_MATCH_NOTHING,
+	 * 		 when this behaviour is wanted
+	 * @param i1 first identifier object
+	 * @param i2 first identifier object (link)
+	 */
+	static PublishDelete *createPublishDelete(const char *const filter,
+			Identifier *const i1,
+			Identifier *const i2 = NULL);
+	/**
+	 * Create a publish notify object.
+	 *
+	 * @param mdlist a list of metadata objects associated with this update
+	 * @param i1 first identifier object
+	 * @param i2 second identifier object (link)
+	 */
+	static PublishNotify *createPublishNotify(const std::list<XmlMarshalable *>& mdlist,
+			Identifier *const i1,
+			Identifier *const i2 = NULL);
+
+	/**
+	 * Create a publish notify object.
+	 *
+	 * @param md a single metadata object associated with this update
+	 * @param i1 first identifier object
+	 * @param i2 second identifier object (link)
+	 */
+	static PublishNotify *createPublishNotify(XmlMarshalable *const metadata,
+			Identifier *const i1,
+			Identifier *const i2 = NULL);
+
+
+	/**
+	 * Create a search request object.
+	 *
+	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
+	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
+	 * 		   maximum depth
+	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
+	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
+	 * 			to not add a maximum result size
+	 * @param i1 identifier object where the search will start
 	 */
 	static SearchRequest *createSearchReq(const char *const matchLinksFilter,
 			const int maxDepth,
@@ -105,22 +169,54 @@ public:
 			const int maxResultSize,
 			Identifier *const i1);
 
+	/**
+	 * Create a subscribe request object.
+	 *
+	 * @param srList list of SubSubscribe objects
+	 * 		 (SubscribeUpdate, SubscribeDelete)
+	 */
+	static SubscribeRequest *createSubscribeReq(const std::list<SubSubscribe *> srList);
 
-	static SubscribeRequest *createSubR(
-			const std::list<SubSubscribe *> srList);
+	/**
+	 * Create a subscribe request object.
+	 *
+	 * @param sub SubSubscribe object
+	 * 	      (SubscribeUpdate, SubscribeDelete)
+	 */
+	static SubscribeRequest *createSubscribeReq(SubSubscribe *const sub);
 
-	static SubscribeRequest *createSubR(SubSubscribe *const sr);
 
-	static SubscribeUpdate *createSubU(std::string const& name,
+	/**
+	 * Create a subscribe update object.
+	 *
+	 * @param name name of the subscription
+	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
+	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
+	 * 		   maximum depth
+	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
+	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
+	 * 			to not add a maximum result size
+	 * @param i1 identifier object where the search will start
+	 */
+	static SubscribeUpdate *createSubscribeUpdate(std::string const& name,
 			const char *const matchLinksFilter,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
 			Identifier *const i1);
+	/**
+	 * Create a subscribe delete object.
+	 *
+	 * @param name name of the subscription
+	 */
+	static SubscribeDelete *createSubscribeDelete(std::string const& name);
 
-	static SubscribeDelete *createSubD(std::string const& name);
-
-	static PollRequest *createPollR(std::string const& name);
+	/**
+	 * Used internally, not to be used by users of the library.
+	 */
+	static PollRequest *createPollReq(void);
 };
 } // namespace
 #endif /* REQUESTS_H_ */
