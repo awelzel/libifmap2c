@@ -31,11 +31,12 @@ namespace ifmap2c {
 class MacAddress : public IdentifierWithAD {
 
 public:
-	static MacAddress *
-	createMacAddress(const std::string& val, const std::string& ad = "");
+	static MacAddress *createMacAddress(const std::string& val,
+			const std::string& ad = "");
 
-	const std::string&
-	getValue() const;
+	const std::string& getValue() const;
+
+	MacAddress *clone(void) const;
 
 private:
 	MacAddress(const std::string& val, const std::string& ad);

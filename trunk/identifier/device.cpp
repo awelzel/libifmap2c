@@ -43,11 +43,15 @@ Device::Device(const string& val, DeviceType type) :
 	addXmlChild(child);
 }
 
+
+
 Device *
 Device::createDeviceAik(const string& val)
 {
 	return new Device(val, aik);
 }
+
+
 
 Device *
 Device::createDeviceName(const string& val)
@@ -55,16 +59,28 @@ Device::createDeviceName(const string& val)
 	return new Device(val, name);
 }
 
+
+
 const string&
 Device::getValue() const
 {
 	return _value;
 }
 
+
+
 DeviceType
 Device::getDeviceType() const
 {
 	return _deviceType;
+}
+
+
+
+Device *
+Device::clone(void) const
+{
+	return new Device(_value, _deviceType);
 }
 
 } // namespace

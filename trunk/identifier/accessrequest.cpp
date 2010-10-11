@@ -45,9 +45,14 @@ AccessRequest::createAccessRequest(const string& name, const string& ad)
 
 
 const std::string&
-AccessRequest::getName()
+AccessRequest::getName() const
 {
 	return _name;
+}
+
+AccessRequest *AccessRequest::clone(void) const
+{
+	return new AccessRequest(getName(), getAdministrativeDomain());
 }
 
 } // namespace

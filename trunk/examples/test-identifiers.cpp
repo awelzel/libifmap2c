@@ -205,7 +205,7 @@ checkDev(SSRC *const ssrc)
 	Device *devrecv2 = ri2->getDevice();
 
 	if (devrecv1 == NULL || devrecv2 == NULL) {
-		cerr << "No MacAddress in ResultItem!" << endl;
+		cerr << "No Devices in ResultItem!" << endl;
 		exit(1);
 	} else {
 		cout << "Devices are\t\t";
@@ -228,7 +228,7 @@ compareIp(IpAddress *ip1, IpAddress *ip2)
 {
 	return !ip1->getValue().compare(ip2->getValue())
 		&& !ip1->getAdministrativeDomain().compare(ip2->getAdministrativeDomain())
-		&& (ip1->getType() == ip2->getType());
+		&& (ip1->getIpAddressType() == ip2->getIpAddressType());
 
 }
 
@@ -326,10 +326,10 @@ checkIPv6(SSRC *const ssrc)
 static bool
 compareIdentity(Identity *id1, Identity *id2)
 {
-	if (id1->getType() != id2->getType())
+	if (id1->getIdentityType() != id2->getIdentityType())
 		return false;
 
-	if (id1->getType() == other) {
+	if (id1->getIdentityType() == other) {
 		return !id1->getName().compare(id2->getName())
 			&& !id1->getAdministrativeDomain().compare(id2->getAdministrativeDomain())
 			&& !id1->getOtherTypeDef().compare(id2->getOtherTypeDef());
@@ -454,13 +454,13 @@ main(int argc, char *argv[])
 		ssrc->endSession();
 		cout << "Ok!" << endl;
 	} catch (CommunicationError e) {
-
+		cerr << "CommunicationError: " << e.getMessage() << endl;
 	} catch (ErrorResultError e) {
 		cerr << "ErrorResult:" << endl;
 		cerr << " " << e.getErrorCodeString() << endl;
 		cerr << " " << e.getErrorString() << endl;
 	} catch (...) {
-		cerr << "Unidentfied Exception" << endl;
+		cerr << "Uncatched Exception occured" << endl;
 		throw;
 	}
 

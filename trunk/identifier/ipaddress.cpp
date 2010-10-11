@@ -33,7 +33,7 @@ namespace ifmap2c {
 
 IpAddress::IpAddress(IpAddressType type, const string& val, const string& ad) :
 	IdentifierWithAD(IPADDR_ELEMENT_NAME, EMPTY_VALUE, ad),
-	_value(val), _type(type)
+	_value(val), _ipAddrType(type)
 {
 	addXmlAttribute(STRP(IPADDR_VALUE_ATTR_NAME, val));
 	
@@ -52,9 +52,9 @@ IpAddress::getValue() const
 }
 
 IpAddressType
-IpAddress::getType() const
+IpAddress::getIpAddressType() const
 {
-	return _type;
+	return _ipAddrType;
 }
 
 IpAddress *
@@ -67,6 +67,12 @@ IpAddress *
 IpAddress::createIpv6Address(const string& val, const string& ad)
 {
 	return new IpAddress(ipv6, val, ad);
+}
+
+IpAddress *
+IpAddress::clone(void) const
+{
+	return new IpAddress(getIpAddressType(), getValue(), getAdministrativeDomain());
 }
 
 } // namespace

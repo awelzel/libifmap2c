@@ -43,7 +43,9 @@ public:
 	createAccessRequest(const std::string& name,
 		const std::string& ad = "");
 
-	const std::string& getName();
+	const std::string& getName() const;
+
+	AccessRequest *clone(void) const;
 };
 
 } // namespace

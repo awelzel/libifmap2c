@@ -30,13 +30,14 @@ namespace ifmap2c {
 
 class IdentifierWithAD : public Identifier {
 public:
-	IdentifierWithAD(const std::string& name, const std::string& val,
-			const std::string& ad);
-
 	virtual ~IdentifierWithAD();
 
-	const std::string&
-	getAdministrativeDomain(void) const;
+	const std::string& getAdministrativeDomain(void) const;
+
+protected:
+	IdentifierWithAD(const std::string& name,
+			const std::string& val,
+			const std::string& ad);
 
 private:
 	std::string _administrativeDomain;

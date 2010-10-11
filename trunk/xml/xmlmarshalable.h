@@ -61,6 +61,14 @@ public:
 
 	virtual void clearXmlChildren(void) = 0;
 
+	/**
+	 * Make a deep copy of a XmlMarshalable object
+	 */
+	virtual XmlMarshalable *clone(void) const = 0;
+
+	/**
+	 * Helper to put a XmlMarshalable to stdout
+	 */
 	static void putXmlMarshalable(XmlMarshalable *m);
 };
 
