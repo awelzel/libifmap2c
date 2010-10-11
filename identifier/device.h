@@ -54,6 +54,8 @@ class Device : public Identifier {
 
 		static Device *
 		createDeviceName(const std::string& name);
+
+		Device *clone(void) const;
 };
 
 } // namespace

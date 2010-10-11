@@ -46,9 +46,7 @@ enum IdentityType {
 class Identity : public IdentifierWithAD {
 
 public:
-
-	static Identity *
-	createIdentity(IdentityType type,
+	static Identity * createIdentity(IdentityType type,
 			const std::string& name,
 			const std::string& ad = "");
 
@@ -56,13 +54,15 @@ public:
 			const std::string& name,
 			const std::string& ad = "");
 
-	IdentityType getType() const;
+	IdentityType getIdentityType() const;
 
 	const std::string& getTypeString() const;
 
 	const std::string& getName() const;
 
 	const std::string& getOtherTypeDef() const;
+
+	Identity *clone(void) const;
 
 	static const std::string identityTypeNames[];
 
@@ -75,7 +75,7 @@ private:
 
 	std::string _name;
 	std::string _otherDef;
-	IdentityType _type;
+	IdentityType _identityType;
 };
 
 } // namespace

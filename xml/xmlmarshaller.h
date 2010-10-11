@@ -45,12 +45,14 @@ class XmlMarshaller {
 
 	public:
 		virtual ~XmlMarshaller() { }
-		/* 
+
+		/**
 		 * Mashal a Marshalable object to memory.
-		 * Returns a pointer and the length of the marshalled data
-		 * in a Payload object.
 		 *
-		 * The caller is responsible to free the returned memory.
+		 * @param root the XmlMarshalable to be marshalled
+		 * @return Payload object containing a pointer and
+		 * 	   the length of the memory area. The caller
+		 * 	   is responsible for freeing this memory.
 		 */
 		virtual Payload marshal(XmlMarshalable *root) = 0;
 };

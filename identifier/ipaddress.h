@@ -32,30 +32,32 @@ namespace ifmap2c {
 enum IpAddressType { ipv4, ipv6 };
 
 class IpAddress : public IdentifierWithAD {
+
+public:
+
+	const std::string& getValue() const;
+
+	IpAddressType getIpAddressType() const;
+
+	static IpAddress * createIpv4Address(const std::string& val,
+			const std::string& ad = "");
+
+	static IpAddress *createIpv6Address(const std::string& val,
+			const std::string& ad = "");
+
+	IpAddress *clone(void) const;
+
 private:
 
 	IpAddress(IpAddressType type, const std::string& val,
 		const std::string& ad);
 
 	std::string _value;
-	IpAddressType _type;
+	IpAddressType _ipAddrType;
 
 	static IpAddress *createIpAddress(const std::string& val,
 		const std::string& ad);
 
-public:
-
-	const std::string&
-	getValue() const;
-
-	IpAddressType
-	getType() const;
-
-	static IpAddress *
-	createIpv4Address(const std::string& val, const std::string& ad = "");
-
-	static IpAddress *
-	createIpv6Address(const std::string& val, const std::string& ad = "");
 };
 
 } // namespace

@@ -30,7 +30,7 @@ namespace ifmap2c {
 
 class Identifier : public BasicXmlMarshalable {
 
-public:
+protected:
 	Identifier(const std::string& name, const std::string& val);
 };
 

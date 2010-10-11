@@ -50,26 +50,29 @@ Identity::Identity(IdentityType type, const string& name , const string& ad,
 		IdentifierWithAD(IDENTITY_ELEMENT_NAME, EMPTY_VALUE, ad)
 		,_name(name)
 		,_otherDef(ot)
-		,_type(type)
+		,_identityType(type)
 {
 	addXmlAttribute(STRP(IDENTITY_NAME_ATTR_NAME, name));
 	addXmlAttribute(STRP(IDENTITY_TYPE_ATTR_NAME, identityTypeNames[type]));
+
 	if (type == other)
 		addXmlAttribute(STRP(IDENTITY_OTHER_DEF_ATTR_NAME, ot));
 }
 
 
 
-IdentityType Identity::getType() const
+IdentityType
+Identity::getIdentityType() const
 {
-	return _type;
+	return _identityType;
 }
+
 
 
 const std::string&
 Identity::getTypeString() const
 {
-	return identityTypeNames[_type];
+	return identityTypeNames[_identityType];
 }
 
 
@@ -104,5 +107,15 @@ Identity::createOtherIdentity(const string& otherDef, const string& name,
 {
 	return new Identity(other, name, ad, otherDef);
 }
+
+
+
+Identity *
+Identity::clone(void) const
+{
+	return new Identity(getIdentityType(), getName(), getAdministrativeDomain(),
+			getOtherTypeDef());
+}
+
 
 } // namespace

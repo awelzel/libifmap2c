@@ -49,4 +49,11 @@ MacAddress::getValue() const
 	return _value;
 }
 
+
+MacAddress *
+MacAddress::clone(void) const
+{
+	return new MacAddress(getValue(), getAdministrativeDomain());
+}
+
 } // namespace

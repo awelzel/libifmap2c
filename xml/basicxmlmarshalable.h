@@ -64,11 +64,14 @@ public:
 	void addXmlAttribute(const std::pair<std::string, std::string>& attr);
 
 	void addXmlNamespaceDefinition(const std::pair<std::string, std::string>& ns);
+
+	virtual XmlMarshalable *clone(void) const;
+
 private:
 	std::string _xmlElementName;
 	std::string _xmlElementValue;
 	std::pair<std::string, std::string> _xmlNamespace;
-	std::list<std::pair<std::string, std::string> > _xmlNamespaceDeclarations;
+	std::list<std::pair<std::string, std::string> > _xmlNamespaceDefinitions;
 	std::list<std::pair<std::string, std::string> > _xmlAttributes;
 	std::list<XmlMarshalable *> _xmlChildren;
 };
