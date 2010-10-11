@@ -47,6 +47,8 @@ public:
 	static XmlMarshalable *createAuthBy();
 		
 	static XmlMarshalable *createDevIp();
+
+	static XmlMarshalable *createRole();
 		
 	static XmlMarshalable * createIpMac(const std::string& start = "",
 			const std::string& end = "",
