@@ -88,7 +88,7 @@ SSRC::getARC(void) {
 void
 SSRC::newSession(const string& maxPollResSize)
 {
-	NewSessionRequest *nsreq = Requests::createNSR(maxPollResSize);
+	NewSessionRequest *nsreq = Requests::createNewSessionReq(maxPollResSize);
 	XmlMarshalable *reply = NULL;
 	NewSessionResult *nsres = NULL;
 	try {
@@ -117,7 +117,7 @@ SSRC::newSession(const string& maxPollResSize)
 void
 SSRC::endSession(void)
 {
-	EndSessionRequest *esr = Requests::createESR();
+	EndSessionRequest *esr = Requests::createEndSessionReq();
 	XmlMarshalable *reply = processMessage(esr);
 	try {
 		ResponseParser::checkEndSessionResult(reply);
@@ -189,7 +189,7 @@ SSRC::subscribe(SubscribeRequest *const sr)
 void
 SSRC::renewSession(void)
 {
-	RenewSessionRequest *rsr = Requests::createRNSR();
+	RenewSessionRequest *rsr = Requests::createRenewSessionReq();
 	XmlMarshalable *reply = NULL;
 
 	try {

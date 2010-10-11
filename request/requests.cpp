@@ -30,7 +30,7 @@ using namespace std;
 namespace ifmap2c {
 
 NewSessionRequest*
-Requests::createNSR(const string& maxPollResSize)
+Requests::createNewSessionReq(const string& maxPollResSize)
 {
 	return NewSessionRequest::createNewSessionRequest(maxPollResSize);
 }
@@ -38,19 +38,19 @@ Requests::createNSR(const string& maxPollResSize)
 
 
 EndSessionRequest*
-Requests::createESR(void)
+Requests::createEndSessionReq(void)
 {
 	return EndSessionRequest::createEndSessionRequest();
 }
 
 RenewSessionRequest *
-Requests::createRNSR(void)
+Requests::createRenewSessionReq(void)
 {
 	return RenewSessionRequest::createRenewSessionRequest();
 }
 
 PublishRequest*
-Requests::createPR(const std::list<SubPublish *>& reqs)
+Requests::createPublishReq(const std::list<SubPublish *>& reqs)
 {
 	return PublishRequest::createPublishRequest(reqs);
 }
@@ -58,7 +58,7 @@ Requests::createPR(const std::list<SubPublish *>& reqs)
 
 
 PublishRequest*
-Requests::createPR(SubPublish *const  req)
+Requests::createPublishReq(SubPublish *const  req)
 {
 	return PublishRequest::createPublishRequest(req);
 }
@@ -66,7 +66,7 @@ Requests::createPR(SubPublish *const  req)
 
 
 PublishUpdate*
-Requests::createPU(const CLIST& metadata,
+Requests::createPublishUpdate(const CLIST& metadata,
 		Identifier *const i1,
 		LifeTimeType lTime,
 		Identifier *const i2)
@@ -77,7 +77,7 @@ Requests::createPU(const CLIST& metadata,
 
 
 PublishUpdate*
-Requests::createPU(XmlMarshalable *const metadata,
+Requests::createPublishUpdate(XmlMarshalable *const metadata,
 		Identifier *const i1,
 		LifeTimeType lTime,
 		Identifier *const i2)
@@ -88,7 +88,7 @@ Requests::createPU(XmlMarshalable *const metadata,
 
 
 PublishDelete *
-Requests::createPD(const char *const filter,
+Requests::createPublishDelete(const char *const filter,
 		Identifier *const i1,
 		Identifier *const i2)
 {
@@ -96,7 +96,7 @@ Requests::createPD(const char *const filter,
 }
 
 PublishNotify *
-Requests::createPN(const CLIST& metadataList,
+Requests::createPublishNotify(const CLIST& metadataList,
 		Identifier *const i1,
 		Identifier *const i2)
 {
@@ -104,7 +104,7 @@ Requests::createPN(const CLIST& metadataList,
 }
 
 PublishNotify *
-Requests::createPN(XmlMarshalable *const metadata,
+Requests::createPublishNotify(XmlMarshalable *const metadata,
 		Identifier *const i1,
 		Identifier *const i2)
 {
@@ -126,19 +126,19 @@ Requests::createSearchReq(const char *const matchLinksFilter,
 
 
 SubscribeRequest *
-Requests::createSubR(const std::list<SubSubscribe *> srList)
+Requests::createSubscribeReq(const std::list<SubSubscribe *> srList)
 {
 	return SubscribeRequest::createSubscribeRequest(srList);
 }
 
 SubscribeRequest *
-Requests::createSubR(SubSubscribe *const sr)
+Requests::createSubscribeReq(SubSubscribe *const sr)
 {
 	return SubscribeRequest::createSubscribeRequest(sr);
 }
 
 SubscribeUpdate *
-Requests::createSubU(std::string const& name,
+Requests::createSubscribeUpdate(std::string const& name,
 		const char *const matchLinksFilter,
 		const int maxDepth,
 		const char *const resultFilter,
@@ -150,15 +150,15 @@ Requests::createSubU(std::string const& name,
 }
 
 SubscribeDelete *
-Requests::createSubD(const string& name)
+Requests::createSubscribeDelete(const string& name)
 {
 	return SubscribeDelete::createSubscribeDelete(name);
 }
 
 PollRequest *
-Requests::createPollR(const string& name)
+Requests::createPollReq(void)
 {
-	return PollRequest::createPollRequest(name);
+	return PollRequest::createPollRequest();
 }
 
 } // namespace

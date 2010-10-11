@@ -62,7 +62,7 @@ ARC::~ARC() {
 PollResult *
 ARC::poll(void)
 {
-	PollRequest *pollReq = Requests::createPollR(getSessionId());
+	PollRequest *pollReq = Requests::createPollReq();
 	XmlMarshalable *reply = NULL;
 	PollResult *pollRes = NULL;
 	try {

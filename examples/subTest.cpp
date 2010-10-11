@@ -149,19 +149,21 @@ int main()
 	PollResult *pollRes = NULL;
 	XmlMarshalable *ipmac1 = Metadata::createIpMac();
 	XmlMarshalable *ipmac2 = Metadata::createIpMac();
-	PublishUpdate *pu1 = Requests::createPU(ipmac1, i1, session, i2);
-	PublishUpdate *pu2 = Requests::createPU(ipmac2, i11, session);
-	PublishRequest *pr1 = Requests::createPR(pu1);
-	PublishRequest *pr2 = Requests::createPR(pu2);
+	PublishUpdate *pu1 = Requests::createPublishUpdate(ipmac1, i1, session, i2);
+	PublishUpdate *pu2 = Requests::createPublishUpdate(ipmac2, i11, session);
+	PublishRequest *pr1 = Requests::createPublishReq(pu1);
+	PublishRequest *pr2 = Requests::createPublishReq(pu2);
 
 	// meta namespace isn't defined by default anymore
 	pr1->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 	pr2->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
-	SubscribeUpdate *sub = Requests::createSubU("mysub", NULL, 25, NULL, -1, i12);
-	SubscribeRequest *subreq = Requests::createSubR(sub);
-	SubscribeDelete *subdel = Requests::createSubD("mysub");
-	SubscribeRequest *subreqdel = Requests::createSubR(subdel);
+	SubscribeUpdate *sub = Requests::createSubscribeUpdate("mysub",
+			FILTER_MATCH_ALL, 25, FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE, i12);
+	SubscribeRequest *subreq = Requests::createSubscribeReq(sub);
+	SubscribeDelete *subdel = Requests::createSubscribeDelete("mysub");
+	SubscribeRequest *subreqdel = Requests::createSubscribeReq(subdel);
 
 
 	try {

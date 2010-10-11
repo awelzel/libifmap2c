@@ -30,10 +30,10 @@ namespace ifmap2c {
 
 class PollRequest : public BasicXmlMarshalable {
 public:
-	static PollRequest *createPollRequest(const std::string& sessionId);
+	static PollRequest *createPollRequest(void);
 
 private:
-	PollRequest(const std::string& sessionId);
+	PollRequest();
 };
 
 } // namespace
