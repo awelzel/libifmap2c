@@ -63,4 +63,7 @@
 #define META_DEVIP_ELEMENT_NAME			"device-ip"
 #define META_DEVIP_CARDINALITY			single
 
+#define META_ROLE_ELEMENT_NAME			"role"
+#define META_ROLE_CARDINALITY			multi
+
 #endif /* TCGMETA_H_ */

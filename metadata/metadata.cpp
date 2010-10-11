@@ -86,6 +86,12 @@ Metadata::createDevIp()
 	return createMetadata(META_DEVIP_ELEMENT_NAME, META_DEVIP_CARDINALITY);
 }
 
+XmlMarshalable *
+Metadata::createRole()
+{
+	return createMetadata(META_ROLE_ELEMENT_NAME, META_DEVIP_CARDINALITY);
+}
+
 
 
 XmlMarshalable *
