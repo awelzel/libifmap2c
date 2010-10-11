@@ -65,12 +65,10 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 	${CURL_LIBRARIES}
 )
 
-#ADD_EXECUTABLE(test_new examples/test_new.cpp)
 ADD_EXECUTABLE(subTest examples/subTest.cpp)
 ADD_EXECUTABLE(ip-mac examples/ip-mac.cpp)
 ADD_EXECUTABLE(test-identifiers examples/test-identifiers.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example examples/pdp-dhcp-example.cpp)
-#TARGET_LINK_LIBRARIES(test_new ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(subTest ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(ip-mac ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(test-identifiers ${PROJECT_NAME})
