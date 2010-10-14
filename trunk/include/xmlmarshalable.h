@@ -38,36 +38,37 @@ public:
 
 	virtual const std::string& getXmlElementName(void) const = 0;
 
-	virtual void
-	addXmlAttribute(const std::pair<std::string, std::string>& ns) = 0;
+	virtual void addXmlAttribute(
+			const std::pair<std::string, std::string>& ns) = 0;
 
-	virtual const std::list<std::pair<std::string, std::string> >&
-	getXmlAttributes(void) const = 0;
+	virtual void clearXmlAttributes(void) = 0;
 
-	virtual const std::list<XmlMarshalable *>& getXmlChildren(void) const = 0;
+	virtual const std::list<std::pair<std::string, std::string> >& getXmlAttributes(
+			void) const = 0;
 
 	virtual const std::string& getXmlElementValue(void) const = 0;
 
-	virtual void
-	addXmlNamespaceDefinition(const std::pair<std::string, std::string>& attr) = 0;
+	virtual void addXmlNamespaceDefinition(
+			const std::pair<std::string, std::string>& attr) = 0;
 
-	virtual const std::list<std::pair<std::string, std::string> >&
-	getXmlNamespaceDefinitions(void) const = 0;
+	virtual const std::list<std::pair<std::string, std::string> >& getXmlNamespaceDefinitions(
+			void) const = 0;
 		
-	virtual const std::pair<std::string, std::string>&
-	getXmlNamespace() const = 0;
+	virtual const std::pair<std::string, std::string>& getXmlNamespace() const = 0;
 
 	virtual void addXmlChild(XmlMarshalable *const child) = 0;
 
 	virtual void clearXmlChildren(void) = 0;
 
+	virtual const std::list<XmlMarshalable *>& getXmlChildren(void) const = 0;
+
 	/**
-	 * Make a deep copy of a XmlMarshalable object
+	 * Make a deep copy of a XmlMarshalable object.
 	 */
 	virtual XmlMarshalable *clone(void) const = 0;
 
 	/**
-	 * Helper to put a XmlMarshalable to stdout
+	 * Helper to put a XmlMarshalable to STDOUT.
 	 */
 	static void putXmlMarshalable(XmlMarshalable *m);
 };

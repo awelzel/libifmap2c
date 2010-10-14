@@ -63,6 +63,8 @@ public:
 
 	void addXmlAttribute(const std::pair<std::string, std::string>& attr);
 
+	void clearXmlAttributes(void);
+
 	void addXmlNamespaceDefinition(const std::pair<std::string, std::string>& ns);
 
 	virtual XmlMarshalable *clone(void) const;

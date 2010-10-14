@@ -60,7 +60,24 @@ protected:
 			const std::string& mycert,
 			const std::string& capath);
 
+	/**
+	 *
+	 *
+	 *
+	 */
 	XmlMarshalable *processMessage(XmlMarshalable *const msg);
+
+	/**
+	 * Set the a session-id attribute to the request.
+	 *
+	 * If the is already a session-id attribute set, the old value is
+	 * removed and replaced by the new one.
+	 *
+	 * @param req the request for which the session-id attribute is to be set
+	 * @param sessionId this value will be set as session-id attribute
+	 */
+	void setSessionId(XmlMarshalable *const req,
+			const std::string& sessionId);
 
 	bool _basicAuth;
 	std::string _url;
@@ -78,6 +95,7 @@ private:
 	bool containsSessionId(XmlMarshalable *req);
 
 	XmlMarshalable *buildEnvelope();
+
 };
 
 } // namespace

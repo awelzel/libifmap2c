@@ -179,4 +179,31 @@ IfmapCommunication::processMessage(XmlMarshalable *const msg)
 	return replyMarsh;
 }
 
+void
+IfmapCommunication::setSessionId(XmlMarshalable *const req,
+		const string& sessionId)
+{
+	CSTRPLISTIT it = req->getXmlAttributes().begin();
+	CSTRPLISTIT end = req->getXmlAttributes().end();
+	// if we find a session-id attribute we need to copy the whole list :-(
+
+	for (STRP strp = *it; it != end; strp = *(++it)) {
+		if (!strp.first.compare(SESSIONID_ATTR_NAME)) {
+			STRPLIST attrList = req->getXmlAttributes();
+			req->clearXmlAttributes();
+
+			it = attrList.begin();
+			end = attrList.end();
+
+			for (STRP strp = *it; it != end; *(++it)) {
+				if (strp.first.compare(SESSIONID_ATTR_NAME)) {
+					req->addXmlAttribute(strp);
+				}
+			}
+			break;
+		}
+	}
+	req->addXmlAttribute(STRP(SESSIONID_ATTR_NAME, sessionId));
+}
+
 } // namespace

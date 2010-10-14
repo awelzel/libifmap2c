@@ -36,9 +36,7 @@ SSRC::SSRC(const string& url,
 		const string& pass,
 		const string& capath) :
 		IfmapCommunication(url, user, pass, capath)
-{
-
-}
+{ }
 
 SSRC::SSRC(const string& url,
 		const string& mykey,
@@ -46,11 +44,13 @@ SSRC::SSRC(const string& url,
 		const string& mycert,
 		const string& capath) :
 		IfmapCommunication(url, mykey, mykeypw, mycert, capath)
-{
+{  }
 
-}
 
-SSRC::~SSRC() { }
+
+SSRC::~SSRC()
+{ /* cleanup is done in superclass */ }
+
 
 
 SSRC *
@@ -62,6 +62,8 @@ SSRC::createSSRC(const string& url,
 	return new SSRC(url, user, pass, capath);
 }
 
+
+
 SSRC *
 SSRC::createSSRC(const string& url,
 		const string& mykey,
@@ -71,6 +73,8 @@ SSRC::createSSRC(const string& url,
 {
 	return new SSRC(url, mykey, mykeypw, mycert, capath);
 }
+
+
 
 ARC *
 SSRC::getARC(void) {
@@ -91,6 +95,7 @@ SSRC::newSession(const string& maxPollResSize)
 	NewSessionRequest *nsreq = Requests::createNewSessionReq(maxPollResSize);
 	XmlMarshalable *reply = NULL;
 	NewSessionResult *nsres = NULL;
+
 	try {
 		reply = processMessage(nsreq);
 		nsres = ResponseParser::createNewSessionResult(reply);
@@ -115,27 +120,35 @@ SSRC::newSession(const string& maxPollResSize)
 
 
 void
-SSRC::endSession(void)
+SSRC::endSession(const string& sId)
 {
-	EndSessionRequest *esr = Requests::createEndSessionReq();
-	XmlMarshalable *reply = processMessage(esr);
+	EndSessionRequest *esreq = Requests::createEndSessionReq();
+	XmlMarshalable *reply = NULL;
+
+	if (sId.length() > 0)
+		setSessionId(esreq, sId);
+
 	try {
+		reply = processMessage(esreq);
 		ResponseParser::checkEndSessionResult(reply);
 	} catch (...) {
-		delete esr;
+		delete esreq;
 		delete reply;
 		throw;
 	}
-	delete esr;
+	delete esreq;
 	delete reply;
 }
 
 
 
 void
-SSRC::publish(PublishRequest *const pr)
+SSRC::publish(PublishRequest *const pr, const string& sId)
 {
 	XmlMarshalable *reply = NULL;
+
+	if (sId.length() > 0)
+		setSessionId(pr, sId);
 
 	try {
 		reply = processMessage(pr);
@@ -151,10 +164,13 @@ SSRC::publish(PublishRequest *const pr)
 
 
 SearchResult *
-SSRC::search(SearchRequest *const sr)
+SSRC::search(SearchRequest *const sr, const string& sId)
 {
 	XmlMarshalable *reply  = NULL;
 	SearchResult *sres = NULL;
+
+	if (sId.length() > 0)
+		setSessionId(sr, sId);
 
 	try {
 		reply = processMessage(sr);
@@ -170,9 +186,12 @@ SSRC::search(SearchRequest *const sr)
 }
 
 void
-SSRC::subscribe(SubscribeRequest *const sr)
+SSRC::subscribe(SubscribeRequest *const sr, const string& sId)
 {
 	XmlMarshalable *reply = NULL;
+
+	if (sId.length() > 0)
+		setSessionId(sr, sId);
 
 	try {
 		reply = processMessage(sr);
@@ -187,10 +206,13 @@ SSRC::subscribe(SubscribeRequest *const sr)
 }
 
 void
-SSRC::renewSession(void)
+SSRC::renewSession(const string& sId)
 {
 	RenewSessionRequest *rsr = Requests::createRenewSessionReq();
 	XmlMarshalable *reply = NULL;
+
+	if (sId.length() > 0)
+		setSessionId(rsr, sId);
 
 	try {
 		reply = processMessage(rsr);
@@ -206,6 +228,8 @@ SSRC::renewSession(void)
 	delete reply;
 }
 
+
+
 const string&
 SSRC::getSessionId(void) const
 {
@@ -213,11 +237,14 @@ SSRC::getSessionId(void) const
 }
 
 
+
 const string&
 SSRC::getPublisherId(void) const
 {
 	return _currentPublisherId;
 }
+
+
 
 const string&
 SSRC::getMaxPollResultSize(void) const
