@@ -112,6 +112,12 @@ BasicXmlMarshalable::addXmlAttribute(const STRP& attr)
 	_xmlAttributes.push_back(attr);
 }
 
+void
+BasicXmlMarshalable::clearXmlAttributes(void)
+{
+	_xmlAttributes.clear();
+}
+
 
 
 void

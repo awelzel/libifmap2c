@@ -44,12 +44,12 @@ using namespace ifmap2c;
 
 #define IDENTITY_NAME_PREFIX	"john.smith"
 #define SWITCH_ONE_IP		"192.0.2.55"
-#define SWITCH_ONE_DEV_NAME	"111:4"
+#define SWITCH_ONE_DEV_NAME	"802.1X SWITCH 111:4"
 #define SWITCH_TWO_IP		"192.0.2.56"
-#define SWITCH_TWO_DEV_NAME	"111:5"
+#define SWITCH_TWO_DEV_NAME	"802.1X SWITCH 111:5"
 #define VLAN			"1234"
 
-#define PDP_DEV_NAME		"111:0"
+#define PDP_DEV_NAME		"THE PDP 111:0"
 #define PDP_IP			"192.0.2.60"
 
 #define AR_PREFIX		"111:"
@@ -67,15 +67,15 @@ using namespace ifmap2c;
 #define DHCP_BASIC_PW		"dhcp"
 
 // number of access requests to demonstrate
-#define AR_NUMBER	64
+#define AR_NUMBER	20
 
 // usec
-#define TIMEFACTOR		0
-#define PDP_SLEEP		(50 * TIMEFACTOR)
-#define PDP_DHCP_SLEEP		(100 * TIMEFACTOR)
-#define AR_SLEEP		(200 * TIMEFACTOR)
+#define TIMEFACTOR		5
+#define PDP_SLEEP		(500 * TIMEFACTOR)
+#define PDP_DHCP_SLEEP		(1000 * TIMEFACTOR)
+#define AR_SLEEP		(3000 * TIMEFACTOR)
 
-#define RENEW_SESSON_SEEP	(500 * TIMEFACTOR)
+#define RENEW_SESSON_SEEP	(5000 * TIMEFACTOR)
 
 // don't want to think about it right now ;-)
 #define SOME_BYTES	32
