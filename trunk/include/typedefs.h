@@ -38,20 +38,25 @@ extern "C" {
 
 namespace ifmap2c {
 
+// STRP = string pair
 typedef std::pair<std::string, std::string> STRP;
 typedef std::list<STRP> STRPLIST;
-typedef std::list<STRP>::iterator STRPLISTIT;
-typedef std::list<STRP>::const_iterator CSTRPLISTIT;
-typedef std::list<XmlMarshalable *> CLIST;
-typedef const std::list<XmlMarshalable *> CCLIST;
-typedef std::list<XmlMarshalable *>::iterator CLISTIT;
-typedef std::list<XmlMarshalable *>::const_iterator CCLISTIT;
+typedef STRPLIST::iterator STRPLISTIT;
+typedef STRPLIST::const_iterator CSTRPLISTIT;
 
+// XMLM == XmlMarshalable
+typedef std::list<XmlMarshalable *> XMLMLIST;
+typedef const XMLMLIST CXMLMLIST;
+typedef XMLMLIST::iterator XMLMLISTIT;
+typedef XMLMLIST::const_iterator CXMLMLISTIT;
+
+// SR = SearchResult
 typedef std::list<SearchResult *> SRLIST;
 typedef const SRLIST CSRLIST;
 typedef SRLIST::iterator SRLISTIT;
 typedef SRLIST::const_iterator CSRLISTIT;
 
+// RI = ResultItem
 typedef std::list<ResultItem *> RILIST;
 typedef const RILIST CRILIST;
 typedef RILIST::iterator RILISTIT;

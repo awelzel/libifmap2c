@@ -101,6 +101,13 @@ ResponseParser::checkRenewSessionResult(XmlMarshalable *const env)
 	throwIfNull(renewSessionRes, RENEWSESSIONRESULT_ELEMENT_NAME);
 }
 
+void
+ResponseParser::checkPurgePublisherReceived(XmlMarshalable *const env)
+{
+	XmlMarshalable *purgePublisherRecv = locatePurgePublisherRecvElement(env);
+	throwIfNull(purgePublisherRecv, PURGEPUBLISHERRECV_ELEMENT_NAME);
+}
+
 
 SearchResult *
 ResponseParser::createSearchResult(XmlMarshalable *const env)
@@ -122,8 +129,8 @@ ResponseParser::extractSearchResult(XmlMarshalable *const sr)
 
 	searchResultName = extractSearchResultName(sr);
 
-	CCLISTIT it = sr->getXmlChildren().begin();
-	CCLISTIT end = sr->getXmlChildren().end();
+	CXMLMLISTIT it = sr->getXmlChildren().begin();
+	CXMLMLISTIT end = sr->getXmlChildren().end();
 
 	retSearchRes = new SearchResult(searchResultName);
 
@@ -156,8 +163,8 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 	retPollRes = new PollResult();
 
 	// we have SearchResult elements down here
-	CCLISTIT it = xmlPollRes->getXmlChildren().begin();
-	CCLISTIT end = xmlPollRes->getXmlChildren().end();
+	CXMLMLISTIT it = xmlPollRes->getXmlChildren().begin();
+	CXMLMLISTIT end = xmlPollRes->getXmlChildren().end();
 
 	try {
 		for (child = *it; it != end; child = *(it++)) {
@@ -223,13 +230,13 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 
 	ResultItem *resultItem = new ResultItem();
 
-	CCLIST childs = xmlResultItem->getXmlChildren();
+	CXMLMLIST childs = xmlResultItem->getXmlChildren();
 
 	if (childs.size() > 3 || childs.size() < 1)
 		throw ResponseParseError("ResultItem contains wrong number of elements");
 
-	CCLISTIT it = childs.begin();
-	CCLISTIT end = childs.end();
+	CXMLMLISTIT it = childs.begin();
+	CXMLMLISTIT end = childs.end();
 
 	//XmlMarshalable::putXmlMarshalable(xmlResultItem);
 
@@ -252,8 +259,8 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 				resultItem->setIdentity(id);
 				id = NULL;
 			} else if ((mdList = extractMetadataList(child))) {
-				CCLISTIT it = mdList->getXmlChildren().begin();
-				CCLISTIT end = mdList->getXmlChildren().end();
+				CXMLMLISTIT it = mdList->getXmlChildren().begin();
+				CXMLMLISTIT end = mdList->getXmlChildren().end();
 
 				// hang children into the searchResult
 				for (/* */; it != end; it++)
@@ -406,8 +413,8 @@ ResponseParser::extractDevice(XmlMarshalable *const element)
 			throw ResponseParseError("Device with more than"
 					"one child element");
 
-		CCLISTIT it = element->getXmlChildren().begin();
-		CCLISTIT end = element->getXmlChildren().end();
+		CXMLMLISTIT it = element->getXmlChildren().begin();
+		CXMLMLISTIT end = element->getXmlChildren().end();
 
 		for (/* */; it != end; it++) {
 			if (compNameNs(*it, DEVICE_AIK_ELEMENT, DEVICE_AIK_HREF)) {
@@ -596,6 +603,14 @@ ResponseParser::locateRenewSessionResultElement(XmlMarshalable *const env)
 			RENEWSESSIONRESULT_ELEMENT_HREF));
 }
 
+XmlMarshalable *
+ResponseParser::locatePurgePublisherRecvElement(XmlMarshalable *const env)
+{
+	return locateUnderResponse(env, STRP(PURGEPUBLISHERRECV_ELEMENT_NAME,
+			PURGEPUBLISHERRECV_ELEMENT_HREF));
+}
+
+
 
 XmlMarshalable *
 ResponseParser::locatePublishReceivedElement(XmlMarshalable *const env)
@@ -628,9 +643,9 @@ ResponseParser::isAttrWithName(const STRP& attr, const string& attrname)
 XmlMarshalable *
 ResponseParser::getChild(XmlMarshalable *marsh, const string& elname, const string& href)
 {
-	CLIST children = marsh->getXmlChildren();
-	CLISTIT it = children.begin();
-	CLISTIT end = children.end();
+	XMLMLIST children = marsh->getXmlChildren();
+	XMLMLISTIT it = children.begin();
+	XMLMLISTIT end = children.end();
 
 	for (/* */; it != end; it++)
 		if(compNameNs(*it, elname, href))

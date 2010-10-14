@@ -48,8 +48,8 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-    cerr << "usage: " << prog << " update|delete ifmap-server-url"
-		    " ip-address mac-address user password capath" << endl;
+    cerr << "usage: " << prog << " update|delete ip-addr mac-addr"
+		    " ifmap-server-url user password capath" << endl;
     exit(1);
 }
 
@@ -64,9 +64,9 @@ int main(int argc, char* argv[])
         usage(argv[0]);
     }
 
-    char* url = argv[2];
-    char* ipArg = argv[3];
-    char* macArg = argv[4];
+    char* ipArg = argv[2];
+    char* macArg = argv[3];
+    char* url = argv[4];
     char* user = argv[5];
     char* password = argv[6];
     char *capath = argv[7];

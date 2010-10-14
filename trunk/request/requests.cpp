@@ -66,7 +66,7 @@ Requests::createPublishReq(SubPublish *const  req)
 
 
 PublishUpdate*
-Requests::createPublishUpdate(const CLIST& metadata,
+Requests::createPublishUpdate(const XMLMLIST& metadata,
 		Identifier *const i1,
 		LifeTimeType lTime,
 		Identifier *const i2)
@@ -96,7 +96,7 @@ Requests::createPublishDelete(const char *const filter,
 }
 
 PublishNotify *
-Requests::createPublishNotify(const CLIST& metadataList,
+Requests::createPublishNotify(const XMLMLIST& metadataList,
 		Identifier *const i1,
 		Identifier *const i2)
 {
@@ -159,6 +159,12 @@ PollRequest *
 Requests::createPollReq(void)
 {
 	return PollRequest::createPollRequest();
+}
+
+PurgePublisherRequest *
+Requests::createPurgePublisherReq(const string& publisherId)
+{
+	return PurgePublisherRequest::createPurgePublisherRequests(publisherId);
 }
 
 } // namespace

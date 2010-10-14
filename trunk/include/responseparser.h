@@ -44,6 +44,8 @@ public:
 
 	static void checkRenewSessionResult(XmlMarshalable *const env);
 
+	static void checkPurgePublisherReceived(XmlMarshalable *const env);
+
 	static SearchResult *createSearchResult(XmlMarshalable *const env);
 
 	static PollResult *createPollResult(XmlMarshalable *const env);
@@ -84,6 +86,8 @@ public:
 	static XmlMarshalable *locatePublishReceivedElement(XmlMarshalable *const env);
 
 	static XmlMarshalable *locateRenewSessionResultElement(XmlMarshalable *const env);
+
+	static XmlMarshalable *locatePurgePublisherRecvElement(XmlMarshalable *const env);
 
 	static bool compNameNs(XmlMarshalable *const elem,
 			const std::string& name,
