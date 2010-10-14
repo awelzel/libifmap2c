@@ -38,7 +38,7 @@ string PublishUpdate::lifeTimeNames[] = {
 
 
 PublishUpdate *
-PublishUpdate::createPublishUpdate(const CLIST& mlist,
+PublishUpdate::createPublishUpdate(const XMLMLIST& mlist,
 		Identifier *const i1,
 		LifeTimeType lTime,
 		Identifier *const i2)
@@ -54,7 +54,7 @@ PublishUpdate::createPublishUpdate(XmlMarshalable *const metadata,
 		LifeTimeType lTime,
 		Identifier *const i2)
 {
-	CLIST metadataList;
+	XMLMLIST metadataList;
 	metadataList.push_back(metadata);
 	return new PublishUpdate(metadataList, i1, lTime, i2);
 }
@@ -65,7 +65,7 @@ PublishUpdate::~PublishUpdate()	{ }
 
 
 
-PublishUpdate::PublishUpdate(const CLIST& mlist,
+PublishUpdate::PublishUpdate(const XMLMLIST& mlist,
 		Identifier *const i1, LifeTimeType lTime, Identifier *const i2) :
 	  SubPublish(PUBLISH_UPDATE_ELEMENT_NAME, i1, i2)
 {
@@ -75,8 +75,8 @@ PublishUpdate::PublishUpdate(const CLIST& mlist,
 			METADATA_LIST_ELEMENT_NAME, EMPTY_VALUE,
 			NO_NSPAIR);
 
-	CCLISTIT it = mlist.begin();
-	CCLISTIT end = mlist.end();
+	CXMLMLISTIT it = mlist.begin();
+	CXMLMLISTIT end = mlist.end();
 
 	for (/* */; it != end; it++)
 		metadatachild->addXmlChild(*it);

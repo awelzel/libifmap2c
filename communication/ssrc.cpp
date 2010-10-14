@@ -230,6 +230,32 @@ SSRC::renewSession(const string& sId)
 
 
 
+void
+SSRC::purgePublisher(const string& sId, const string& pId)
+{
+	// take either the given or the actual publisherId for this request.
+	string pubId = (pId.length() > 0) ? pId : getPublisherId();
+
+	PurgePublisherRequest *ppr = Requests::createPurgePublisherReq(pubId);
+	XmlMarshalable *reply = NULL;
+
+	if (sId.length() > 0)
+		setSessionId(ppr, sId);
+
+	try {
+		reply = processMessage(ppr);
+		ResponseParser::checkPurgePublisherReceived(reply);
+	} catch (...) {
+		if (ppr) delete ppr;
+		if (reply) delete reply;
+		throw;
+	}
+	delete ppr;
+	delete reply;
+}
+
+
+
 const string&
 SSRC::getSessionId(void) const
 {

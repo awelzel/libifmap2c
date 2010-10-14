@@ -47,8 +47,8 @@ BasicXmlMarshalable::~BasicXmlMarshalable()
 	_xmlAttributes.clear();
 
 	/* delete all childs */
-	CLISTIT it = _xmlChildren.begin();
-	CLISTIT end = _xmlChildren.end();
+	XMLMLISTIT it = _xmlChildren.begin();
+	XMLMLISTIT end = _xmlChildren.end();
 
 	for (/* */; it != end; it++) {
 		delete *it;
@@ -98,7 +98,7 @@ BasicXmlMarshalable::getXmlAttributes(void) const
 
 
 
-const CLIST&
+const XMLMLIST&
 BasicXmlMarshalable::getXmlChildren(void) const
 {
 	return _xmlChildren;
@@ -148,8 +148,8 @@ XmlMarshalable
 			getXmlElementValue(),
 			getXmlNamespace());
 
-	CCLISTIT cit = getXmlChildren().begin();
-	CCLISTIT cend = getXmlChildren().end();
+	CXMLMLISTIT cit = getXmlChildren().begin();
+	CXMLMLISTIT cend = getXmlChildren().end();
 	XmlMarshalable *child;
 
 	// clone all the children

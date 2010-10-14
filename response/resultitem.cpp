@@ -55,8 +55,8 @@ ResultItem::~ResultItem()
 		delete _id;
 
 	// delete all metadata childs
-	CLISTIT it = _metadataList.begin();
-	CLISTIT end = _metadataList.end();
+	XMLMLISTIT it = _metadataList.begin();
+	XMLMLISTIT end = _metadataList.end();
 	XmlMarshalable *child = NULL;
 	for (child = *it; it != end; child = *(++it))
 		delete child;
@@ -168,7 +168,7 @@ ResultItem::addMetadata(XmlMarshalable *const md)
 
 
 
-const CCLIST&
+const CXMLMLIST&
 ResultItem::getMetadataList(void) const
 {
 	return _metadataList;

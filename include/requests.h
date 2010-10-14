@@ -25,22 +25,23 @@
 #ifndef REQUESTS_H_
 #define REQUESTS_H_
 
-#include "xmlmarshalable.h"
-#include "identifiers.h"
-#include "newsessionrequest.h"
-#include "publishrequest.h"
 #include "endsessionrequest.h"
-#include "publishupdate.h"
+#include "identifier.h"
+#include "newsessionrequest.h"
+#include "pollrequest.h"
 #include "publishdelete.h"
 #include "publishnotify.h"
-#include "subpublish.h"
-#include "searchrequest.h"
-#include "subscriberequest.h"
-#include "subsubscribe.h"
-#include "subscribeupdate.h"
-#include "subscribedelete.h"
-#include "pollrequest.h"
+#include "publishrequest.h"
+#include "publishupdate.h"
+#include "purgepublisherrequest.h"
 #include "renewsessionrequest.h"
+#include "searchrequest.h"
+#include "subpublish.h"
+#include "subscribedelete.h"
+#include "subscriberequest.h"
+#include "subscribeupdate.h"
+#include "subsubscribe.h"
+#include "xmlmarshalable.h"
 
 namespace ifmap2c {
 
@@ -175,7 +176,8 @@ public:
 	 * @param srList list of SubSubscribe objects
 	 * 		 (SubscribeUpdate, SubscribeDelete)
 	 */
-	static SubscribeRequest *createSubscribeReq(const std::list<SubSubscribe *> srList);
+	static SubscribeRequest *createSubscribeReq(
+			const std::list<SubSubscribe *> srList);
 
 	/**
 	 * Create a subscribe request object.
@@ -217,6 +219,13 @@ public:
 	 * Used internally, not to be used by users of the library.
 	 */
 	static PollRequest *createPollReq(void);
+
+	/**
+	 * Used internally, not to be used by users of the library.
+	 */
+	static PurgePublisherRequest *createPurgePublisherReq(
+			std::string const& publisherId);
 };
+
 } // namespace
 #endif /* REQUESTS_H_ */

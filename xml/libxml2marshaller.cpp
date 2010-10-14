@@ -143,9 +143,9 @@ LibXml2Marshaller::marshalToXmlNode(XmlMarshalable *node)
 		// no namespace
 	}
 
-	CLIST childs = node->getXmlChildren();
-	CLISTIT cit = childs.begin();
-	CLISTIT cend = childs.end();
+	XMLMLIST childs = node->getXmlChildren();
+	XMLMLISTIT cit = childs.begin();
+	XMLMLISTIT cend = childs.end();
 
 	/* do the whole thing for all children */
 	for (/* */; cit != cend; cit++) {

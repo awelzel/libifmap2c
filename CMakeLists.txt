@@ -33,6 +33,7 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	request/publishnotify.cpp
 	request/publishrequest.cpp
 	request/publishupdate.cpp
+	request/purgepublisherrequest.cpp
 	request/renewsessionrequest.cpp
 	request/requests.cpp
 	request/searchrequest.cpp
@@ -67,11 +68,13 @@ ADD_EXECUTABLE(subTest examples/subTest.cpp)
 ADD_EXECUTABLE(ip-mac examples/ip-mac.cpp)
 ADD_EXECUTABLE(test-identifiers examples/test-identifiers.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example examples/pdp-dhcp-example.cpp)
+ADD_EXECUTABLE(test-purge-publisher examples/test-purge-publisher.cpp)
 
 TARGET_LINK_LIBRARIES(subTest ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(ip-mac ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(test-identifiers ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(pdp-dhcp-example ${PROJECT_NAME})
+TARGET_LINK_LIBRARIES(test-purge-publisher ${PROJECT_NAME})
 
 INSTALL(TARGETS ${PROJECT_NAME}
 	LIBRARY DESTINATION lib
@@ -106,6 +109,7 @@ INSTALL(FILES
 	include/publishnotify.h
 	include/publishrequest.h
 	include/publishupdate.h
+	include/purgepublisherrequest.h
 	include/renewsessionrequest.h
 	include/requests.h
 	include/responseparseerror.h

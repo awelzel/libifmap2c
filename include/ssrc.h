@@ -214,6 +214,23 @@ public:
 	 */
 	void renewSession(const std::string& sessionId = "");
 
+
+/**
+	 * Run a purgePublisher operation.
+	 *
+	 * @param sessionId if this value is set to a string with length > 0,
+	 *		    this value is used as the session-id, else the
+	 *		    value obtained by getSessionId() will be used.
+	 *		    (Only use it if you know what you are doing.)
+	 * @param publisherId if this value is set to a string with length > 0,
+	 * 		      this value is used as the publisher-id, else
+	 *		      the value obtained by getPublisherId() will be
+	 *		      used.
+	 *		      (Only use it if you know what you are doing.)
+	 */
+	void purgePublisher(const std::string& sessionId = "",
+			const std::string& publisherId = "");
+
 	const std::string& getSessionId(void) const;
 	const std::string& getPublisherId(void) const;
 	const std::string& getMaxPollResultSize(void) const;
