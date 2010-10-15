@@ -3,7 +3,7 @@ Assuming you have successfully installed libifmap2c on your system you can start
 
 There's not much documented here, sorry. Please look into the examples folder to get a glimpse of how you can use libifmap2c.
 
-== Extensively documented MAPC  ==
+== Some Sample Code  ==
 The following code realizes a MAP Client that sends two metadata updates
 using one publishRequest.
 
