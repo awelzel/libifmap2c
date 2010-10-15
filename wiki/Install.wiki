@@ -1,0 +1,29 @@
+= Building and Installing libifmap2c =
+Building the library was tested on Slackware Linux 13.1. It was also
+successfully compiled using Mac OS X. If you have problems building the
+library using Linux, please let me know. At the moment I'm not doing
+development using Windows.
+
+==Prerequisites==
+You need the following software to be able to successful compile libifmap2c.
+Make sure you have the development packages for libxml2 and libcurl.
+
+  * cmake (tested 2.8)
+  * libxml2 (tested 2.7.7)
+  * libcurl (min 7.19.1)
+
+== Check-out source ==
+ * Switch to a directory where you want to check out the source
+ * {{{svn checkout http://libifmap2c.googlecode.com/svn/trunk/ libifmap2c}}}
+
+== Build ==
+ * {{{cd libifmap2c/build}}}
+ * {{{cmake ../}}}
+ * {{{make}}}
+
+== Install ==
+If you want to install the library and header files into system directories, e.g.
+{{{/usr/local/[lib/include]}}},
+run {{{make install}}} as root. Don't forget to run {{{ldconfig}}} afterwards in
+order to make use of the newly installed library.
+
