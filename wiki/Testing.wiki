@@ -1,0 +1,42 @@
+= Testing =
+
+== Executable files contained with libifmap2c ==
+In the {{{build}}} directory you will find, besides other, the follwing executable files:
+  * {{{ip-mac}}} utility originally written by Roger Chickering, to publish and delete {{{ip-mac}}} metadata. It was adapted to use libifmap2c
+  * {{{test-purge-publisher}}} simply runs the purgePublisher operation
+  * {{{test-identifiers}}} does searches with depth=0 to test the Identifier parsing of the library
+
+All examples use basic authentication, i.e. a username password combination, to authenticate with the MAPS. While libifmap2c provides support for certificate based
+authentication, basic authentication is easier to set up.
+
+== Open source IF-MAP 2.0 Server ==
+To do testing one of the currently available open source IF-MAP 2.0 servers can be used.
+  * [http://trust.inform.fh-hannover.de/joomla/index.php/downloads/54-iron irond]
+  * [http://code.google.com/p/omapd/ omapd]
+
+Till now, testing was done using irond. But omapd should work equally good.
+
+== The {{{capath}}} parameter ==
+All test programs listed above require as a last parameter a directory, which contains
+the servers certificate in PEM format. This directory needs to be prepared using
+OpenSSL's {{{c_rehash}}} command.
+
+For example, in the build directory execute the following commands:
+ * {{{mkdir capath}}}
+ * {{{cp /path/to/servercert.pem capath}}}
+ * {{{c_rehash capath}}}
+
+== Running the {{{ip-mac}}} executable ==
+The following command will publish {{{ip-mac}}} metadata to the link between
+the IP 192.168.0.1 and the MAC 11:bb:cc:dd:ee:ff
+
+{{{./ip-mac update 192.168.0.1 11:bb:cc:dd:ee:ff https://localhost:8443 test test capath/}}}
+
+To delete the metadata again, use {{{delete}}} instead of {{{update}}} as the first
+parameter. Or, to delete all metadata of the publisher associated with the username
+test:
+
+{{{./test-purge-publisher https://127.0.0.1:8443 test test capath/}}}
+
+This assumes that you run an IF-MAP server on you local machine with port 8443
+to be used for basic authentication, and the {{{capath}}} directory was created as described before. Further, test:test can be used as basic autentication credentials.
