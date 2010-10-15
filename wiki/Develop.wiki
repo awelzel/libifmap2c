@@ -1,12 +1,14 @@
 = Development =
 Assuming you have successfully installed libifmap2c on your system you can start writing a MAP Client. 
 
-== Basic usage ==
+There's not much documented here, sorry. Please look into the examples folder to get a glimpse of how you can use libifmap2c.
+
+== Extensively documented MAPC  ==
 The following code realizes a MAP Client that sends two metadata updates
 using one publishRequest.
 
 {{{
-/* filename mapc.cpp */
+/* filename example-mapc1.cpp */
 #include <iostream>
 #include <list>
 
@@ -133,10 +135,12 @@ int main(int argc, char *argv[])
 
 Build the client:
 
-{{{g++ -o mapc mapc.cpp -lifmap2c}}}
+{{{g++ -o example-mapc1 example-mapc1.cpp -lifmap2c}}}
 
 Run the client:
 
-{{{./mapc https://127.0.0.1:8443 test test ~/libifmap2c/build/capath/}}}
+{{{./example-mapc1 https://127.0.0.1:8443 test test ~/libifmap2c/build/capath/}}}
 
 == Processing {{{SearchResult}}} / {{{PollResult}}} objects ==
+
+ * *TODO, sorry*
