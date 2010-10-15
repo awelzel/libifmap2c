@@ -126,7 +126,6 @@ INSTALL(FILES
 	include/subsubscribe.h
 	include/tcgifmapbase.h
 	include/tcgifmapmeta.h
-	include/typedefs.h
 	include/xmlmarshalable.h
 	include/xmlmarshaller.h
 	include/xmlunmarshaller.h
