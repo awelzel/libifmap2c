@@ -23,9 +23,6 @@ using namespace ifmap2c;
 
 using namespace std;
 
-typedef pair<string, string> STRP;
-
-
 // Example client for the Wiki, very extensive documented.
 int main(int argc, char *argv[])
 {
