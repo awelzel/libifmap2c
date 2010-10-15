@@ -1,4 +1,4 @@
-/* filename mapc.cpp */
+/* filename example-mapc1.cpp */
 #include <iostream>
 #include <list>
 
