@@ -25,7 +25,7 @@
 #ifndef SUBSCRIBEUPDATE_H_
 #define SUBSCRIBEUPDATE_H_
 #include "subsubscribe.h"
-#include "identifiers.h"
+#include "identifier.h"
 #include "tcgifmapbase.h"
 
 namespace ifmap2c {

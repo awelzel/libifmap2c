@@ -70,12 +70,12 @@ using namespace ifmap2c;
 #define AR_NUMBER	20
 
 // usec
-#define TIMEFACTOR		5
+#define TIMEFACTOR		10000
 #define PDP_SLEEP		(500 * TIMEFACTOR)
 #define PDP_DHCP_SLEEP		(1000 * TIMEFACTOR)
 #define AR_SLEEP		(3000 * TIMEFACTOR)
 
-#define RENEW_SESSON_SEEP	(5000 * TIMEFACTOR)
+#define RENEW_SESSON_SEEP	(15000 * TIMEFACTOR)
 
 // don't want to think about it right now ;-)
 #define SOME_BYTES	32
@@ -121,6 +121,7 @@ pdpPublishInfo(SSRC *ssrc, Device *pdpDevice,
 	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 	ssrc->publish(pubReq);
+	usleep(RENEW_SESSON_SEEP);
 
 	delete pubReq;
 	// we used meta->clone() therefore we have to delete this instance
@@ -261,7 +262,7 @@ int main(int argc, char *argv[])
 		}
 
 		// idle around, could bulid in some signal handling for strg+c ?
-		while (false) {
+		while (true) {
 			ssrcDHCP->renewSession();
 			ssrcPDP->renewSession();
 			usleep(RENEW_SESSON_SEEP);
