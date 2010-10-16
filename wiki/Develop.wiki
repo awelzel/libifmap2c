@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
 	// We shouldn't touch them... Make sure we won't.
 	ip1 = NULL, ip2 = NULL, mac1 = NULL, mac2 = NULL;
 	ipmac = NULL; pubUpdate1 = NULL, pubUpdate2 = NULL;
+	publishList.clear();
 
 	try {
 		// run a newSession request
