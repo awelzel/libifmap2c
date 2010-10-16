@@ -42,10 +42,10 @@ int main(int argc, char *argv[])
 	// Note:
 	// To use certificate based authentication one has to use
 	// SSRC::createSSRC(url, /* server url */
-	// 		    key, /* private key in PEM format */
+	// 		    key, /* path to private key in PEM format */
 	// 		    password, /* private key password */
 	// 		    certificate, /* path to certificate */
-	// 		    capath /* as above */)
+	// 		    capath /* as for basic authentication */)
 
 	// Create identifiers used for the request using the
 	// Identifiers class
