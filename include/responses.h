@@ -28,5 +28,6 @@
 #include "newsessionresult.h"
 #include "searchresult.h"
 #include "pollresult.h"
+#include "endsessionresult.h"
 
 #endif /* RESPONSES_H_ */
