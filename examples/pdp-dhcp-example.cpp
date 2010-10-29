@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
 			PublishRequest *pdpPublishRequests[PDP_REQUESTS];
 			pdpPublishRequests[0] = Requests::createPublishReq(
 					Requests::createPublishUpdate(
-					Metadata::createRole(), ar->clone(),
+					Metadata::createRole("finance"), ar->clone(),
 					session, id->clone()));
 
 			pdpPublishRequests[1] = Requests::createPublishReq(

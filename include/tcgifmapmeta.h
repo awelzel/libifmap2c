@@ -60,10 +60,36 @@
 #define META_AUTHBY_ELEMENT_NAME		"authenticated-by"
 #define META_AUTHBY_CARDINALITY			single
 
+#define META_CAPABILITY_ELEMENT_NAME		"capability"
+#define META_CAPABILITY_NAME_ELEMENT_NAME	"name"
+#define META_CAPABILITY_ADMD_ELEMENT_NAME	"administrative-domain"
+#define META_CAPABILITY_CARDINALITY		multi
+
+#define META_DEV_ATTR_ELEMENT_NAME		"device-attribute"
+#define META_DEV_ATTR_NAME_ELEMENT_NAME		"name"
+#define META_DEV_ATTR_CARDINALITY		multi
+
+#define META_DEV_CHAR_ELEMENT_NAME		"device-characteristic"
+#define META_DEV_CHAR_MANU_ELEMENT_NAME		"manufacturer"
+#define META_DEV_CHAR_MODEL_ELEMENT_NAME	"model"
+#define META_DEV_CHAR_OS_ELEMENT_NAME		"os"
+#define META_DEV_CHAR_OSVER_ELEMENT_NAME	"os-version"
+#define META_DEV_CHAR_DEVTYPE_ELEMENT_NAME	"device-type"
+#define META_DEV_CHAR_DISC_TIME_ELEMENT_NAME	"discovery-time"
+#define META_DEV_CHAR_DISC_ID_ELEMENT_NAME	"discovery-id"
+#define META_DEV_CHAR_DISC_METH_ELEMENT_NAME	"discovery-method"
+#define META_DEV_CHAR_CARDINALITY		multi
+
 #define META_DEVIP_ELEMENT_NAME			"device-ip"
 #define META_DEVIP_CARDINALITY			single
 
+#define META_DISCBY_ELEMENT_NAME		"discovered-by"
+#define META_DISCBY_CARDINALITY			single
+
 #define META_ROLE_ELEMENT_NAME			"role"
+#define META_ROLE_ADMD_ELEMENT_NAME		"administrative-domain"
+#define META_ROLE_NAME_ELEMENT_NAME		"name"
 #define META_ROLE_CARDINALITY			multi
+
 
 #endif /* TCGMETA_H_ */

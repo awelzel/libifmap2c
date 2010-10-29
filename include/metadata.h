@@ -36,28 +36,47 @@ class Metadata {
 
 
 public:
-	static XmlMarshalable *createArDev();
+	static XmlMarshalable *createArDev(void);
 		
-	static XmlMarshalable *createArIp();
+	static XmlMarshalable *createArIp(void);
 
-	static XmlMarshalable *createArMac();
+	static XmlMarshalable *createArMac(void);
 
-	static XmlMarshalable *createAuthAs();
+	static XmlMarshalable *createAuthAs(void);
 		
-	static XmlMarshalable *createAuthBy();
+	static XmlMarshalable *createAuthBy(void);
 		
-	static XmlMarshalable *createDevIp();
+	static XmlMarshalable *createDevIp(void);
 
-	static XmlMarshalable *createRole();
+	static XmlMarshalable *createRole(const std::string& name,
+			const std::string& admDomain = "");
 		
 	static XmlMarshalable * createIpMac(const std::string& start = "",
-			const std::string& end = "",
-			const std::string& dhcp = "");
+			const std::string& end = "", const std::string& dhcp = "");
 
 	static XmlMarshalable *createLayer2Info(const char *const vlan,
-			const char *const vlanName,
-			const char *const port,
+			const char *const vlanName, const char *const port,
 			const char *const admDomain);
+
+	static XmlMarshalable *createCapability(const std::string& name,
+			const std::string& ad = "");
+
+	static XmlMarshalable *createDevAttr(const std::string& name);
+
+	/**
+	 * Create device characteristic metadata
+	 */
+	static XmlMarshalable *createDevChar(const std::string& time,
+			const std::string& id,
+			const std::string& method,
+			char const *manufacturer = NULL,
+			char const *model = NULL,
+			char const *os = NULL,
+			char const *osvers = NULL,
+			char const *devtype = NULL);
+
+	static XmlMarshalable *createDiscoveredBy(void);
+
 
 	static std::string cardinalityNames[];
 

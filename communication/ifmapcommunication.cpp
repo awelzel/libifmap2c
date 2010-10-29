@@ -36,7 +36,7 @@
 
 using namespace std;
 
-#define NO_IN_OUT_DEBUG
+#define IN_OUT_DEBUG
 
 namespace ifmap2c {
 
