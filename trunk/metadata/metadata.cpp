@@ -46,20 +46,20 @@ Metadata::createMetadata(const string& name, CardinalityType card)
 
 
 XmlMarshalable *
-Metadata::createArDev()
+Metadata::createArDev(void)
 {
 	return createMetadata(META_ARDEV_ELEMENT_NAME, META_ARDEV_CARDINALITY);
 }
 
 
 XmlMarshalable *
-Metadata::createArIp()
+Metadata::createArIp(void)
 {
 	return createMetadata(META_ARIP_ELEMENT_NAME, META_ARIP_CARDINALITY);
 }
 		
 XmlMarshalable *
-Metadata::createArMac()
+Metadata::createArMac(void)
 {
 	return createMetadata(META_ARMAC_ELEMENT_NAME, META_ARMAC_CARDINALITY);
 }
@@ -67,13 +67,13 @@ Metadata::createArMac()
 
 
 XmlMarshalable *
-Metadata::createAuthAs()
+Metadata::createAuthAs(void)
 {
 	return createMetadata(META_AUTHAS_ELEMENT_NAME, META_AUTHAS_CARDINALITY);
 }
 	
 XmlMarshalable *
-Metadata::createAuthBy()
+Metadata::createAuthBy(void)
 {
 	return createMetadata(META_AUTHBY_ELEMENT_NAME, META_AUTHBY_CARDINALITY);
 }
@@ -81,15 +81,25 @@ Metadata::createAuthBy()
 
 
 XmlMarshalable *
-Metadata::createDevIp()
+Metadata::createDevIp(void)
 {
 	return createMetadata(META_DEVIP_ELEMENT_NAME, META_DEVIP_CARDINALITY);
 }
 
 XmlMarshalable *
-Metadata::createRole()
+Metadata::createRole(const string& name, const string& admDomain)
 {
-	return createMetadata(META_ROLE_ELEMENT_NAME, META_DEVIP_CARDINALITY);
+	XmlMarshalable *ret = createMetadata(META_ROLE_ELEMENT_NAME,
+			META_ROLE_CARDINALITY);
+
+	if (admDomain.length() > 0)
+		ret->addXmlChild(new BasicXmlMarshalable(META_ROLE_ADMD_ELEMENT_NAME,
+				admDomain, NO_NSPAIR));
+
+	ret->addXmlChild(new BasicXmlMarshalable(META_ROLE_NAME_ELEMENT_NAME,
+			name, NO_NSPAIR));
+
+	return ret;
 }
 
 
@@ -150,5 +160,79 @@ Metadata::createLayer2Info(const char *const vlan,
 
 	return ret;
 }
+
+XmlMarshalable *
+Metadata::createCapability(const string& name, const string& ad)
+{
+	XmlMarshalable *ret = createMetadata(META_CAPABILITY_ELEMENT_NAME,
+			META_CAPABILITY_CARDINALITY);
+
+	ret->addXmlChild(new BasicXmlMarshalable(META_CAPABILITY_NAME_ELEMENT_NAME,
+			name, NO_NSPAIR));
+
+	if (ad.length() > 0) {
+		ret->addXmlChild(new BasicXmlMarshalable(META_CAPABILITY_ADMD_ELEMENT_NAME,
+			ad, NO_NSPAIR));
+	}
+
+	return ret;
+}
+
+XmlMarshalable *
+Metadata::createDevAttr(const std::string& name)
+{
+	XmlMarshalable *ret = createMetadata(META_DEV_ATTR_ELEMENT_NAME,
+			META_DEV_ATTR_CARDINALITY);
+
+	ret->addXmlChild(new BasicXmlMarshalable(META_DEV_ATTR_NAME_ELEMENT_NAME,
+			name, NO_NSPAIR));
+	return ret;
+}
+
+XmlMarshalable *
+Metadata::createDevChar(const string& time, const string& method, const string& id,
+					char const *manufacturer,
+					char const *model,
+					char const *os,
+					char const *osvers,
+					char const *devtype)
+{
+	XmlMarshalable *ret = createMetadata(META_DEV_CHAR_ELEMENT_NAME,
+			META_DEV_CHAR_CARDINALITY);
+
+	if (manufacturer)
+		ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_MANU_ELEMENT_NAME,
+			manufacturer, NO_NSPAIR));
+
+	if (model)
+		ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_MODEL_ELEMENT_NAME,
+			model, NO_NSPAIR));
+	if (os)
+		ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_OS_ELEMENT_NAME,
+			os, NO_NSPAIR));
+	if (osvers)
+		ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_OSVER_ELEMENT_NAME,
+			osvers, NO_NSPAIR));
+
+	if (devtype)
+		ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_DEVTYPE_ELEMENT_NAME,
+			devtype, NO_NSPAIR));
+
+	ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_DISC_TIME_ELEMENT_NAME,
+			time, NO_NSPAIR));
+	ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_DISC_ID_ELEMENT_NAME,
+			id, NO_NSPAIR));
+	ret->addXmlChild(new BasicXmlMarshalable(META_DEV_CHAR_DISC_METH_ELEMENT_NAME,
+			method, NO_NSPAIR));
+
+	return ret;
+}
+
+XmlMarshalable *
+Metadata::createDiscoveredBy(void)
+{
+	return createMetadata(META_DISCBY_ELEMENT_NAME, META_DISCBY_CARDINALITY);
+}
+
 
 } // namespace

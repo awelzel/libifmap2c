@@ -69,12 +69,14 @@ ADD_EXECUTABLE(ip-mac examples/ip-mac.cpp)
 ADD_EXECUTABLE(test-identifiers examples/test-identifiers.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example examples/pdp-dhcp-example.cpp)
 ADD_EXECUTABLE(test-purge-publisher examples/test-purge-publisher.cpp)
+ADD_EXECUTABLE(metadata-examples examples/metadata-examples.cpp)
 
 TARGET_LINK_LIBRARIES(subTest ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(ip-mac ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(test-identifiers ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(pdp-dhcp-example ${PROJECT_NAME})
 TARGET_LINK_LIBRARIES(test-purge-publisher ${PROJECT_NAME})
+TARGET_LINK_LIBRARIES(metadata-examples ${PROJECT_NAME})
 
 INSTALL(TARGETS ${PROJECT_NAME}
 	LIBRARY DESTINATION lib
