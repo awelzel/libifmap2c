@@ -158,6 +158,13 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 	XmlMarshalable *child = NULL;
 	SearchResult *sr = NULL;
 	xmlPollRes = locatePollResultElement(env);
+
+	if (xmlPollRes == NULL) {
+		xmlPollRes = locateEndSessionResultElement(env);
+		if (xmlPollRes) // we received a endSessionResult
+			throw EndSessionResult();
+	}
+
 	throwIfNull(xmlPollRes, POLLRESULT_ELEMENT_NAME);
 
 	retPollRes = new PollResult();
