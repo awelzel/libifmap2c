@@ -50,17 +50,11 @@ static void putMarshalable(int depth, XmlMarshalable *m)
 
 	cout << m->getXmlElementName();
 
-	if ((attributes.size() + namespaces.size()) > 0) {
-		cout << endl;
-	}
-
 	list<STRP>::iterator nit = namespaces.begin();
 	list<STRP>::iterator nend = namespaces.end();
 
 	for (/* */; nit != nend; nit++) {
-		if (nit != namespaces.begin())
-			cout << endl;
-
+		cout << endl;
 		putDepth(depth + 1);
 		cout << nit->first << ":" << nit->second;
 	}
@@ -69,8 +63,7 @@ static void putMarshalable(int depth, XmlMarshalable *m)
 	list<STRP>::iterator aend = attributes.end();
 
 	for (/* */; ait != aend; ait++) {
-		if (ait != attributes.begin())
-			cout << endl;
+		cout << endl;
 		putDepth(depth + 1);
 		cout << ait->first << "=\"" << ait->second << "\"";;
 	}
