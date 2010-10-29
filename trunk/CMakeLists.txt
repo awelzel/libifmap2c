@@ -87,6 +87,7 @@ INSTALL(FILES
 	include/communicationerror.h
 	include/device.h
 	include/endsessionrequest.h
+	include/endsessionresult.h
 	include/errorresulterror.h
 	include/identifier.h
 	include/identifiers.h
