@@ -94,11 +94,18 @@ IfmapCommunication::~IfmapCommunication()
 bool
 IfmapCommunication::containsSessionId(XmlMarshalable *req)
 {
+	// if this is a newSession, then return true in any case...
+	if (ResponseParser::compNameNs(req, NEWSESSION_ELEMENT_NAME,
+				NEWSESSION_ELEMENT_HREF)) {
+		return true;
+	}
+
 	CSTRPLISTIT it = req->getXmlAttributes().begin();
 	CSTRPLISTIT end = req->getXmlAttributes().end();
 
 	for (/* */; it != end; it++) {
-		if (ResponseParser::isAttrWithName(*it, SESSIONID_ATTR_NAME)) {
+		if (ResponseParser::isAttrWithName(*it,
+					SESSIONID_ATTR_NAME)) {
 			return true;
 		}
 	}
