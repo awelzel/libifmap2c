@@ -567,7 +567,7 @@ XmlMarshalable *
 ResponseParser::locateNewSessionResultElement(XmlMarshalable *const env)
 {
 	return locateUnderResponse(env, STRP(NEWSESSIONRESULT_ELEMENT_NAME,
-			NEWSESSION_ELEMENT_HREF));
+			NEWSESSIONRESULT_ELEMENT_HREF));
 }
 
 

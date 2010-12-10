@@ -202,6 +202,9 @@ int main()
 		cout << "MarshalError " << e.getMessage() << endl;
 	} catch (XmlUnmarshalError e) {
 		cout << "UnmarshalError " << e.getMessage() << endl;
+	} catch (ResponseParseError e) {
+		cout << "ResponseParse " << e.getMessage() << endl;
+
 
 	}
 	delete pr1;
