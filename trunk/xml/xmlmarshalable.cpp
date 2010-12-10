@@ -56,7 +56,8 @@ static void putMarshalable(int depth, XmlMarshalable *m)
 	for (/* */; nit != nend; nit++) {
 		cout << endl;
 		putDepth(depth + 1);
-		cout << nit->first << ":" << nit->second;
+		cout << "xmlns:" << nit->first;
+		cout << "=\"" << nit->second << "\"";
 	}
 
 	list<STRP>::iterator ait = attributes.begin();
