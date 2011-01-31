@@ -35,7 +35,6 @@ enum IdentityType {
           email_address,
           hip_hit,
           kerberos_principal,
-          trusted_platform_module,
           username,
           sip_uri,
           tel_uri,

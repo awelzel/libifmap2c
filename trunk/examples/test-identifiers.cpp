@@ -340,7 +340,7 @@ compareIdentity(Identity *id1, Identity *id2)
 }
 
 
-#define NIDENTITIES 22
+#define NIDENTITIES 20
 static void
 checkIdentity(SSRC *const ssrc)
 {
@@ -384,16 +384,14 @@ checkIdentity(SSRC *const ssrc)
 	identities[9] = Identifiers::createIdentity(hip_hit, identname, admind);
 	identities[10] = Identifiers::createIdentity(kerberos_principal, identname);
 	identities[11] = Identifiers::createIdentity(kerberos_principal, identname, admind);
-	identities[12] = Identifiers::createIdentity(trusted_platform_module, identname);
-	identities[13] = Identifiers::createIdentity(trusted_platform_module, identname, admind);
-	identities[14] = Identifiers::createIdentity(username, identname);
-	identities[15] = Identifiers::createIdentity(username, identname, admind);
-	identities[16] = Identifiers::createIdentity(sip_uri, identname);
-	identities[17] = Identifiers::createIdentity(sip_uri, identname, admind);
-	identities[18] = Identifiers::createIdentity(tel_uri, identname);
-	identities[19] = Identifiers::createIdentity(tel_uri, identname, admind);
-	identities[20] = Identifiers::createOtherIdentity(othert, identname);
-	identities[21] = Identifiers::createOtherIdentity(othert,identname, admind);
+	identities[12] = Identifiers::createIdentity(username, identname);
+	identities[13] = Identifiers::createIdentity(username, identname, admind);
+	identities[14] = Identifiers::createIdentity(sip_uri, identname);
+	identities[15] = Identifiers::createIdentity(sip_uri, identname, admind);
+	identities[16] = Identifiers::createIdentity(tel_uri, identname);
+	identities[17] = Identifiers::createIdentity(tel_uri, identname, admind);
+	identities[18] = Identifiers::createOtherIdentity(othert, identname);
+	identities[19] = Identifiers::createOtherIdentity(othert,identname, admind);
 
 
 	bool foundBad = false;

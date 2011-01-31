@@ -31,8 +31,9 @@
 
 using namespace std;
 
-#define	CURL_DEBUG_VALUE 0
-#define	CURL_VERIFY_HOST 0
+#define	CURL_DEBUG_VALUE 0L
+#define	CURL_VERIFY_HOST 0L
+#define	CURL_VERIFY_PEER 1L
 
 namespace ifmap2c {
 
@@ -172,12 +173,18 @@ void LowLevelCurlCommunication::generalInitialization(CURL *const handle,
 	// the url to connect to
 	curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 
-	// verify the peer, use the servercert file
-	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 1L);
+	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, CURL_VERIFY_PEER);
+	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, CURL_VERIFY_HOST);
 	curl_easy_setopt(handle, CURLOPT_CAPATH, capath.c_str());
 
+	// drop possible standard certificate location
+	curl_easy_setopt(handle, CURLOPT_CAINFO, NULL);
+
+
 	// verify the hostname
-	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, CURL_VERIFY_HOST);
+
+	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_DEFAULT);
+	curl_easy_setopt(handle, CURLOPT_SSL_CIPHER_LIST, "DEFAULT");
 
 	 // remove expect header FIXME: Check whether we can clean it
 	 // after using, or do we have to wait, till the handle isn't used
