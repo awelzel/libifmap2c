@@ -32,6 +32,9 @@ class Identifier : public BasicXmlMarshalable {
 
 protected:
 	Identifier(const std::string& name, const std::string& val);
+
+public:
+	virtual Identifier *clone(void) const = 0;
 };
 
 } // namespace

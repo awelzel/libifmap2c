@@ -28,6 +28,7 @@
 
 #include <cstring>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
@@ -195,6 +196,7 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 				retPollRes->addNotifyResult(sr);
 			} else if (compNameNs(child, POLLRESULT_ERROR_ELEMENT_NAME,
 					POLLRESULT_ERROR_ELEMENT_HREF)) {
+				// could throw a PollErrorResult here?
 				throwErrorResult(child);
 			} else {
 				throw ResponseParseError("Bad element in PollResult");
@@ -203,6 +205,7 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 	} catch (...) {
 		if (retPollRes)
 			delete retPollRes;
+		throw;
 	}
 	return retPollRes;
 }
