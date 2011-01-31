@@ -160,7 +160,7 @@ main(int argc, char *argv[])
 		try {
 			ssrc->publish(pr1);
 			cout << "Should have failed..." << endl;
-		} catch (Resp) {
+		} catch (ErrorResultError e) {
 			cout << "Ok Failed on purpose..." << endl;;
 		}
 
