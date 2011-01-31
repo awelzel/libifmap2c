@@ -498,8 +498,6 @@ ResponseParser::extractIdentity(XmlMarshalable *const element)
 			type = hip_hit;
 		} else if (!typeStr.compare(Identity::identityTypeNames[kerberos_principal])) {
 			type = kerberos_principal;
-		} else if (!typeStr.compare(Identity::identityTypeNames[trusted_platform_module])) {
-			type = trusted_platform_module;
 		} else if (!typeStr.compare(Identity::identityTypeNames[username])) {
 			type = username;
 		} else if (!typeStr.compare(Identity::identityTypeNames[sip_uri])) {

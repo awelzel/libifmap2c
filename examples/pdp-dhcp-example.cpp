@@ -70,7 +70,7 @@ using namespace ifmap2c;
 #define AR_NUMBER	20
 
 // usec
-#define TIMEFACTOR		10000
+#define TIMEFACTOR		0
 #define PDP_SLEEP		(500 * TIMEFACTOR)
 #define PDP_DHCP_SLEEP		(1000 * TIMEFACTOR)
 #define AR_SLEEP		(3000 * TIMEFACTOR)
@@ -262,11 +262,11 @@ int main(int argc, char *argv[])
 		}
 
 		// idle around, could bulid in some signal handling for strg+c ?
-		while (true) {
+		//while (true) {
 			ssrcDHCP->renewSession();
 			ssrcPDP->renewSession();
 			usleep(RENEW_SESSON_SEEP);
-		}
+		//}
 
 		ssrcDHCP->endSession();
 		ssrcPDP->endSession();

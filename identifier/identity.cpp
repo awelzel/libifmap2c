@@ -38,7 +38,6 @@ const string Identity::identityTypeNames[] = {
 	"email-address",
 	"hip-hit",
 	"kerberos-principal",
-	"trusted-platform-module",
 	"username",
 	"sip-uri",
 	"tel-uri",
