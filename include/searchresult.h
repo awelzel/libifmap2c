@@ -41,6 +41,13 @@ public:
 
 	const std::string& getSearchResultName(void) const;
 
+	/**
+	 * Search the list of ResultItems in the SearchResult for one
+	 * that matches exactly the given Identifiers.
+	 */
+	ResultItem *
+	getResultItem(Identifier *const i1, Identifier *const i2 = NULL) const;
+
 private:
 	std::list<ResultItem *> _resultItems;
 	std::string _searchResultName;

@@ -43,8 +43,8 @@ public:
 
 private:
 	std::string _sessionId;
-	std::string publisherId;
-	std::string maxPollResultSize;
+	std::string _publisherId;
+	std::string _maxPollResultSize;
 };
 
 } // namespace

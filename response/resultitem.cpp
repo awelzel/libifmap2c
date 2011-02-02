@@ -22,37 +22,27 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
+#include <typeinfo>
 #include "resultitem.h"
 #include "typedefs.h"
+
 
 namespace ifmap2c {
 
 ResultItem::ResultItem() : numberIdentifiers(0),
-		_ip(NULL),
-		_mac(NULL),
-		_dev(NULL),
-		_ar(NULL),
-		_id(NULL)
+		_i1(NULL),
+		_i2(NULL)
 { }
 
 
 
 ResultItem::~ResultItem()
 {
-	if (_ip)
-		delete _ip;
+	if (_i1)
+		delete _i1;
 
-	if (_mac)
-		delete _mac;
-
-	if (_dev)
-		delete _dev;
-
-	if (_ar)
-		delete _ar;
-
-	if (_id)
-		delete _id;
+	if (_i2)
+		delete _i2;
 
 	// delete all metadata childs
 	XMLMLISTIT it = _metadataList.begin();
@@ -70,10 +60,13 @@ ResultItem::ResultItem::setIpAddress(IpAddress *const ip)
 {
 	checkAndIncIdentifierNumber();
 
-	if (!_ip)
-		_ip = ip;
-	else
-		throw ResultItemError("Two IpAddress in ResultItem");
+	if (_i1) {
+		if (typeid(*_i1) == typeid(*ip))
+			throw ResultItemError("Two IpAddress in ResultItem");
+		_i2 = ip;
+	} else {
+		_i1 = ip;
+	}
 }
 
 void
@@ -81,10 +74,13 @@ ResultItem::ResultItem::setMacAddress(MacAddress *const mac)
 {
 	checkAndIncIdentifierNumber();
 
-	if (!_mac)
-		_mac = mac;
-	else
-		throw ResultItemError("Two MacAddress in ResultItem");
+	if (_i1) {
+		if (typeid(*_i1) == typeid(*mac))
+			throw ResultItemError("Two MacAddress in ResultItem");
+		_i2 = mac;
+	} else {
+		_i1 = mac;
+	}
 }
 
 void
@@ -92,10 +88,13 @@ ResultItem::ResultItem::setDevice(Device *const dev)
 {
 	checkAndIncIdentifierNumber();
 
-	if (!_dev)
-		_dev = dev;
-	else
-		throw ResultItemError("Two Device in ResultItem");
+	if (_i1) {
+		if (typeid(*_i1) == typeid(*dev))
+			throw ResultItemError("Two Device in ResultItem");
+		_i2 = dev;
+	} else {
+		_i1 = dev;
+	}
 }
 
 void
@@ -103,10 +102,13 @@ ResultItem::ResultItem::setAccessRequest(AccessRequest *const ar)
 {
 	checkAndIncIdentifierNumber();
 
-	if (!_ar)
-		_ar = ar;
-	else
-		throw ResultItemError("Two AccessRequest in ResultItem");
+	if (_i1) {
+		if (typeid(*_i1) == typeid(*ar))
+			throw ResultItemError("Two AccessRequest in ResultItem");
+		_i2 = ar;
+	} else {
+		_i1 = ar;
+	}
 }
 
 void
@@ -114,10 +116,13 @@ ResultItem::ResultItem::setIdentity(Identity *const id)
 {
 	checkAndIncIdentifierNumber();
 
-	if (!_id)
-		_id = id;
-	else
-		throw ResultItemError("Two Identity in ResultItem");
+	if (_i1) {
+		if (typeid(*_i1) == typeid(*id))
+			throw ResultItemError("Two Identity in ResultItem");
+		_i2 = id;
+	} else {
+		_i1 = id;
+	}
 }
 
 
@@ -125,7 +130,14 @@ ResultItem::ResultItem::setIdentity(Identity *const id)
 IpAddress *
 ResultItem::getIpAddress(void) const
 {
-	return _ip;
+	if (_i1)
+		if (typeid(*_i1) == typeid(IpAddress))
+			return (IpAddress *)_i1;
+
+	if (_i2)
+		if (typeid(*_i2) == typeid(IpAddress))
+			return (IpAddress *)_i2;
+	return NULL;
 }
 
 
@@ -133,7 +145,14 @@ ResultItem::getIpAddress(void) const
 MacAddress *
 ResultItem::getMacAddress(void) const
 {
-	return _mac;
+	if (_i1)
+		if (typeid(*_i1) == typeid(MacAddress))
+			return (MacAddress *)_i1;
+
+	if (_i2)
+		if (typeid(*_i2) == typeid(MacAddress))
+			return (MacAddress *)_i2;
+	return NULL;
 }
 
 
@@ -141,7 +160,14 @@ ResultItem::getMacAddress(void) const
 Device *
 ResultItem::getDevice(void) const
 {
-	return _dev;
+	if (_i1)
+		if (typeid(*_i1) == typeid(Device))
+			return (Device *)_i1;
+
+	if (_i2)
+		if (typeid(*_i2) == typeid(Device))
+			return (Device *)_i2;
+	return NULL;
 }
 
 
@@ -149,7 +175,14 @@ ResultItem::getDevice(void) const
 AccessRequest *
 ResultItem::getAccessRequest() const
 {
-	return _ar;
+	if (_i1)
+		if (typeid(*_i1) == typeid(AccessRequest))
+			return (AccessRequest *)_i1;
+
+	if (_i2)
+		if (typeid(*_i2) == typeid(AccessRequest))
+			return (AccessRequest *)_i2;
+	return NULL;
 }
 
 
@@ -157,8 +190,30 @@ ResultItem::getAccessRequest() const
 Identity *
 ResultItem::getIdentity(void) const
 {
-	return _id;
+	if (_i1)
+		if (typeid(*_i1) == typeid(Identity))
+			return (Identity *)_i1;
+
+	if (_i2)
+		if (typeid(*_i2) == typeid(Identity))
+			return (Identity *)_i2;
+	return NULL;
 }
+
+
+Identifier *
+ResultItem::getIdentifier1(void) const
+{
+	return _i1;
+}
+
+
+Identifier *
+ResultItem::getIdentifier2(void) const
+{
+	return _i2;
+}
+
 
 void
 ResultItem::addMetadata(XmlMarshalable *const md)
