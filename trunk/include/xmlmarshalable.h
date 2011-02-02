@@ -54,7 +54,7 @@ public:
 	virtual const std::list<std::pair<std::string, std::string> >& getXmlNamespaceDefinitions(
 			void) const = 0;
 		
-	virtual const std::pair<std::string, std::string>& getXmlNamespace() const = 0;
+	virtual const std::pair<std::string, std::string>& getXmlNamespace(void) const = 0;
 
 	virtual void addXmlChild(XmlMarshalable *const child) = 0;
 
@@ -71,6 +71,17 @@ public:
 	 * Helper to put a XmlMarshalable to STDOUT.
 	 */
 	static void putXmlMarshalable(XmlMarshalable *m);
+
+	/**
+	 * Search for elements with the given name and the given namespace
+	 * in the list, and return a list of pointers to those.
+	 */
+	static std::list<XmlMarshalable *> findMatchingElements(
+			const std::list<XmlMarshalable *>& elements,
+			const std::string& name, const std::string& ns);
+
+	static bool compNameNs(XmlMarshalable *const el, const std::string& name,
+			const std::string& href);
 };
 
 } // namespace

@@ -60,6 +60,10 @@ public:
 	AccessRequest *getAccessRequest(void) const;
 	Identity *getIdentity(void) const;
 
+	Identifier *getIdentifier1(void) const;
+	Identifier *getIdentifier2(void) const;
+
+
 	void addMetadata(XmlMarshalable *const md);
 
 	const std::list<XmlMarshalable *>& getMetadataList(void) const;
@@ -69,11 +73,8 @@ private:
 	std::list<XmlMarshalable *> _metadataList;
 	int numberIdentifiers;
 
-	IpAddress *_ip;
-	MacAddress *_mac;
-	Device *_dev;
-	AccessRequest *_ar;
-	Identity *_id;
+	Identifier *_i1;
+	Identifier *_i2;
 
 	void checkAndIncIdentifierNumber(void);
 };

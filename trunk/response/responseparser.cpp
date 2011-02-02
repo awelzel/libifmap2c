@@ -34,7 +34,9 @@ using namespace std;
 
 namespace ifmap2c {
 
-// If PublisherId or SessionId is not there, throw something upwards (FIXME)
+
+//TODO: If we gave a max poll result size in the request, we have
+//      to get one back!
 NewSessionResult *
 ResponseParser::createNewSessionResult(XmlMarshalable *const env)
 {
@@ -137,10 +139,8 @@ ResponseParser::extractSearchResult(XmlMarshalable *const sr)
 
 	// we have result items down here
 	try {
-		for (child = *it; it != end; child = *(++it)) {
-			ResultItem *resultItem = createResultItem(child);
-			retSearchRes->addResultItem(resultItem);
-		}
+		for (child = *it; it != end; child = *(++it))
+			retSearchRes->addResultItem(createResultItem(child));
 	} catch (...) {
 		// cleanup
 		delete retSearchRes;
@@ -176,8 +176,6 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 
 	try {
 		for (child = *it; it != end; child = *(it++)) {
-			// XmlMarshalable::putXmlMarshalable(child);
-
 			if (compNameNs(child, POLLRESULT_SEARCH_ELEMENT_NAME,
 					POLLRESULT_SEARCH_ELEMENT_HREF)) {
 				sr = extractSearchResult(child);
@@ -196,7 +194,7 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 				retPollRes->addNotifyResult(sr);
 			} else if (compNameNs(child, POLLRESULT_ERROR_ELEMENT_NAME,
 					POLLRESULT_ERROR_ELEMENT_HREF)) {
-				// could throw a PollErrorResult here?
+				// TODO: could throw a PollErrorResult here?
 				throwErrorResult(child);
 			} else {
 				throw ResponseParseError("Bad element in PollResult");
@@ -238,21 +236,21 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 	XmlMarshalable *child = NULL;
 	XmlMarshalable *mdList = NULL;
 
-	ResultItem *resultItem = new ResultItem();
+	ResultItem *resultItem = NULL;
 
 	CXMLMLIST childs = xmlResultItem->getXmlChildren();
 
-	if (childs.size() > 3 || childs.size() < 1)
+	int nChildren = childs.size();
+
+	if (nChildren > 3 || nChildren < 1)
 		throw ResponseParseError("ResultItem contains wrong number of elements");
 
 	CXMLMLISTIT it = childs.begin();
 	CXMLMLISTIT end = childs.end();
 
-	//XmlMarshalable::putXmlMarshalable(xmlResultItem);
-
 	try {
+		resultItem = new ResultItem();
 		for (child = *it; it != end; child = *(++it)) {
-			//XmlMarshalable::putXmlMarshalable(child);
 			if ((ar = extractAccessRequest(child))) {
 				resultItem->setAccessRequest(ar);
 				ar = NULL;
@@ -276,11 +274,11 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 				for (/* */; it != end; it++)
 					resultItem->addMetadata(*it);
 
-				// remove them from this tree
+				// remove them from the parsed XML document
 				mdList->clearXmlChildren();
 			}
 		}
-	} catch (ResultItemError e) {
+	} catch (ResponseParseError e) {
 		delete resultItem;
 
 		if (!ar)
@@ -299,7 +297,6 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 			delete id;
 
 		throw ResponseParseError(e.getMessage());
-	} catch (...) {
 		delete resultItem;
 		throw;
 	}
@@ -330,7 +327,7 @@ ResponseParser::extractAccessRequest(XmlMarshalable *const element)
 		}
 
 		if (!foundName)
-			throw ResponseParseError("AccessRequest without name");
+			throw ResponseParseError("Got AccessRequest without name");
 
 		ar = AccessRequest::createAccessRequest(name, ad);
 
@@ -366,7 +363,7 @@ ResponseParser::extractIpAddress(XmlMarshalable *const element)
 		}
 
 		if (!foundValue)
-			throw ResponseParseError("IpAddress without value");
+			throw ResponseParseError("Got IpAddress without value");
 
 		if (type == ipv4) {
 			ip = IpAddress::createIpv4Address(value, ad);
@@ -399,7 +396,7 @@ ResponseParser::extractMacAddress(XmlMarshalable *const element)
 		}
 
 		if (!valueFound)
-			throw ResponseParseError("MacAddress without value");
+			throw ResponseParseError("Got MacAddress without value");
 
 		mac = MacAddress::createMacAddress(value, ad);
 	}
@@ -441,7 +438,7 @@ ResponseParser::extractDevice(XmlMarshalable *const element)
 		}
 
 		if (!foundElement)
-			throw ResponseParseError("Device without name or aik-name");
+			throw ResponseParseError("Got Device without name or aik-name");
 
 		if (type == aik)
 			dev = Device::createDeviceAik(elementValue);
@@ -483,10 +480,10 @@ ResponseParser::extractIdentity(XmlMarshalable *const element)
 		}
 		
 		if (!foundType)
-			throw ResponseParseError("Identity without type");
+			throw ResponseParseError("Got Identity without type");
 
 		if (!foundName)
-			throw ResponseParseError("Identity without name");
+			throw ResponseParseError("Got Identity without name");
 
 		
 		if (!typeStr.compare(Identity::identityTypeNames[aik_name])) {
@@ -510,7 +507,7 @@ ResponseParser::extractIdentity(XmlMarshalable *const element)
 		} else if (!typeStr.compare(Identity::identityTypeNames[other])) {
 			type = other;
 		} else {
-			throw ResponseParseError("Identity with unknown type");
+			throw ResponseParseError("Got Identity with unknown type");
 		}
 
 		if (type == other && !foundOther)
@@ -634,8 +631,7 @@ ResponseParser::compNameNs(XmlMarshalable *const el,
 		const std::string& name,
 		const std::string& href)
 {
-	return !el->getXmlElementName().compare(name)
-			&& !el->getXmlNamespace().second.compare(href);
+	return XmlMarshalable::compNameNs(el, name, href);
 }
 
 

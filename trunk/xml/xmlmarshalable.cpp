@@ -94,4 +94,29 @@ void XmlMarshalable::putXmlMarshalable(XmlMarshalable *m)
 	putMarshalable(0, m);
 }
 
+list<XmlMarshalable *>
+XmlMarshalable::findMatchingElements(const list<XmlMarshalable *>& elements,
+		const string& name,
+		const string& ns)
+{
+	XMLMLIST ret;
+	CXMLMLISTIT it = elements.begin();
+	CXMLMLISTIT end = elements.end();
+
+	for (XmlMarshalable *el = *it; it != end; el = *(++it)) {
+		if (XmlMarshalable::compNameNs(el, name, ns))
+			ret.push_back(el);
+	}
+	return ret;
+}
+
+bool
+XmlMarshalable::compNameNs(XmlMarshalable *const el,
+		const string& name,
+		const string& href)
+{
+	return !el->getXmlElementName().compare(name)
+			&& !el->getXmlNamespace().second.compare(href);
+}
+
 } // namespace

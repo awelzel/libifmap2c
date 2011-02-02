@@ -63,6 +63,24 @@ public:
 	static Identity *createOtherIdentity(const std::string& otherTypeDef,
 			const std::string& name,
 			const std::string& ad = "");
+
+	static bool same(Identifier *const i1, Identifier *const i2);
+
+private:
+
+	static bool sameAd(IdentifierWithAD *const i1, IdentifierWithAD *const i2);
+
+	static bool sameIp(IpAddress *const ip1, IpAddress *const ip2);
+
+	static bool sameMac(MacAddress *const mac1, MacAddress *const mac2);
+
+	static bool sameDev(Device const *const dev1, Device *const dev2);
+
+	static bool sameAr(AccessRequest *const ar1, AccessRequest *const ar2);
+
+	static bool sameIdentity(Identity *const id1, Identity *const id2);
+
+
 };
 
 } // namespace

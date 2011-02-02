@@ -63,4 +63,23 @@ SearchResult::getSearchResultName(void) const
 	return _searchResultName;
 }
 
+ResultItem *
+SearchResult::getResultItem(Identifier *const i1, Identifier *const i2) const
+{
+	CRILISTIT it = _resultItems.begin();
+	CRILISTIT end = _resultItems.end();
+
+	for (ResultItem *ri = *it; it != end; ri = *(++it)) {
+		Identifier *ri1 = ri->getIdentifier1();
+		Identifier *ri2 = ri->getIdentifier2();
+
+		if ((Identifiers::same(i1, ri1) && Identifiers::same(i2, ri2))
+				|| (Identifiers::same(i1, ri2) && Identifiers::same(i2, ri1))) {
+				return ri;
+		}
+	}
+	return NULL;
+}
+
+
 } // namespace

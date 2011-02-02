@@ -29,7 +29,7 @@ namespace ifmap2c {
 
 NewSessionResult::NewSessionResult(const string& sId, const string& pId,
 		const string& maxPs) :
-		_sessionId(sId), publisherId(pId), maxPollResultSize(maxPs)
+		_sessionId(sId), _publisherId(pId), _maxPollResultSize(maxPs)
 {
 	// nothing to see here
 }
@@ -41,11 +41,11 @@ const std::string& NewSessionResult::getSessionId() const
 }
 const std::string& NewSessionResult::getPublisherId() const
 {
-	return publisherId;
+	return _publisherId;
 }
 const std::string& NewSessionResult::getMaxPollResultSize() const
 {
-	return maxPollResultSize;
+	return _maxPollResultSize;
 }
 
 } // namespace
