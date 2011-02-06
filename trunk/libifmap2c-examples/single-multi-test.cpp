@@ -22,17 +22,24 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ssrc.h"
-#include "basicxmlmarshalable.h"
-#include "typedefs.h"
-#include "metadata.h"
+
+// libifmap2c includes
+#include <libifmap2c/ssrc.h>
+#include <libifmap2c/identifiers.h>
+#include <libifmap2c/metadata.h>
 
 #include <iostream>
 #include <cstdlib>
 #include <list>
 
+
 using namespace std;
 using namespace ifmap2c;
+
+typedef pair<string, string> STRP;
+typedef list<ResultItem *>::iterator RILISTIT;
+typedef list<XmlMarshalable *> XMLMLIST;
+typedef XMLMLIST::iterator XMLMLISTIT;
 
 class SingleValueMetadata : public BasicXmlMarshalable {
 public:

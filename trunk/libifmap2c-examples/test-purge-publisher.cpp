@@ -24,7 +24,9 @@
 
 #include <iostream>
 #include <cstdlib>
-#include "ssrc.h"
+
+// libifmap2c includes
+#include <libifmap2c/ssrc.h>
 
 using namespace ifmap2c;
 using namespace std;

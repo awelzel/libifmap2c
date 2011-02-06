@@ -24,18 +24,18 @@
 
 #include <iostream>
 
-#include "ifmapcommunication.h"
-#include "identifiers.h"
-#include "requests.h"
-#include "responses.h"
-#include "metadata.h"
-
-#include "typedefs.h"
-#include "ssrc.h"
-#include "arc.h"
+#include <libifmap2c/ssrc.h>
+#include <libifmap2c/arc.h>
+#include <libifmap2c/identifiers.h>
+#include <libifmap2c/metadata.h>
 
 using namespace std;
 using namespace ifmap2c;
+
+typedef list<SearchResult *> SRLIST;
+typedef list<SearchResult *>::const_iterator CSRLISTIT;
+typedef list<ResultItem *> RILIST;
+typedef RILIST::const_iterator CRILISTIT;
 
 
 static void examineResultItem(ResultItem *const resItem)
@@ -141,8 +141,6 @@ int main()
 	ifmap2c::ARC *arc = ssrc->getARC();
 
 	Identifier *i1 = Identifiers::createAr("tnc:001");
-	Identifier *i11 = Identifiers::createAr("tnc:001");
-	Identifier *i12 = Identifiers::createAr("tnc:001");
 	Identifier *i2 = Identifiers::createIdentity(username, "john");
 
 
@@ -150,7 +148,7 @@ int main()
 	XmlMarshalable *ipmac1 = Metadata::createIpMac();
 	XmlMarshalable *ipmac2 = Metadata::createIpMac();
 	PublishUpdate *pu1 = Requests::createPublishUpdate(ipmac1, i1, session, i2);
-	PublishUpdate *pu2 = Requests::createPublishUpdate(ipmac2, i11, session);
+	PublishUpdate *pu2 = Requests::createPublishUpdate(ipmac2, i1->clone(), session);
 	PublishRequest *pr1 = Requests::createPublishReq(pu1);
 	PublishRequest *pr2 = Requests::createPublishReq(pu2);
 
@@ -160,7 +158,7 @@ int main()
 
 	SubscribeUpdate *sub = Requests::createSubscribeUpdate("mysub",
 			FILTER_MATCH_ALL, 25, FILTER_MATCH_ALL,
-			SEARCH_NO_MAX_RESULT_SIZE, i12);
+			SEARCH_NO_MAX_RESULT_SIZE, i1->clone());
 	SubscribeRequest *subreq = Requests::createSubscribeReq(sub);
 	SubscribeDelete *subdel = Requests::createSubscribeDelete("mysub");
 	SubscribeRequest *subreqdel = Requests::createSubscribeReq(subdel);
