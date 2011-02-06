@@ -379,3 +379,11 @@ int main(int argc, char *argv[])
 	return 0;
 }
 }}}
+
+Build the client:
+
+g++ -o example-mapc2 example-mapc2.cpp -lifmap2c
+
+Run the client:
+
+./example-mapc2 https://127.0.0.1:8443 test test ~/libifmap2c/build/capath/ 
