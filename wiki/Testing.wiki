@@ -28,8 +28,6 @@ To do testing one of the currently available open source IF-MAP 2.0 servers can 
   * [http://trust.inform.fh-hannover.de/joomla/index.php/downloads/54-iron irond]
   * [http://code.google.com/p/omapd/ omapd]
 
-Till now, testing was done using irond.
-
 *Note:* The omapd 0.4.0 release will not work with libifmap2c. Make sure to check out the SVN version of omapd. (06.02.11 aw)
 
 == The {{{capath}}} parameter ==
