@@ -15,11 +15,13 @@ Make sure you have the development packages for libxml2 and libcurl.
 == Check-out source / Extract archive ==
  * Switch to a directory where you want to check out the source
  * {{{svn checkout http://libifmap2c.googlecode.com/svn/trunk/ libifmap2c}}}
+ * {{{cd libifmap2c/libifmap2c}}}
 Alternatively you can download the archive and extract it:
  * {{{tar xvf libifmap2c-<version>.tar.gz}}}
+ * {{{cd libifmap2c-<version>}}}
 
 == Build ==
- * {{{cd libifmap2c/build}}}
+ * {{{cd build}}}
  * {{{cmake ../}}}
  * {{{make}}}
 
