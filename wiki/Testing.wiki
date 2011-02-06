@@ -15,7 +15,7 @@ The building process is the same as for the library:
 
 Afterwards, you'll find a set of executable files in the {{{build}}} folder. To note
 some of them::
-  * {{{ip-mac}}} utility originally written by Roger Chickering, to publish and delete {{{ip-mac}}} metadata. It was adapted to use libifmap2c
+  * {{{ip-mac}}} utility originally written by Roger Chickering, to publish and delete {{{ip-mac}}} metadata, was adapted to use libifmap2c
   * {{{test-purge-publisher}}} simply runs the purgePublisher operation
   * {{{test-identifiers}}} does searches with depth=0 to test the Identifier parsing of the library
   * {{{example-mapc1}}} and {{{example-mapc2}}}, the MAPC examples from the [Develop Develop] page
@@ -28,7 +28,7 @@ To do testing one of the currently available open source IF-MAP 2.0 servers can 
   * [http://trust.inform.fh-hannover.de/joomla/index.php/downloads/54-iron irond]
   * [http://code.google.com/p/omapd/ omapd]
 
-*Note:* The omapd 0.4.0 release will not work with libifmap2c. Make sure to check out the SVN version of omapd. (06.02.11 aw)
+*Note:* The omapd 0.4.0 release will not work with libifmap2c. Make sure to check out the SVN version of omapd or use a more recent release if available (06.02.11)
 
 == The {{{capath}}} parameter ==
 All test programs listed above require as a last parameter a directory, which contains
