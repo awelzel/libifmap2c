@@ -224,13 +224,22 @@ static size_t
 write_data(void *buffer, size_t size, size_t nmemb,
 		void *userp)
 {
-	const size_t theSize = size * nmemb;
+	
+	const size_t newsize = size * nmemb;
 	Payload *exchanger = (Payload *)userp;
+	char *memptr= exchanger->memory;
+	size_t oldsize = exchanger->length;
 
-	exchanger->memory = new char[theSize];
-	exchanger->length = theSize;
+	// we may be called twice by libcurl, make sure
+	// we increase our buffer and copy the old content
+	// and so on...
+	exchanger->memory = new char[oldsize + newsize];
+	exchanger->length = oldsize + newsize;
+	memcpy(exchanger->memory, memptr, oldsize);
+	delete[] memptr;
+	memptr = exchanger->memory + oldsize;
 
-	memcpy(exchanger->memory, buffer, exchanger->length);
+	memcpy(memptr, buffer, newsize);
 
 	if (CURL_DEBUG_VALUE) {
 		fprintf(stderr, "write_data: %d bytes received\n",
@@ -241,7 +250,7 @@ write_data(void *buffer, size_t size, size_t nmemb,
 		}
 		fprintf(stderr, "\n");
 	}
-	return theSize;
+	return newsize;
 }
 
 
