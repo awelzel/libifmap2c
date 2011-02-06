@@ -34,10 +34,10 @@
 #include <unistd.h>
 #include <list>
 
-#include "ssrc.h"
-#include "requests.h"
-#include "identifiers.h"
-#include "metadata.h"
+// libifmap2c includes
+#include <libifmap2c/ssrc.h>
+#include <libifmap2c/identifiers.h>
+#include <libifmap2c/metadata.h>
 
 using namespace std;
 using namespace ifmap2c;

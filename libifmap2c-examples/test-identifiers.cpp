@@ -36,9 +36,11 @@
 #include <iostream>
 #include <cstdlib>
 
-#include "ssrc.h"
-#include "identifiers.h"
-#include "requests.h"
+// libifmap2c includes
+#include <libifmap2c/ssrc.h>
+#include <libifmap2c/identifiers.h>
+#include <libifmap2c/metadata.h>
+
 
 using namespace std;
 using namespace ifmap2c;

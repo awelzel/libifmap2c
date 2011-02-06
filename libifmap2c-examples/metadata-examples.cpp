@@ -25,10 +25,10 @@
 #include <iostream>
 #include <list>
 
-#include "ssrc.h"
-#include "requests.h"
-#include "identifiers.h"
-#include "metadata.h"
+// libifmap2c includes
+#include <libifmap2c/ssrc.h>
+#include <libifmap2c/identifiers.h>
+#include <libifmap2c/metadata.h>
 
 // libifmap2c namespace
 using namespace ifmap2c;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 {
 	if (argc != 5) {
 		cout << "Usage: " << argv[0] << " ifmap-server-url"
-			" user pass capath" << endl;
+				" user pass capath" << endl;
 		return 1;
 	}
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	XmlMarshalable *cap = Metadata::createCapability("finance");
 	XmlMarshalable *cap2 = Metadata::createCapability("finance", "myadm");
 	XmlMarshalable *devattr = Metadata::createDevAttr("AntiVirusRunning");
-	XmlMarshalable *devchar = Metadata::createDevChar("22.10.09", "122345", "FOOL",
+	XmlMarshalable *devchar = Metadata::createDevChar("22.10.09", "122345", "fool",
 			"Intel", NULL, "Linux", NULL, "Desktop");
 	XmlMarshalable *discby = Metadata::createDiscoveredBy();
 	XmlMarshalable *role1 = Metadata::createRole("user", "domain");
@@ -85,11 +85,11 @@ int main(int argc, char *argv[])
 	metalist.push_back(discby);;
 	metalist.push_back(role1);
 	metalist.push_back(role2);
-	
+
 	PublishUpdate *pubUpdate = Requests::createPublishUpdate(metalist, ar, session, dev);
 
 	PublishRequest *publishReq = Requests::createPublishReq(pubUpdate);
-	
+
 	publishReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 	try {
