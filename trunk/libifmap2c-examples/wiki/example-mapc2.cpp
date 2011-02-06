@@ -31,7 +31,7 @@
  */
 
 
-/* filename example-mapc1.cpp */
+/* filename example-mapc2.cpp */
 #include <iostream>
 #include <list>
 
