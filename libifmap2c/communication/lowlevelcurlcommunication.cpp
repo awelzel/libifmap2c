@@ -235,6 +235,7 @@ write_data(void *buffer, size_t size, size_t nmemb,
 	// and so on...
 	exchanger->memory = new char[oldsize + newsize];
 	exchanger->length = oldsize + newsize;
+	// this is a nop if we are called the first time
 	memcpy(exchanger->memory, memptr, oldsize);
 	delete[] memptr;
 	memptr = exchanger->memory + oldsize;
@@ -257,9 +258,6 @@ write_data(void *buffer, size_t size, size_t nmemb,
 
 /*
  * the read callback functions for curl :-(
- *
- * FIXME: Allow for big data transfers, e.g. calling
- * read_data multiple times?
  */
 static size_t
 read_data(void *buffer, size_t size, size_t nmemb,

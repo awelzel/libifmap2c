@@ -44,9 +44,18 @@ public:
 	/**
 	 * Search the list of ResultItems in the SearchResult for one
 	 * that matches exactly the given Identifiers.
+	 * *Should* only find one ResultItem... 
 	 */
 	ResultItem *
 	getResultItem(Identifier *const i1, Identifier *const i2 = NULL) const;
+	
+	/**
+	 * Search the list of ResultItems in the SearchResult for one
+	 * or more which matche the types given by i1, i2.
+	 * The content of the identifiers is not compared.
+	 */
+	std::list<ResultItem *>
+	getResultItemsByType(Identifier *const i1, Identifier *const i2 = NULL) const;
 
 private:
 	std::list<ResultItem *> _resultItems;

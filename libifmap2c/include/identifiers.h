@@ -65,6 +65,8 @@ public:
 			const std::string& ad = "");
 
 	static bool same(Identifier *const i1, Identifier *const i2);
+	
+	static bool sameType(Identifier *const i1, Identifier *const i2);
 
 private:
 

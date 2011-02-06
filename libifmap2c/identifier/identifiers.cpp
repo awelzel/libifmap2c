@@ -84,6 +84,19 @@ Identifiers::createOtherIdentity(const string& otherTypeDef,
 }
 
 bool
+Identifiers::sameType(Identifier *const i1, Identifier *const i2)
+{
+	if (i1 == i2)
+		return true;
+	
+	if (i1 && i2)
+		if (typeid(*i1) == typeid(*i2))
+			return true;
+	
+	return false;
+}
+
+bool
 Identifiers::same(Identifier *const i1, Identifier *const i2)
 {
 	if (i1 == i2) {
