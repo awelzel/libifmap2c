@@ -1,10 +1,24 @@
 = Testing =
 
-== Executable files contained with libifmap2c ==
-In the {{{build}}} directory you will find, besides other, the follwing executable files:
+== Examples contained with libifmap2c ==
+libifmap2c provides a set of example MAPC, which are basically only "Hello World"
+programs. However, they provide some insight of what is possible with libifmap2c.
+
+If you checked out the source using svn, you'll find a `libifmap2c-examples` folder
+besides the `libifmap2c` folder. However, you may also download the archive
+`libifmap2c-examples-<version>.tar.gz`.
+
+The building process is the same as for the library:
+ * {{{cd build}}}
+ * {{{cmake ../}}}
+ * {{{make}}}
+
+Afterwards, you'll find a set of executable files in the {{{build}}} folder. To note
+some of them::
   * {{{ip-mac}}} utility originally written by Roger Chickering, to publish and delete {{{ip-mac}}} metadata. It was adapted to use libifmap2c
   * {{{test-purge-publisher}}} simply runs the purgePublisher operation
   * {{{test-identifiers}}} does searches with depth=0 to test the Identifier parsing of the library
+  * {{{example-mapc1}}} and {{{example-mapc2}}}, the MAPC examples from the [Develop Develop] page
 
 All examples use basic authentication, i.e. a username password combination, to authenticate with the MAPS. While libifmap2c provides support for certificate based
 authentication, basic authentication is easier to set up.
@@ -40,3 +54,6 @@ test:
 
 This assumes that you run an IF-MAP server on you local machine with port 8443
 to be used for basic authentication, and the {{{capath}}} directory was created as described before. Further, test:test can be used as basic autentication credentials.
+
+The run the other examples, similar parameters are expected. However, there might
+be some suprises. It's probably a good idea to read the source code if you are not sure ;-)
