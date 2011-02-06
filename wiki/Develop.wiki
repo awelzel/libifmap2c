@@ -141,6 +141,12 @@ Run the client:
 
 == Processing {{{SearchResult}}} / {{{PollResult}}} objects ==
 
+What follows is a rather long example which shows how SearchResults can be
+processed using the `getResultItem()` and `getResultItemsByType()` methods
+provided by `SearchResult`.
+In principal, the `SearchResult` objects contained in a `PollResult` can be
+processed in the same way.
+
 {{{
 
 /* filename example-mapc2.cpp */
