@@ -25,20 +25,12 @@
 #ifndef TCGIFMAPBASE_H_
 #define TCGIFMAPBASE_H_
 
-#define USE_SOAP_12
-
-#ifdef USE_SOAP_12
-#define SOAP_HREF			"http://www.w3.org/2003/05/soap-envelope"
-#else
-#define SOAP_HREF			"http://schemas.xmlsoap.org/soap/envelope/"
-#endif
+#include "soap.h"
 
 #define EMPTY_VALUE			""
 #define NO_PREFIX			EMPTY_VALUE
 #define NO_HREF				EMPTY_VALUE
 
-#define SOAP_PREFIX 			"env"
-#define SOAP_NSPAIR 			std::pair<std::string, std::string>(SOAP_PREFIX, SOAP_HREF)
 
 #define IFMAP_PREFIX			"ifmap"
 #define IFMAP_HREF 			"http://www.trustedcomputinggroup.org/2010/IFMAP/2"

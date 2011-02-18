@@ -82,14 +82,14 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 )
 
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
-	VERSION 0.1.0
+	VERSION 0.1.1
 	SOVERSION 0.1
 )
 
 INSTALL(TARGETS ${PROJECT_NAME}
 	LIBRARY DESTINATION lib
 )
-# :r !ls ../include
+
 INSTALL(FILES 
 	include/accessrequest.h
 	include/arc.h
@@ -129,6 +129,7 @@ INSTALL(FILES
 	include/resultitem.h
 	include/searchrequest.h
 	include/searchresult.h
+	include/soap.h
 	include/ssrc.h
 	include/subpublish.h
 	include/subscribedelete.h

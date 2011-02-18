@@ -22,32 +22,19 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef PAYLOAD_H_
-#define PAYLOAD_H_
+#ifndef SOAP_H_
+#define SOAP_H_
 
-namespace ifmap2c {
+#define USE_SOAP_12
 
-class Payload {
+#ifdef USE_SOAP_12
+#define SOAP_HREF			"http://www.w3.org/2003/05/soap-envelope"
+#define SOAP_CONTENT_TYPE		"application/soap+xml"
+#else
+#define SOAP_HREF			"http://schemas.xmlsoap.org/soap/envelope/"
+#define SOAP_CONTENT_TYPE		"text/xml"
+#endif
 
-
-	public:
-		Payload(char *mem = (char *)0, int len = 0) :
-			memory(mem), length(len), curPtr(0) { }
-
-		void free() {
-			if (memory)
-				delete[] memory;
-			memory = (char *)0;
-			length = 0;
-		}
-
-		~Payload() { }
-
-		char *memory;
-		int length;
-		int curPtr;
-
-};
-
-} // namespace
-#endif /* PAYLOAD_H_ */
+#define SOAP_PREFIX 			"env"
+#define SOAP_NSPAIR 			std::pair<std::string, std::string>(SOAP_PREFIX, SOAP_HREF)
+#endif /* SOAP_H_ */
