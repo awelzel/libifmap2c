@@ -24,6 +24,7 @@
 
 #include "lowlevelcurlcommunication.h"
 #include "communicationerror.h"
+#include "soap.h"
 
 #include <cstring>
 #include <cstdlib>
@@ -81,7 +82,7 @@ LowLevelCurlCommunication::doRequest(const Payload &p)
 
 
 	// set content length
-	curl_easy_setopt(_handle, CURLOPT_INFILESIZE,
+	curl_easy_setopt(_handle, CURLOPT_POSTFIELDSIZE,
 			(curl_off_t)_payloadExchange->length);
 
 	// Run exchange payloadExchange members will be different
@@ -173,15 +174,17 @@ void LowLevelCurlCommunication::generalInitialization(CURL *const handle,
 	// the url to connect to
 	curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 
-	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, CURL_VERIFY_PEER);
-	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, CURL_VERIFY_HOST);
-	curl_easy_setopt(handle, CURLOPT_CAPATH, capath.c_str());
+
+
+	// SSL setup
 
 	// drop possible standard certificate location
 	curl_easy_setopt(handle, CURLOPT_CAINFO, NULL);
-
-
-	// verify the hostname
+	// verify if the peer certificate is known
+	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, CURL_VERIFY_PEER);
+	// verify if host name is valid
+	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, CURL_VERIFY_HOST);
+	curl_easy_setopt(handle, CURLOPT_CAPATH, capath.c_str());
 
 	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_DEFAULT);
 	curl_easy_setopt(handle, CURLOPT_SSL_CIPHER_LIST, "DEFAULT");
@@ -190,12 +193,16 @@ void LowLevelCurlCommunication::generalInitialization(CURL *const handle,
 	 // after using, or do we have to wait, till the handle isn't used
 	 // anymore???
 	*slist = curl_slist_append(*slist, "Expect:");
+	*slist = curl_slist_append(*slist, "Accept:");
+	*slist = curl_slist_append(*slist, "Content-Type: " SOAP_CONTENT_TYPE);
 	curl_easy_setopt(handle, CURLOPT_HTTPHEADER, *slist);
+
+	// use POST
+	curl_easy_setopt(handle, CURLOPT_POST, 1L);
 
 	// callbacks
 	curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, &write_data);
 	curl_easy_setopt(handle, CURLOPT_READFUNCTION, &read_data);
-	curl_easy_setopt(handle, CURLOPT_UPLOAD, 1L);
 
 	// payload object given through the last pointer of the callback functions
 	curl_easy_setopt(handle, CURLOPT_WRITEDATA, ex);
@@ -264,37 +271,37 @@ read_data(void *buffer, size_t size, size_t nmemb,
 		void *userp)
 {
 	Payload *exchanger = (Payload *)userp;
-	size_t tmp;
+	int curlsize = (size * nmemb);
+	int exchgleft = (exchanger->length - exchanger->curPtr);
+	int curPtr = exchanger->curPtr;
+	int cpybytes = (curlsize < exchgleft) ?
+		curlsize : exchgleft;
 
-	/* finish transfer ? */
-	if (exchanger->length == 0)
-		return 0;
-
-	if ((unsigned int)exchanger->length > (size * nmemb)) {
-		fprintf(stderr, "FAIL FAIL FAIL :-(\n");
-		exit(1);
-	}
-
-	if (CURL_DEBUG_VALUE) {
-		fprintf(stderr, "read_data: %d bytes to be sent\n",
-			exchanger->length);
-
-		for (int i = 0; i < exchanger->length; i++) {
-			fprintf(stderr, "%c", exchanger->memory[i]);
+	// finished transferring data  to libcurl?
+	// if yes, free everything...
+	if (cpybytes == 0) {
+		if (CURL_DEBUG_VALUE) {
+			fprintf(stderr, "read_data: complete\n");
 		}
-		fprintf(stderr, "\n");
+		exchanger->length = 0;
+		exchanger->curPtr = 0;
+		/* free the data which was just sent */
+		delete[] exchanger->memory;
+		exchanger->memory = NULL;
+	} else {
+		memcpy(buffer, exchanger->memory + curPtr, cpybytes);
+		exchanger->curPtr += cpybytes;
+		if (CURL_DEBUG_VALUE) {
+			fprintf(stderr, "read_data: %d bytes to be transferred\n",
+				cpybytes);
+
+			for (int i = 0; i < cpybytes; i++) {
+				fprintf(stderr, "%c", ((char *)buffer)[i]);
+			}
+			fprintf(stderr, "\n");
+		}
 	}
-
-	/* copy everything in the exchanger to libcurl */
-	memcpy(buffer, exchanger->memory, exchanger->length);
-	tmp = exchanger->length;
-
-	exchanger->length = 0;
-	/* free the data which was just sent */
-	delete[] exchanger->memory;
-	exchanger->memory = NULL;
-
-	return tmp;
+	return cpybytes;
 }
 
 } // namespace
