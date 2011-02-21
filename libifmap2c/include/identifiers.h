@@ -52,9 +52,7 @@ public:
 	static MacAddress *createMac(const std::string& value,
 			const std::string ad = "");
 
-	static Device *createDevAik(const std::string& aik);
-
-	static Device *createDevName(const std::string& name);
+	static Device *createDev(const std::string& name);
 
 	static Identity *createIdentity(IdentityType type,
 			const std::string& name,
