@@ -30,15 +30,12 @@
 
 namespace ifmap2c {
 
-enum DeviceType {aik, name};
-
 class Device : public Identifier {
 
 	private:
-		Device(const std::string& val, DeviceType type);
+		Device(const std::string& val);
 
 		std::string _value;
-		DeviceType _deviceType;
 
 	public:
 		virtual ~Device() { };
@@ -46,14 +43,8 @@ class Device : public Identifier {
 		const std::string&
 		getValue() const;
 
-		DeviceType
-		getDeviceType() const;
-
 		static Device *
-		createDeviceAik(const std::string& aik);
-
-		static Device *
-		createDeviceName(const std::string& name);
+		createDevice(const std::string& name);
 
 		Device *clone(void) const;
 };

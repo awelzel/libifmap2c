@@ -28,35 +28,19 @@ using namespace std;
 
 namespace ifmap2c {
 
-Device::Device(const string& val, DeviceType type) :
-	Identifier (DEVICE_ELEMENT_NAME, EMPTY_VALUE), _value(val), _deviceType(type)
+Device::Device(const string& val) :
+	Identifier (DEVICE_ELEMENT_NAME, EMPTY_VALUE), _value(val)
 {
-	BasicXmlMarshalable *child = NULL;
-	
-	if (type == aik)
-		child = new BasicXmlMarshalable(DEVICE_AIK_ELEMENT,
-				val, IDENTIFIER_NSPAIR);
-	else if (type == name)
-		child = new BasicXmlMarshalable(DEVICE_NAME_ELEMENT,
-				val, IDENTIFIER_NSPAIR);
-
-	addXmlChild(child);
+	addXmlChild(new BasicXmlMarshalable(DEVICE_NAME_ELEMENT,
+			val, IDENTIFIER_NSPAIR));
 }
 
 
 
 Device *
-Device::createDeviceAik(const string& val)
+Device::createDevice(const string& val)
 {
-	return new Device(val, aik);
-}
-
-
-
-Device *
-Device::createDeviceName(const string& val)
-{
-	return new Device(val, name);
+	return new Device(val);
 }
 
 
@@ -69,18 +53,10 @@ Device::getValue() const
 
 
 
-DeviceType
-Device::getDeviceType() const
-{
-	return _deviceType;
-}
-
-
-
 Device *
 Device::clone(void) const
 {
-	return new Device(_value, _deviceType);
+	return new Device(_value);
 }
 
 } // namespace

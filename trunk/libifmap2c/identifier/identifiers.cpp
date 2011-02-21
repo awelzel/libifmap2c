@@ -57,15 +57,9 @@ Identifiers::createMac(const string& value, const string ad)
 }
 
 Device *
-Identifiers::createDevAik(const string& aik)
+Identifiers::createDev(const string& name)
 {
-	return Device::createDeviceAik(aik);
-}
-
-Device *
-Identifiers::createDevName(const string& name)
-{
-	return Device::createDeviceName(name);
+	return Device::createDevice(name);
 }
 
 Identity *
@@ -157,8 +151,7 @@ Identifiers::sameDev(Device const *const dev1, Device *const dev2)
 {
 	const string &val1 = dev1->getValue();
 	const string &val2 = dev2->getValue();
-	return (dev1->getDeviceType() == dev2->getDeviceType())
-				&& !(val1.compare(val2));
+	return !(val1.compare(val2));
 
 }
 

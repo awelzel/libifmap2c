@@ -410,8 +410,6 @@ Device *
 ResponseParser::extractDevice(XmlMarshalable *const element)
 {
 	Device *dev = NULL;
-	bool foundElement;
-	DeviceType type = aik; // should be set later
 	string elementValue;
 
 	if (compNameNs(element, DEVICE_ELEMENT_NAME, DEVICE_ELEMENT_HREF)) {
@@ -421,29 +419,14 @@ ResponseParser::extractDevice(XmlMarshalable *const element)
 					"one child element");
 
 		CXMLMLISTIT it = element->getXmlChildren().begin();
-		CXMLMLISTIT end = element->getXmlChildren().end();
 
-		for (/* */; it != end; it++) {
-			if (compNameNs(*it, DEVICE_AIK_ELEMENT, DEVICE_AIK_HREF)) {
-				foundElement = true;
-				type = aik;
-				elementValue = (*it)->getXmlElementValue();
-
-			} else if (compNameNs(*it, DEVICE_NAME_ELEMENT, DEVICE_NAME_HREF)) {
-				foundElement = true;
-				type = name;
-				elementValue = (*it)->getXmlElementValue();
-			}
-
+		if (compNameNs(*it, DEVICE_NAME_ELEMENT, DEVICE_NAME_HREF)) {
+			elementValue = (*it)->getXmlElementValue();
+		} else {
+			throw ResponseParseError("Device does not contain "
+					"a name element");
 		}
-
-		if (!foundElement)
-			throw ResponseParseError("Got Device without name or aik-name");
-
-		if (type == aik)
-			dev = Device::createDeviceAik(elementValue);
-		else
-			dev = Device::createDeviceName(elementValue);
+		dev = Device::createDevice(elementValue);
 
 	}
 	return dev;

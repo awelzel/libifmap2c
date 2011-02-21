@@ -143,8 +143,6 @@
 
 #define DEVICE_ELEMENT_NAME		"device"
 #define DEVICE_ELEMENT_HREF		NO_HREF
-#define DEVICE_AIK_ELEMENT		"aik-name"
-#define DEVICE_AIK_HREF			NO_HREF
 #define DEVICE_NAME_ELEMENT		"name"
 #define DEVICE_NAME_HREF		NO_HREF
 
