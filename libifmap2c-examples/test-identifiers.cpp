@@ -173,8 +173,7 @@ checkMac(SSRC *const ssrc)
 static bool
 compareDev(Device *dev1, Device  *dev2)
 {
-	return !dev1->getValue().compare(dev2->getValue()) &&
-			(dev1->getDeviceType() == dev2->getDeviceType());
+	return !dev1->getValue().compare(dev2->getValue());
 }
 
 
@@ -185,33 +184,28 @@ checkDev(SSRC *const ssrc)
 	const string aikname = "iDontKnowHowItLooksLike";
 	const string devname = "NameOfTheDevice";
 
-	Device *dev1 = Identifiers::createDevAik(aikname);
-	Device *dev2 = Identifiers::createDevName(devname);
+	Device *dev1 = Identifiers::createDev(aikname);
 
 	SearchRequest *sreq1 = Requests::createSearchReq(NULL, 0, NULL, -1, dev1);
-	SearchRequest *sreq2 = Requests::createSearchReq(NULL, 0, NULL, -1, dev2);
 
 	SearchResult *sres1 = ssrc->search(sreq1);
-	SearchResult *sres2 = ssrc->search(sreq2);
 
-	if (sres1->getResultItems().size() != 1 || sres2->getResultItems().size() != 1) {
+	if (sres1->getResultItems().size() != 1) {
 		cerr << "Wrong number of ResultItems in SearchResult!" << endl;
 		exit(1);
 	}
 
 	// get the first resultitem
 	ResultItem *ri1 = *sres1->getResultItems().begin();
-	ResultItem *ri2 = *sres2->getResultItems().begin();
 
 	Device *devrecv1 = ri1->getDevice();
-	Device *devrecv2 = ri2->getDevice();
 
-	if (devrecv1 == NULL || devrecv2 == NULL) {
-		cerr << "No Devices in ResultItem!" << endl;
+	if (devrecv1 == NULL) {
+		cerr << "No Device in ResultItem!" << endl;
 		exit(1);
 	} else {
-		cout << "Devices are\t\t";
-		if (compareDev(dev1, devrecv1) && compareDev(dev2, devrecv2)) {
+		cout << "Device are\t\t";
+		if (compareDev(dev1, devrecv1)) {
 			cout << "Good!" << endl;
 		} else {
 			cout << "Bad!" << endl;
@@ -219,9 +213,7 @@ checkDev(SSRC *const ssrc)
 	}
 
 	delete sres1;
-	delete sres2;
 	delete sreq1;
-	delete sreq2;
 }
 
 
@@ -347,25 +339,15 @@ static void
 checkIdentity(SSRC *const ssrc)
 {
 	std::string identname = "Aidentity";
+	std::string hiphit = "1:2:3:4:c:d:e:f";
+	std::string sipuri = "sip:ident@localhost:8842";
+	std::string teluri = "+4-12-123-1234";
+	std::string email = "ident@domain.tld";
+	std::string kerberos = "pri/lurk@DOM";
 	const string admind = "The Administrative Domain";
 	const string othert = "DefinitionOfAType";
 
-	/*
-        aik_name,
-        distinguished_name,
-        dns_name,
-        email_address,
-        hip_hit,
-        kerberos_principal,
-        trusted_platform_module,
-        username,
-        sip_uri,
-        tel_uri,
-        other
-        */
-
 	// now that gets funny...
-
 
 	// this should result everything with NULL?
 	Identity *identities[NIDENTITIES] = {0};
@@ -382,16 +364,16 @@ checkIdentity(SSRC *const ssrc)
 	identities[5] = Identifiers::createIdentity(dns_name, identname, admind);
 	identities[6] = Identifiers::createIdentity(email_address, identname);
 	identities[7] = Identifiers::createIdentity(email_address, identname, admind);
-	identities[8] = Identifiers::createIdentity(hip_hit, identname);
-	identities[9] = Identifiers::createIdentity(hip_hit, identname, admind);
-	identities[10] = Identifiers::createIdentity(kerberos_principal, identname);
-	identities[11] = Identifiers::createIdentity(kerberos_principal, identname, admind);
+	identities[8] = Identifiers::createIdentity(hip_hit, hiphit);
+	identities[9] = Identifiers::createIdentity(hip_hit, hiphit, admind);
+	identities[10] = Identifiers::createIdentity(kerberos_principal, kerberos);
+	identities[11] = Identifiers::createIdentity(kerberos_principal, kerberos, admind);
 	identities[12] = Identifiers::createIdentity(username, identname);
 	identities[13] = Identifiers::createIdentity(username, identname, admind);
-	identities[14] = Identifiers::createIdentity(sip_uri, identname);
-	identities[15] = Identifiers::createIdentity(sip_uri, identname, admind);
-	identities[16] = Identifiers::createIdentity(tel_uri, identname);
-	identities[17] = Identifiers::createIdentity(tel_uri, identname, admind);
+	identities[14] = Identifiers::createIdentity(sip_uri, sipuri);
+	identities[15] = Identifiers::createIdentity(sip_uri, sipuri, admind);
+	identities[16] = Identifiers::createIdentity(tel_uri, teluri);
+	identities[17] = Identifiers::createIdentity(tel_uri, teluri, admind);
 	identities[18] = Identifiers::createOtherIdentity(othert, identname);
 	identities[19] = Identifiers::createOtherIdentity(othert,identname, admind);
 
@@ -442,7 +424,7 @@ main(int argc, char *argv[])
 	try {
 		cout << "Doing newSession\t";
 		ssrc->newSession();
-		cout << "Ok." << endl;
+		cout << "Ok!" << endl;
 		checkAr(ssrc);
 		checkMac(ssrc);
 		checkDev(ssrc);

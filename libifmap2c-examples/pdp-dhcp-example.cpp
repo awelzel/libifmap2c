@@ -154,9 +154,9 @@ int main(int argc, char *argv[])
 	SSRC *ssrcDHCP= SSRC::createSSRC(argv[1], DHCP_BASIC_USER,
 			DHCP_BASIC_PW ,argv[2]);
 
-	Device *pdpDevice = Identifiers::createDevName(PDP_DEV_NAME);
-	Device *switchOneDevice = Identifiers::createDevName(SWITCH_ONE_DEV_NAME);
-	Device *switchTwoDevice = Identifiers::createDevName(SWITCH_TWO_DEV_NAME);
+	Device *pdpDevice = Identifiers::createDev(PDP_DEV_NAME);
+	Device *switchOneDevice = Identifiers::createDev(SWITCH_ONE_DEV_NAME);
+	Device *switchTwoDevice = Identifiers::createDev(SWITCH_TWO_DEV_NAME);
 	IpAddress *pdpIp = Identifiers::createIPv4(PDP_IP);
 	IpAddress *switchOneIp = Identifiers::createIPv4(SWITCH_ONE_IP);
 	IpAddress *switchTwoIp = Identifiers::createIPv4(SWITCH_TWO_IP);
