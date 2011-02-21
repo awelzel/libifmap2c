@@ -132,6 +132,9 @@ int main(int argc, char *argv[])
 		cerr << " ErrorCode   " << e.getErrorCodeString() << endl;
 		cerr << " ErrorString " << e.getErrorString() << endl;
 
+	} catch (ResponseParseError e) {
+		cerr << "ResponseParseError: " << e.getMessage() << endl;
+
 	// other things can come up here, but we ignore that for now
 	} catch (...) {
 		cerr << "Unidentified Error." << endl;

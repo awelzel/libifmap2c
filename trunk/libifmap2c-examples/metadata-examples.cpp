@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
 	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3], argv[4]);
 
-	Device *dev = Identifiers::createDevName("TheDev");
+	Device *dev = Identifiers::createDev("TheDev");
 	AccessRequest *ar = Identifiers::createAr("TheAR");
 
 	XmlMarshalable *ardev = Metadata::createArDev();
