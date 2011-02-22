@@ -41,21 +41,25 @@ typedef list<ResultItem *>::iterator RILISTIT;
 typedef list<XmlMarshalable *> XMLMLIST;
 typedef XMLMLIST::iterator XMLMLISTIT;
 
+static STRP mdNs("myns", "http://mynamespace.com");
+
 class SingleValueMetadata : public BasicXmlMarshalable {
 public:
 	SingleValueMetadata() :
-		BasicXmlMarshalable("simpleMetadata", "", NO_NSPAIR)
+		BasicXmlMarshalable("simpleMetadata", "", mdNs)
 	{
 		addXmlAttribute(STRP(META_CARDINALITY_ATTR_NAME, "singleValue"));
+		addXmlNamespaceDefinition(mdNs);
 	}
 };
 
 class MultiValueMetadata : public BasicXmlMarshalable {
 public:
 	MultiValueMetadata() :
-		BasicXmlMarshalable("simpleMetadata", "", NO_NSPAIR)
+		BasicXmlMarshalable("simpleMetadata", "", mdNs)
 	{
 		addXmlAttribute(STRP(META_CARDINALITY_ATTR_NAME, "multiValue"));
+		addXmlNamespaceDefinition(mdNs);
 	}
 };
 
