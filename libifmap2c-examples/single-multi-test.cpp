@@ -63,51 +63,33 @@ public:
 	}
 };
 
+class SingleValueMetadata2 : public BasicXmlMarshalable {
+
+public:
+	SingleValueMetadata2() :
+		BasicXmlMarshalable("simpleMetadata2", "", mdNs)
+	{
+		addXmlAttribute(STRP(META_CARDINALITY_ATTR_NAME, "singleValue"));
+		addXmlNamespaceDefinition(mdNs);
+	}
+};
+
+class MultiValueMetadata2 : public BasicXmlMarshalable {
+public:
+	MultiValueMetadata2() :
+		BasicXmlMarshalable("simpleMetadata2", "", mdNs)
+	{
+		addXmlAttribute(STRP(META_CARDINALITY_ATTR_NAME, "multiValue"));
+		addXmlNamespaceDefinition(mdNs);
+	}
+};
+
 
 static void
 usage(const char *const name)
 {
 	cerr << "Usage: " << name << " ifmap-server-url username password capath" << endl;
 	exit(1);
-}
-
-static void
-outputSearchResult(SearchResult *sresult) {
-	list<ResultItem *> list = sresult->getResultItems();
-	RILISTIT it = list.begin();
-	RILISTIT end = list.end();
-
-	for (ResultItem *item = *it; it != end; ++it, item = *it) {
-		if (item->getAccessRequest()) {
-			XmlMarshalable::putXmlMarshalable(item->getAccessRequest());
-		}
-
-		if (item->getDevice()) {
-			XmlMarshalable::putXmlMarshalable(item->getDevice());
-		}
-
-		if (item->getIdentity()) {
-			XmlMarshalable::putXmlMarshalable(item->getIdentity());
-		}
-
-		if (item->getIpAddress()) {
-			XmlMarshalable::putXmlMarshalable(item->getIpAddress());
-		}
-
-		if (item->getMacAddress()) {
-			XmlMarshalable::putXmlMarshalable(item->getMacAddress());
-		}
-
-		cerr << "METADATALIST" << endl;
-		XMLMLIST mlist = item->getMetadataList();
-		XMLMLISTIT mit = mlist.begin();
-		XMLMLISTIT mend = mlist.end();
-
-		for (XmlMarshalable *md = *mit; mit != mend; ++mit, md = *mit) {
-			XmlMarshalable::putXmlMarshalable(md);
-		}
-	}
-
 }
 
 int
@@ -120,17 +102,19 @@ main(int argc, char *argv[])
 	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
 	XmlMarshalable *single = new SingleValueMetadata();
 	XmlMarshalable *multi = new MultiValueMetadata();
+	XmlMarshalable *single2 = new SingleValueMetadata2();
+	XmlMarshalable *multi2 = new MultiValueMetadata2();
 	IpAddress *i1 = IpAddress::createIpv4Address("192.168.0.1");
 
 	SubPublish *sub1 = PublishUpdate::createPublishUpdate(single, i1->clone(), session);
 	SubPublish *sub2 = PublishUpdate::createPublishUpdate(multi, i1->clone(), session);
+	SubPublish *sub3 = PublishUpdate::createPublishUpdate(multi2, i1->clone(), session);
+	SubPublish *sub4 = PublishUpdate::createPublishUpdate(single2, i1, session);
+
 	PublishRequest *pr1 = PublishRequest::createPublishRequest(sub1);
 	PublishRequest *pr2 = PublishRequest::createPublishRequest(sub2);
-
-	SearchRequest *sr1 = SearchRequest::createSearchRequest(FILTER_MATCH_NOTHING,
-			SEARCH_NO_MAX_DEPTH, FILTER_MATCH_ALL, SEARCH_NO_MAX_RESULT_SIZE, i1);
-	SearchResult *sresult;
-
+	PublishRequest *pr3 = PublishRequest::createPublishRequest(sub3);
+	PublishRequest *pr4 = PublishRequest::createPublishRequest(sub4);
 
 	try {
 		cout << "Doing newSession\t";
@@ -144,52 +128,19 @@ main(int argc, char *argv[])
 			ssrc->publish(pr2);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok Failed on purpose..." << endl;;
+			cout << "Ok (failed on purpose)" << endl;;
 		}
 
-		cout << "Doing search\t\t";
-		sresult = ssrc->search(sr1);
-		cout << "Ok" << endl;
-		outputSearchResult(sresult);
-		delete sresult;
-
-		cout << "Doing purge\t\t";
-		ssrc->purgePublisher();
-		cout << "Ok" << endl;
-
-		cout << "Doing search2\t\t";
-		sresult = ssrc->search(sr1);
-		cout << "Ok" << endl;
-		outputSearchResult(sresult);
-		delete sresult;
-
-
-		cout << "Doing publish2\t\t";
-		ssrc->publish(pr2);
+		cout << "Doing publish3\t\t";
+		ssrc->publish(pr3);
 		cout << "Ok" << endl;
 		cout << "Doing publish1\t\t";
 		try {
-			ssrc->publish(pr1);
+			ssrc->publish(pr4);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok Failed on purpose..." << endl;;
+			cout << "Ok (failed on purpose)" << endl;;
 		}
-
-		cout << "Doing search3\t\t";
-		sresult = ssrc->search(sr1);
-		cout << "Ok" << endl;
-		outputSearchResult(sresult);
-		delete sresult;
-
-		cout << "Doing publish2 again\t";
-		ssrc->publish(pr2);
-		cout << "Ok" << endl;
-
-		cout << "Doing search4\t\t";
-		sresult = ssrc->search(sr1);
-		cout << "Ok" << endl;
-		outputSearchResult(sresult);
-		delete sresult;
 
 		cout << "Doing endSession\t";
 		ssrc->endSession();
@@ -206,10 +157,10 @@ main(int argc, char *argv[])
 		throw;
 	}
 
-	delete pr1;
-	delete pr2;
-	delete sr1;
+	// delete the publish requests and all their childs
+	delete pr1; delete pr2; delete pr3; delete pr4;
+	
+	// this closes the TCP connection
 	delete ssrc;
 	return 0;
 }
-
