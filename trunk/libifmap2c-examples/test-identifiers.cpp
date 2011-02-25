@@ -441,6 +441,8 @@ main(int argc, char *argv[])
 		cerr << "ErrorResult:" << endl;
 		cerr << " " << e.getErrorCodeString() << endl;
 		cerr << " " << e.getErrorString() << endl;
+	} catch (XmlUnmarshalError e) {
+		cerr << "UnmarshalError:" << e.getMessage() << endl;
 	} catch (...) {
 		cerr << "Uncatched Exception occured" << endl;
 		throw;
