@@ -1,0 +1,14 @@
+0.1.1
+	* test-close-conn:
+	  - new example to demonstrate how the underlying TCP connection
+	    of a SSRC is closed and how to keep the session alive using
+	    renewSession calls on a new SSRC.
+	
+	* single-multi-test:
+	  - Added Namespaces to the used metadata types
+	    (Infoblox IBOS wants them, thanks to Akmal Khan)
+	  - Don't do searches anymore, just check whether publishReceived
+	    or InvalidMetadata is received.
+
+0.1.0
+	* First release.

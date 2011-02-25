@@ -1,0 +1,9 @@
+0.1.1
+	* Remove possibility to create Device identifier with aik-name
+	  element. (Simply use Identifiers::createDev() now)
+
+	* Use HTTP POST instead of HTTP PUT (thanks to Akmal Khan)
+	* Add Content-Type Header as application/soap+xml
+	* Remove Accept: */* Header
+0.1.0
+	First release.
