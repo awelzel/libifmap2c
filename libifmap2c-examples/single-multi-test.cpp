@@ -37,9 +37,6 @@ using namespace std;
 using namespace ifmap2c;
 
 typedef pair<string, string> STRP;
-typedef list<ResultItem *>::iterator RILISTIT;
-typedef list<XmlMarshalable *> XMLMLIST;
-typedef XMLMLIST::iterator XMLMLISTIT;
 
 static STRP mdNs("myns", "http://mynamespace.com");
 
