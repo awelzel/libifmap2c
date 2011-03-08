@@ -37,38 +37,44 @@ SearchRequest::createSearchRequest(const char *const matchLinksFilter,
 		const int maxDepth,
 		const char *const resultFilter,
 		const int maxResultSize,
+		const char *const terminalIdent,
 		Identifier *const i1)
 {
 	return new SearchRequest(matchLinksFilter, maxDepth, resultFilter,
-			maxResultSize, i1);
+			maxResultSize, terminalIdent, i1);
 }
 
 SearchRequest::SearchRequest(const char *const matchLinksFilter,
 		const int maxDepth,
 		const char *const resultFilter,
 		const int maxResultSize,
+		const char *const terminalIdent,
 		Identifier *const i1) :
 		BasicXmlMarshalable( SEARCH_ELEMENT_NAME, EMPTY_VALUE,
 				IFMAP_OPERATION_NSPAIR)
 {
-	stringstream ss;
 	if (matchLinksFilter)
 		addXmlAttribute(STRP(SEARCH_MATCH_LINKS_ATTR_NAME, matchLinksFilter));
 
 	if (maxDepth >= 0) {
+		stringstream ss;
 		ss << maxDepth;
 		addXmlAttribute(STRP(SEARCH_MAX_DEPTH_ATTR_NAME, ss.str()));
-		ss.clear();
 	}
 
 	if (resultFilter)
 		addXmlAttribute(STRP(SEARCH_RESULT_FILTER_ATTR_NAME, resultFilter));
 
 	if (maxResultSize >= 0) {
+		stringstream ss;
 		ss << maxResultSize;
-		addXmlAttribute(STRP(SEARCH_MAX_DEPTH_ATTR_NAME, ss.str()));
-		ss.clear();
+		addXmlAttribute(STRP(SEARCH_MAX_SIZE_ATTR_NAME, ss.str()));
 	}
+
+	if (terminalIdent) {
+		addXmlAttribute(STRP(SEARCH_TERM_IDENT_ATTR_NAME, terminalIdent));
+	}
+		
 
 	if (i1)
 		addXmlChild(i1);

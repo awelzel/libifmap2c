@@ -169,6 +169,28 @@ public:
 			const char *const resultFilter,
 			const int maxResultSize,
 			Identifier *const i1);
+	/**
+	 * Create a search request object.
+	 *
+	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
+	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
+	 * 		   maximum depth
+	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
+	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
+	 * 			to not add a maximum result size
+	 * @param terminalIdent terminal identifiers as string, separated
+	 * 			by commas, use SEARCH_NO_TERMINAL_IDENTIFIERS
+	 * 			to not add the terminal identifiers attribute
+	 * @param i1 identifier object where the search will start
+	 */
+	static SearchRequest *createSearchReq(const char *const matchLinksFilter,
+			const int maxDepth,
+			const char *const resultFilter,
+			const int maxResultSize,
+			const char *const terminalIdent,
+			Identifier *const i1);
 
 	/**
 	 * Create a subscribe request object.

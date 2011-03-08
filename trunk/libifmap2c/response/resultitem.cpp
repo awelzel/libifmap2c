@@ -61,8 +61,6 @@ ResultItem::ResultItem::setIpAddress(IpAddress *const ip)
 	checkAndIncIdentifierNumber();
 
 	if (_i1) {
-		if (typeid(*_i1) == typeid(*ip))
-			throw ResultItemError("Two IpAddress in ResultItem");
 		_i2 = ip;
 	} else {
 		_i1 = ip;
@@ -75,8 +73,6 @@ ResultItem::ResultItem::setMacAddress(MacAddress *const mac)
 	checkAndIncIdentifierNumber();
 
 	if (_i1) {
-		if (typeid(*_i1) == typeid(*mac))
-			throw ResultItemError("Two MacAddress in ResultItem");
 		_i2 = mac;
 	} else {
 		_i1 = mac;
@@ -89,8 +85,6 @@ ResultItem::ResultItem::setDevice(Device *const dev)
 	checkAndIncIdentifierNumber();
 
 	if (_i1) {
-		if (typeid(*_i1) == typeid(*dev))
-			throw ResultItemError("Two Device in ResultItem");
 		_i2 = dev;
 	} else {
 		_i1 = dev;
@@ -103,8 +97,6 @@ ResultItem::ResultItem::setAccessRequest(AccessRequest *const ar)
 	checkAndIncIdentifierNumber();
 
 	if (_i1) {
-		if (typeid(*_i1) == typeid(*ar))
-			throw ResultItemError("Two AccessRequest in ResultItem");
 		_i2 = ar;
 	} else {
 		_i1 = ar;
@@ -117,8 +109,6 @@ ResultItem::ResultItem::setIdentity(Identity *const id)
 	checkAndIncIdentifierNumber();
 
 	if (_i1) {
-		if (typeid(*_i1) == typeid(*id))
-			throw ResultItemError("Two Identity in ResultItem");
 		_i2 = id;
 	} else {
 		_i1 = id;
