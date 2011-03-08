@@ -50,6 +50,7 @@ public:
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1);
 
 	virtual ~SearchRequest();
@@ -60,6 +61,7 @@ private:
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1);
 };
 

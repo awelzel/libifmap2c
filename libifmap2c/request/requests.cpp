@@ -120,8 +120,21 @@ Requests::createSearchReq(const char *const matchLinksFilter,
 		const int maxResultSize,
 		Identifier *const i1)
 {
+	return createSearchReq(matchLinksFilter, maxDepth, 
+			resultFilter, maxResultSize,
+			SEARCH_NO_TERMINAL_IDENTIFIERS, i1);
+}
+SearchRequest *
+Requests::createSearchReq(const char *const matchLinksFilter,
+			const int maxDepth,
+			const char *const resultFilter,
+			const int maxResultSize,
+			const char *const terminalIdent,
+			Identifier *const i1)
+{
 	return SearchRequest::createSearchRequest(matchLinksFilter,
-			maxDepth, resultFilter, maxResultSize, i1);
+			maxDepth, resultFilter, maxResultSize, 
+			terminalIdent, i1);
 }
 
 

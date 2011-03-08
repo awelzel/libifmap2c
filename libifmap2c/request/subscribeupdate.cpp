@@ -52,24 +52,22 @@ SubscribeUpdate::SubscribeUpdate(const string& name,
 			SubSubscribe(SUBSCRIBE_UPDATE_ELEMENT_NAME, name)
 {
 	// this is the same as in a search request
-	stringstream ss;
-
 	if (matchLinksFilter)
 		addXmlAttribute(STRP(SEARCH_MATCH_LINKS_ATTR_NAME, matchLinksFilter));
 
 	if (maxDepth >= 0) {
+		stringstream ss;
 		ss << maxDepth;
 		addXmlAttribute(STRP(SEARCH_MAX_DEPTH_ATTR_NAME, ss.str()));
-		ss.clear();
 	}
 
 	if (resultFilter)
 		addXmlAttribute(STRP(SEARCH_RESULT_FILTER_ATTR_NAME, resultFilter));
 
 	if (maxResultSize >= 0) {
+		stringstream ss;
 		ss << maxResultSize;
 		addXmlAttribute(STRP(SEARCH_MAX_DEPTH_ATTR_NAME, ss.str()));
-		ss.clear();
 	}
 
 	if (i1)
