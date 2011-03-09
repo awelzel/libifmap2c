@@ -28,7 +28,7 @@
 
 namespace ifmap2c {
 
-class PublishNotify : SubPublish {
+class PublishNotify : public SubPublish {
 public:
 
 	static PublishNotify *
