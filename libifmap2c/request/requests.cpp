@@ -120,7 +120,7 @@ Requests::createSearchReq(const char *const matchLinksFilter,
 		const int maxResultSize,
 		Identifier *const i1)
 {
-	return createSearchReq(matchLinksFilter, maxDepth, 
+	return Requests::createSearchReq(matchLinksFilter, maxDepth, 
 			resultFilter, maxResultSize,
 			SEARCH_NO_TERMINAL_IDENTIFIERS, i1);
 }
@@ -158,8 +158,24 @@ Requests::createSubscribeUpdate(std::string const& name,
 		const int maxResultSize,
 		Identifier *const i1)
 {
-	return SubscribeUpdate::createSubscribeUpdate(name, matchLinksFilter,
-			maxDepth, resultFilter, maxResultSize, i1);
+	return Requests::createSubscribeUpdate(name, matchLinksFilter,
+			maxDepth, resultFilter, maxResultSize,
+			SEARCH_NO_TERMINAL_IDENTIFIERS, i1);
+}
+
+SubscribeUpdate *
+Requests::createSubscribeUpdate(
+		std::string const& name,
+		const char *const matchLinksFilter,
+		const int maxDepth,
+		const char *const resultFilter,
+		const int maxResultSize,
+		const char *const terminalIdent,
+		Identifier *const i1)
+{
+	return SubscribeUpdate::createSubscribeUpdate(name,
+			matchLinksFilter, maxDepth, resultFilter,
+			maxResultSize, terminalIdent, i1);
 }
 
 SubscribeDelete *

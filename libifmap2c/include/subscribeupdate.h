@@ -53,6 +53,7 @@ public:
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1);
 
 private:
@@ -62,6 +63,7 @@ private:
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1);
 };
 

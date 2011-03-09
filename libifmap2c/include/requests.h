@@ -224,11 +224,37 @@ public:
 	 * 			to not add a maximum result size
 	 * @param i1 identifier object where the search will start
 	 */
-	static SubscribeUpdate *createSubscribeUpdate(std::string const& name,
+	static SubscribeUpdate *createSubscribeUpdate(
+			std::string const& name,
 			const char *const matchLinksFilter,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			Identifier *const i1);
+	
+	/**
+	 * Create a subscribe update object.
+	 *
+	 * @param name name of the subscription
+	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
+	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
+	 * 		   maximum depth
+	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
+	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
+	 * @param terminalIdent terminal-identifier-type as string, use
+	 * 			SEARCH_NO_TERMINAL_IDENTIFIERS if this
+	 * 			field should not be set.
+	 * @param i1 identifier object where the search will start
+	 */
+	static SubscribeUpdate *createSubscribeUpdate(
+			std::string const& name,
+			const char *const matchLinksFilter,
+			const int maxDepth,
+			const char *const resultFilter,
+			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1);
 	/**
 	 * Create a subscribe delete object.

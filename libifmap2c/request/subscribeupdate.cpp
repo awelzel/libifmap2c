@@ -37,10 +37,11 @@ SubscribeUpdate::createSubscribeUpdate(const string& name,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1)
 {
-	return new SubscribeUpdate(name, matchLinksFilter, maxDepth, resultFilter,
-			maxResultSize, i1);
+	return new SubscribeUpdate(name, matchLinksFilter, maxDepth,
+			resultFilter, maxResultSize, terminalIdent, i1);
 }
 
 SubscribeUpdate::SubscribeUpdate(const string& name,
@@ -48,6 +49,7 @@ SubscribeUpdate::SubscribeUpdate(const string& name,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
+			const char *const terminalIdent,
 			Identifier *const i1) :
 			SubSubscribe(SUBSCRIBE_UPDATE_ELEMENT_NAME, name)
 {
@@ -67,7 +69,11 @@ SubscribeUpdate::SubscribeUpdate(const string& name,
 	if (maxResultSize >= 0) {
 		stringstream ss;
 		ss << maxResultSize;
-		addXmlAttribute(STRP(SEARCH_MAX_DEPTH_ATTR_NAME, ss.str()));
+		addXmlAttribute(STRP(SEARCH_MAX_SIZE_ATTR_NAME, ss.str()));
+	}
+
+	if (terminalIdent) {
+		addXmlAttribute(STRP(SEARCH_TERM_IDENT_ATTR_NAME, terminalIdent));
 	}
 
 	if (i1)
