@@ -36,7 +36,7 @@ enum ErrorCode {
         IdentifierTooLong,
         InvalidMetadata,
         InvalidSchemaVersion,
-        InvalidSessionID,
+        InvalidSessionId,
         MetadataTooLong,
         SearchResultsTooBig,
         PollResultsTooBig,

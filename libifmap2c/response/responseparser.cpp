@@ -63,10 +63,10 @@ ResponseParser::createNewSessionResult(XmlMarshalable *const env)
 	}
 
 	if (!pIdFound)
-		throw ResponseParseError("PublisherID not found");
+		throw ResponseParseError("PublisherId not found");
 
 	if(!sIdFound)
-		throw ResponseParseError("SessionID not found");
+		throw ResponseParseError("SessionId not found");
 
 	return new NewSessionResult(sId, pId, maxPs);
 }
@@ -695,8 +695,8 @@ ResponseParser::throwErrorResult(XmlMarshalable *const err)
 		errCode = InvalidMetadata;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSchemaVersion])) {
 		errCode = InvalidSchemaVersion;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSessionID])) {
-		errCode = InvalidSessionID;
+	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSessionId])) {
+		errCode = InvalidSessionId;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[MetadataTooLong])) {
 		errCode = MetadataTooLong;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[SearchResultsTooBig])) {
