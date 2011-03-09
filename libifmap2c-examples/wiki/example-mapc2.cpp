@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 
 
 	// create a search request
-	SearchRequest *sreq = SearchRequest::createSearchRequest(
+	SearchRequest *sreq = Requests::createSearchReq(
 			FILTER_MATCH_ALL,		// match-links-filter
 			5,				// max-depth
 			FILTER_MATCH_ALL,		// result-filter
