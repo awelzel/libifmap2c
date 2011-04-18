@@ -21,7 +21,9 @@
  * be used in advertising or otherwise to promote the sale, use or other dealings
  * in this Software without prior written authorization of the copyright holder.
  *
- * There was a bug reported in 0.2.0, reproduce it...
+ * This simply checks the correct behavior of irond-0.2.0, other MAPS
+ * might act differently.
+ *
  */
 
 
@@ -147,6 +149,57 @@ checkForTwoEvents(PollResult *const pollres, IpAddress *const ip)
 }
 
 static void
+checkForOneEvent(PollResult *const pollres, IpAddress *const ip)
+{
+	// we only expect one notify result filled with one result
+	// item containing two simpleEvents
+	list<SearchResult *> sresults = pollres->getSearchResults();
+	list<SearchResult *> uresults = pollres->getUpdateResults();
+	list<SearchResult *> dresults = pollres->getDeleteResults();
+	list<SearchResult *> nresults = pollres->getNotifyResults();
+	
+	if (nresults.size() != 1) {
+		cout << " [ERROR: Wrong number of SearchResults] ";
+		return;
+	}
+	
+	if ((sresults.size() != 0) || (uresults.size() != 0) ||
+			(dresults.size() != 0)) {
+		cout << " [ERROR: Other things than the SearchResult] "; 
+		return;
+	}
+
+	SearchResult *nres = *nresults.begin();
+	if (nres->getResultItems().size() != 1) {
+		cout << " [ERROR: Wrong number of ResultItems] ";
+		return;
+	}
+
+	ResultItem *ri = nres->getResultItem(ip);
+	if (ri) {
+		if (ri->getMetadataList().size() != 1) {
+			cout << " [ERROR: Wrong Metadata count for IP] ";
+			return;
+		} else {
+			list<XmlMarshalable *> found =
+				XmlMarshalable::findMatchingElements(
+				ri->getMetadataList(),
+				"simpleEvent",
+				"http://mynamespace.com");
+			if (found.size() != 1) {
+				cout << " [ERROR: Not the events!] ";
+				return;
+			}
+		}
+	} else {
+		cout << " [ERROR: No ResultItem for the IP] ";
+		return;
+	}
+	cout << " [NotifyResult is good] ";
+	return;
+}
+
+static void
 usage(const char *const name)
 {
 	cerr << "Usage: " << name << " ifmap-server-url username password capath" << endl;
@@ -180,13 +233,21 @@ main(int argc, char *argv[])
 	uplist.push_back(Requests::createPublishNotify(new SimpleEvent(
 				"event1"), ip->clone()));
 	PublishRequest *pr2 = Requests::createPublishReq(uplist);
+	
+	PublishRequest *pr3 = Requests::createPublishReq(
+			Requests::createPublishNotify(new SimpleEvent(
+					"event1"), ip->clone()));
+	PublishRequest *pr4 = Requests::createPublishReq(
+			Requests::createPublishNotify(new SimpleEvent(
+					"event2"), ip->clone()));
+
 
 	SubSubscribe *subcreate = Requests::createSubscribeUpdate(
 			"sub1",
 			FILTER_MATCH_ALL,
 			0,
 			FILTER_MATCH_ALL,
-			2000,
+			200000,
 			ip);
 
 
@@ -196,20 +257,24 @@ main(int argc, char *argv[])
 		cout << "Doing newSession\t";
 		ssrc->newSession();
 		cout << "Ok" << endl;
+
 		cout << "Doing subscribe\t\t";
 		ssrc->subscribe(subreq);
 		cout << "Ok" << endl;
+
 		cout << "Doing first poll\t";
 		PollResult *pollres = arc->poll();
 		checkOnlyIp(pollres, ip);
 		delete pollres;
 		cout << "Ok" << endl;
+
 		cout << "Doing publish 1\t\t";
 		ssrc->publish(pr1);
 		cout << "Ok" << endl;
+
 		cout << "Doing second poll\t";
 		pollres = arc->poll();
-		checkForTwoEvents(pollres, ip);
+		//checkForTwoEvents(pollres, ip);
 		delete pollres;
 		cout << "Ok" << endl;
 		
@@ -222,6 +287,41 @@ main(int argc, char *argv[])
 		checkForTwoEvents(pollres, ip);
 		delete pollres;
 		cout << "Ok" << endl;
+		
+		cout << "Doing publish 3\t\t";
+		ssrc->publish(pr3);
+		cout << "Ok" << endl;
+
+		cout << "Doing fourth poll\t";
+		pollres = arc->poll();
+		checkForOneEvent(pollres, ip);
+		delete pollres;
+		cout << "Ok" << endl;
+		
+		cout << "Doing publish 4\t\t";
+		ssrc->publish(pr4);
+		cout << "Ok" << endl;
+
+		cout << "Doing fifth poll\t";
+		pollres = arc->poll();
+		checkForOneEvent(pollres, ip);
+		delete pollres;
+		cout << "Ok" << endl;
+		
+		cout << "Doing publish 5\t\t";
+		ssrc->publish(pr3);
+		cout << "Ok" << endl;
+
+		cout << "Doing publish 6\t\t";
+		ssrc->publish(pr4);
+		cout << "Ok" << endl;
+
+		cout << "Doing sixth poll\t";
+		pollres = arc->poll();
+		checkForTwoEvents(pollres, ip);
+		delete pollres;
+		cout << "Ok" << endl;
+
 		cout << "Doing endSession\t";
 		ssrc->endSession();
 		cout << "Ok" << endl;
@@ -243,6 +343,8 @@ main(int argc, char *argv[])
 
 	delete pr1;
 	delete pr2;
+	delete pr3;
+	delete pr4;
 	delete subreq;
 	
 	// this closes the TCP connections
