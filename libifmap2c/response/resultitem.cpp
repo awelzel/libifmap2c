@@ -47,9 +47,11 @@ ResultItem::~ResultItem()
 	// delete all metadata childs
 	XMLMLISTIT it = _metadataList.begin();
 	XMLMLISTIT end = _metadataList.end();
-	XmlMarshalable *child = NULL;
-	for (child = *it; it != end; child = *(++it))
+	XmlMarshalable *child;
+	for (/* see above */; it != end; it++) {
+		child = *it;
 		delete child;
+	}
 	_metadataList.clear();
 }
 

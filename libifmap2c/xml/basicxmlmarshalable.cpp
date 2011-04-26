@@ -50,9 +50,9 @@ BasicXmlMarshalable::~BasicXmlMarshalable()
 	XMLMLISTIT it = _xmlChildren.begin();
 	XMLMLISTIT end = _xmlChildren.end();
 
-	for (/* */; it != end; it++) {
+	for (/* see above */; it != end; it++)
 		delete *it;
-	}
+
 	_xmlChildren.clear();
 }
 
@@ -140,8 +140,8 @@ BasicXmlMarshalable::addXmlNamespaceDefinition(const STRP& ns)
 	_xmlNamespaceDefinitions.push_back(ns);
 }
 
-XmlMarshalable
-*BasicXmlMarshalable::clone(void) const
+XmlMarshalable *
+BasicXmlMarshalable::clone(void) const
 {
 	BasicXmlMarshalable *ret = new BasicXmlMarshalable(
 			getXmlElementName(),
@@ -150,27 +150,34 @@ XmlMarshalable
 
 	CXMLMLISTIT cit = getXmlChildren().begin();
 	CXMLMLISTIT cend = getXmlChildren().end();
-	XmlMarshalable *child;
+	XmlMarshalable *child = NULL;
 
 	// clone all the children
-	for (child = *cit; cit != cend; child = *(++cit))
+	for (/* see above */; cit != cend; cit++) {
+		child = *cit;
 		ret->addXmlChild(child->clone());
+	}
 
 	CSTRPLISTIT sit = getXmlAttributes().begin();
 	CSTRPLISTIT send = getXmlAttributes().end();
 	STRP strp;
 
 	// copy all attributes
-	for (strp = *sit; sit != send; strp = *(++sit))
+	for (/* see above */; sit != send; sit++) {
+		strp = *sit;
 		ret->addXmlAttribute(strp);
+	}
 
 	sit = getXmlNamespaceDefinitions().begin();
 	send = getXmlNamespaceDefinitions().end();
 
 	// copy all namespace definitions
-	for (strp = *sit; sit != send; strp = *(++sit))
+	for (/* see above*/;  sit != send; sit++) {
+		strp = *sit;
 		ret->addXmlNamespaceDefinition(strp);
+	}
 
 	return ret;
 }
+
 } // namespace

@@ -192,9 +192,11 @@ IfmapCommunication::setSessionId(XmlMarshalable *const req,
 {
 	CSTRPLISTIT it = req->getXmlAttributes().begin();
 	CSTRPLISTIT end = req->getXmlAttributes().end();
+	STRP strp;
 	// if we find a session-id attribute we need to copy the whole list :-(
 
-	for (STRP strp = *it; it != end; strp = *(++it)) {
+	for (/* see above */; it != end; it++) {
+		strp = *it;
 		if (!strp.first.compare(SESSIONID_ATTR_NAME)) {
 			STRPLIST attrList = req->getXmlAttributes();
 			req->clearXmlAttributes();

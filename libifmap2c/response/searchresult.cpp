@@ -38,7 +38,7 @@ SearchResult::~SearchResult()
 	CRILISTIT it = _resultItems.begin();
 	CRILISTIT end = _resultItems.end();
 
-	for (/* */; it != end; it++)
+	for (/* see above */; it != end; it++)
 		delete *it;
 
 	_resultItems.clear();
@@ -68,8 +68,10 @@ SearchResult::getResultItem(Identifier *const i1, Identifier *const i2) const
 {
 	CRILISTIT it = _resultItems.begin();
 	CRILISTIT end = _resultItems.end();
+	ResultItem *ri;
 
-	for (ResultItem *ri = *it; it != end; ri = *(++it)) {
+	for (/* see above */; it != end; it++) {
+		ri = *it;
 		Identifier *ri1 = ri->getIdentifier1();
 		Identifier *ri2 = ri->getIdentifier2();
 
@@ -88,8 +90,10 @@ SearchResult::getResultItemsByType(Identifier *const i1, Identifier *const i2) c
 	CRILISTIT it = _resultItems.begin();
 	CRILISTIT end = _resultItems.end();
 	RILIST ret;
+	ResultItem *ri;
 
-	for (ResultItem *ri = *it; it != end; ri = *(++it)) {
+	for (/* see above */; it != end; it++) {
+		ri = *it;
 		Identifier *ri1 = ri->getIdentifier1();
 		Identifier *ri2 = ri->getIdentifier2();
 

@@ -97,7 +97,7 @@ LibXml2Marshaller::marshalToXmlNode(XmlMarshalable *node)
 	STRPLISTIT end = attrList.end();
 	
 	/* create new property nodes for the new xmlNode object */
-	for (/* */; it != end; it++) {
+	for (/* see above */; it != end; it++) {
 		xmlNewProp(xmlNode, BAD_CAST it->first.c_str(),
 				BAD_CAST it->second.c_str());
 	}
@@ -126,7 +126,7 @@ LibXml2Marshaller::marshalToXmlNode(XmlMarshalable *node)
 		NSDECLLISTIT rit = _nsDeclarationList.rbegin();
 		NSDECLLISTIT rend = _nsDeclarationList.rend();
 
-		for (/* */; rit != rend; rit++) {
+		for (/* see above */; rit != rend; rit++) {
 			if (!rit->first.compare(prefix)) {
 				xmlSetNs(xmlNode, rit->second);
 				break;
@@ -148,7 +148,7 @@ LibXml2Marshaller::marshalToXmlNode(XmlMarshalable *node)
 	XMLMLISTIT cend = childs.end();
 
 	/* do the whole thing for all children */
-	for (/* */; cit != cend; cit++) {
+	for (/* see above */; cit != cend; cit++) {
 		xmlNodePtr child = marshalToXmlNode(*cit);
 		if (!xmlAddChild(xmlNode, child))
 			throw XmlMarshalError("Failure creating child node");
