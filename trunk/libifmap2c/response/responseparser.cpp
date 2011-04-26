@@ -48,7 +48,7 @@ ResponseParser::createNewSessionResult(XmlMarshalable *const env)
 	CSTRPLISTIT it = newSessionResult->getXmlAttributes().begin();
 	CSTRPLISTIT end = newSessionResult->getXmlAttributes().end();
 
-	for (/* */; it != end; it++) {
+	for (/* see above */; it != end; it++) {
 		if (isAttrWithName(*it, PUBLISHERID_ATTR_NAME)) {
 			pId = it->second;
 			pIdFound = true;
@@ -139,8 +139,10 @@ ResponseParser::extractSearchResult(XmlMarshalable *const sr)
 
 	// we have result items down here
 	try {
-		for (child = *it; it != end; child = *(++it))
+		for (/* see above */; it != end; it++) {
+			child = *it;
 			retSearchRes->addResultItem(createResultItem(child));
+		}
 	} catch (...) {
 		// cleanup
 		delete retSearchRes;
@@ -175,7 +177,8 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 	CXMLMLISTIT end = xmlPollRes->getXmlChildren().end();
 
 	try {
-		for (child = *it; it != end; child = *(it++)) {
+		for (/* see above */; it != end; ++it) {
+			child = *it;
 			if (compNameNs(child, POLLRESULT_SEARCH_ELEMENT_NAME,
 					POLLRESULT_SEARCH_ELEMENT_HREF)) {
 				sr = extractSearchResult(child);
@@ -250,7 +253,8 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 
 	try {
 		resultItem = new ResultItem();
-		for (child = *it; it != end; child = *(++it)) {
+		for (/* see above */; it != end; it++) {
+			child = *it;
 			if ((ar = extractAccessRequest(child))) {
 				resultItem->setAccessRequest(ar);
 				ar = NULL;
@@ -271,7 +275,7 @@ ResponseParser::createResultItem(XmlMarshalable *xmlResultItem)
 				CXMLMLISTIT end = mdList->getXmlChildren().end();
 
 				// hang children into the searchResult
-				for (/* */; it != end; it++)
+				for (/* see above */; it != end; it++)
 					resultItem->addMetadata(*it);
 
 				// remove them from the parsed XML document
@@ -317,7 +321,7 @@ ResponseParser::extractAccessRequest(XmlMarshalable *const element)
 		CSTRPLISTIT it = element->getXmlAttributes().begin();
 		CSTRPLISTIT end = element->getXmlAttributes().end();
 
-		for (/* */; it != end; it++) {
+		for (/* see above */; it != end; it++) {
 			if (isAttrWithName(*it, ACCESSREQ_NAME_ATTR_NAME)) {
 				name = (*it).second;
 				foundName = true;
@@ -349,7 +353,7 @@ ResponseParser::extractIpAddress(XmlMarshalable *const element)
 		CSTRPLISTIT it = element->getXmlAttributes().begin();
 		CSTRPLISTIT end = element->getXmlAttributes().end();
 
-		for (/* */; it != end; it++) {
+		for (/* see above */; it != end; it++) {
 			if (isAttrWithName(*it, IPADDR_VALUE_ATTR_NAME)) {
 				value = (*it).second;
 				foundValue = true;
@@ -386,7 +390,7 @@ ResponseParser::extractMacAddress(XmlMarshalable *const element)
 		CSTRPLISTIT it = element->getXmlAttributes().begin();
 		CSTRPLISTIT end = element->getXmlAttributes().end();
 
-		for (/* */; it != end; it++) {
+		for (/* see above */; it != end; it++) {
 			if (isAttrWithName(*it, MACADDR_VALUE_ATTR_NAME)) {
 				value = (*it).second;
 				valueFound = true;
@@ -447,7 +451,7 @@ ResponseParser::extractIdentity(XmlMarshalable *const element)
 		CSTRPLISTIT it = element->getXmlAttributes().begin();
 		CSTRPLISTIT end = element->getXmlAttributes().end();
 
-		for (/* */; it != end; it++) {
+		for (/* see above */; it != end; it++) {
 			if (isAttrWithName(*it, IDENTITY_TYPE_ATTR_NAME)) {
 				typeStr = (*it).second;
 				foundType = true;
@@ -634,7 +638,7 @@ ResponseParser::getChild(XmlMarshalable *marsh, const string& elname, const stri
 	XMLMLISTIT it = children.begin();
 	XMLMLISTIT end = children.end();
 
-	for (/* */; it != end; it++)
+	for (/* see above */; it != end; it++)
 		if(compNameNs(*it, elname, href))
 			return *it;
 
@@ -665,7 +669,7 @@ ResponseParser::throwErrorResult(XmlMarshalable *const err)
 	CSTRPLISTIT it = err->getXmlAttributes().begin();
 	CSTRPLISTIT end = err->getXmlAttributes().end();
 
-	for (/* */; it != end; it++) {
+	for (/* see above */; it != end; it++) {
 		if (!it->first.compare(ERRORCODE_ATTR_NAME)) {
 			errCodeString = it->second;
 		}
