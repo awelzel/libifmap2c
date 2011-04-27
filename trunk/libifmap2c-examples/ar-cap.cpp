@@ -38,7 +38,7 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete device ip"
+	cerr << "usage: " << prog << " update|delete arname capability"
 			" ifmap-server-url user password capath" << endl;
 	exit(1);
 }
@@ -54,26 +54,30 @@ int main(int argc, char* argv[])
 		usage(argv[0]);
 	}
 
-	char* devArg = argv[2];
-	char* ipArg = argv[3];
+	char* arArg = argv[2];
+	char* capArg = argv[3];
 	char* url = argv[4];
 	char* user = argv[5];
 	char* password = argv[6];
 	char *capath = argv[7];
+	string str;
+
 
 	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
-	XmlMarshalable *devip = NULL;
+	XmlMarshalable *cap = NULL;
 
-	Identifier *dev = Identifiers::createDev(devArg);
-	Identifier *ip = Identifiers::createIPv4(ipArg);
-
+	Identifier *ar = Identifiers::createAr(arArg);
+	
 	if (strcmp(op, "update") == 0) {
-		devip = Metadata::createDevIp();
-		subReq = Requests::createPublishUpdate(devip, dev, forever, ip);
+		cap = Metadata::createCapability(capArg);
+		subReq = Requests::createPublishUpdate(cap, ar, forever);
 	} else {
-		subReq = Requests::createPublishDelete("meta:device-ip", dev, ip);
+		str.append("meta:capability[name='");
+		str.append(capArg);
+		str.append("']");
+		subReq = Requests::createPublishDelete(str.c_str(), ar);
 	}
 
 	// create the publish request
@@ -85,8 +89,8 @@ int main(int argc, char* argv[])
 
 	// no need to delete those, will be done when pubReq is deleted
 	subReq = NULL;
-	devip = NULL;
-	ip = NULL; dev = NULL;
+	cap = NULL;
+	ar = NULL;
 
 
 	try {

@@ -38,14 +38,14 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete device ip"
+	cerr << "usage: " << prog << " update|delete arname device port"
 			" ifmap-server-url user password capath" << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 8) {
+	if (argc != 9) {
 		usage(argv[0]);
 	}
 
@@ -54,28 +54,32 @@ int main(int argc, char* argv[])
 		usage(argv[0]);
 	}
 
-	char* devArg = argv[2];
-	char* ipArg = argv[3];
-	char* url = argv[4];
-	char* user = argv[5];
-	char* password = argv[6];
-	char *capath = argv[7];
+	char* arArg = argv[2];
+	char* devArg = argv[3];
+	char* port = argv[4];
+	char* url = argv[5];
+	char* user = argv[6];
+	char* password = argv[7];
+	char *capath = argv[8];
+	string str;
 
 	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
-	XmlMarshalable *devip = NULL;
+	XmlMarshalable *l2info = NULL;
 
+	Identifier *ar = Identifiers::createAr(arArg);
 	Identifier *dev = Identifiers::createDev(devArg);
-	Identifier *ip = Identifiers::createIPv4(ipArg);
 
 	if (strcmp(op, "update") == 0) {
-		devip = Metadata::createDevIp();
-		subReq = Requests::createPublishUpdate(devip, dev, forever, ip);
+		l2info = Metadata::createLayer2Info(NULL, NULL, port, NULL);
+		subReq = Requests::createPublishUpdate(l2info, ar, forever, dev);
 	} else {
-		subReq = Requests::createPublishDelete("meta:device-ip", dev, ip);
+		str.append("meta:layer2-information[port='");
+		str.append(port);
+		str.append("']");
+		subReq = Requests::createPublishDelete(str.c_str(), ar, dev);
 	}
-
 	// create the publish request
 	pubReq = Requests::createPublishReq(subReq);
 
@@ -85,8 +89,8 @@ int main(int argc, char* argv[])
 
 	// no need to delete those, will be done when pubReq is deleted
 	subReq = NULL;
-	devip = NULL;
-	ip = NULL; dev = NULL;
+	l2info = NULL;
+	ar = NULL; dev = NULL;
 
 
 	try {
