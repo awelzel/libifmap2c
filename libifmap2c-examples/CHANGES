@@ -1,0 +1,21 @@
+0.2.0
+	* Only some examples which were used to test the MAPS irond
+	  - test-notify-event-twice (shows some subscribe/poll usage)
+	  - test-update-twice (really simple, only for debug purposes)
+	
+	* single-multi-test renamed to singe-multi-test
+
+0.1.1
+	* test-close-conn:
+	  - new example to demonstrate how the underlying TCP connection
+	    of a SSRC is closed and how to keep the session alive using
+	    renewSession calls on a new SSRC.
+	
+	* single-multi-test:
+	  - Added Namespaces to the used metadata types
+	    (Infoblox IBOS wants them, thanks to Akmal Khan)
+	  - Don't do searches anymore, just check whether publishReceived
+	    or InvalidMetadata is received.
+
+0.1.0
+	* First release.
