@@ -34,6 +34,11 @@ extern "C" {
 	#include <curl/curl.h>
 }
 
+/* maximum len of a status message */
+#define MAX_STATUS_LEN 128
+#define HTTP_HDR "HTTP/1.1 "
+#define HTTP_HDR_LEN strlen("HTTP/1.1 ")
+
 namespace ifmap2c {
 
 class LowLevelCurlCommunication : public LowLevelCommunication {
@@ -79,9 +84,12 @@ private:
 	struct curl_slist *_slist;
 
 	// errorBuffer for curl to store error messages in
-	char *errorBuffer;
+	char *_errorBuffer;
 
-	static bool initialized;
+	// place where the status message is put
+	char *_statusBuffer;
+
+	static bool _initialized;
 
 	/*
 	 * Constructor
@@ -89,13 +97,15 @@ private:
 	LowLevelCurlCommunication(CURL *const handle,
 			Payload *const pexchanger,
 			struct curl_slist *const slist,
-			char *const errBuf);
+			char *const errBuf,
+			char *const statBuf);
 
 
 	static void generalInitialization(CURL *const handle,
 			Payload *const ex,
 			struct curl_slist **slist,
 			char **const errBuf,
+			char **const statBuf,
 			const std::string& url,
 			const std::string& capath);
 
