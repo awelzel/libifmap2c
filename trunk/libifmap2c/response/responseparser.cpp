@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  * 
- * Copyright (c) 2010, Arne Welzel, <arne.welzel@googlemail.com>
+ * Copyright (c) 2010-2011, Arne Welzel, <arne.welzel@googlemail.com>
  * 		 
  * All rights reserved.
  * 		 

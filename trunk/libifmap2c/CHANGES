@@ -1,0 +1,27 @@
+0.2.0
+  CHANGES:
+	* add terminal-identifier-types to SearchRequest and
+	  SubscribeUpdate parameters
+	* Non-200 HTTP status leads to a CommunicationError being
+	  thrown instead of an attempting to parse the received document
+	
+  BUGS:
+	* max-depth was set to max-size (SearchRequest + SubscribeUpdate)
+	* ResultItems may contain the same type of identifier
+	  twice
+	* Creation of PublishNotify wasn't possible as of non-public
+	  inheritance
+	* notify element name was defined wrong
+	* InvalidSessionID renamed to InvalidSessionId
+	* Accessing iterators in for-loops when it == end
+	  fixed
+
+0.1.1
+	* Remove possibility to create Device identifier with aik-name
+	  element. (Simply use Identifiers::createDev() now)
+
+	* Use HTTP POST instead of HTTP PUT (thanks to Akmal Khan)
+	* Add Content-Type Header as application/soap+xml
+	* Remove Accept: */* Header
+0.1.0
+	First release.
