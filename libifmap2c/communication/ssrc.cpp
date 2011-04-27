@@ -231,7 +231,7 @@ SSRC::renewSession(const string& sId)
 
 
 void
-SSRC::purgePublisher(const string& sId, const string& pId)
+SSRC::purgePublisher(const string& pId, const string& sId)
 {
 	// take either the given or the actual publisherId for this request.
 	string pubId = (pId.length() > 0) ? pId : getPublisherId();
