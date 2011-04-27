@@ -1,0 +1,16 @@
+libifmap2c - Open Source C++ IF-MAP 2.0 Client Library 
+======================================================
+
+Example MAPC, mostly "Hello World" examples...
+
+Compile and Install
+
+ * cd build
+ * cmake ../
+ * make
+
+For further information, please visit the project page
+	http://code.google.com/p/libifmap2c/
+
+Thanks,
+	Arne
