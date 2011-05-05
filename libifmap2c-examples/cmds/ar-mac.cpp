@@ -23,7 +23,6 @@
  */
 
 #include <iostream>
-#include <sstream>
 #include <cstdlib>
 #include <cstring>
 
@@ -32,6 +31,8 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
+
 
 // make life easier
 using namespace ifmap2c;
@@ -39,24 +40,66 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " myself|<some-publisher-id>"
-			" ifmap-server-url user password capath" << endl;
+	cerr << "usage: " << prog << " update|delete arname mac-addr"
+		INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 6) {
+	char *arArg, *macArg;
+	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
+
+	if (argc != 8 && argc != 4) {
 		usage(argv[0]);
 	}
 
-	char* pubId = argv[1];
-	char* url = argv[2];
-	char* user = argv[3];
-	char* password = argv[4];
-	char *capath = argv[5];
+	char* op = argv[1];
+	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
+		usage(argv[0]);
+	}
 
-	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
+	arArg = argv[2];
+	macArg = argv[3];
+	
+	if (argc == 8) {
+		loadCmdParameters(&argv[4], &url, &user, &pass, &capath);
+	} else {
+		loadEnvParameters(&url, &user, &pass, &capath);
+		
+		if (!url || !user || !pass || !capath) {
+			cerr << "Environment variables not set?\n\n";
+			usage(argv[0]);
+		}
+	}
+
+	SSRC  *ssrc = SSRC::createSSRC(url, user, pass, capath);
+	PublishRequest *pubReq = NULL;
+	SubPublish *subReq = NULL;
+	XmlMarshalable *armac = NULL;
+
+	Identifier *ar = Identifiers::createAr(arArg);
+	Identifier *mac = Identifiers::createMac(macArg);
+
+	if (strcmp(op, "update") == 0) {
+		armac = Metadata::createArMac();
+		subReq = Requests::createPublishUpdate(armac, ar, forever, mac);
+	} else {
+		subReq = Requests::createPublishDelete("meta:access-request-mac", ar, mac);
+	}
+
+	// create the publish request
+	pubReq = Requests::createPublishReq(subReq);
+
+	// declare the default meta namespace on the publish element
+	// it's not there by default
+	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
+
+	// no need to delete those, will be done when pubReq is deleted
+	subReq = NULL;
+	armac = NULL;
+	ar = NULL; mac = NULL;
 
 
 	try {
@@ -64,16 +107,8 @@ int main(int argc, char* argv[])
 		ssrc->newSession();
 		cout << "Ok! SessionID=\"" << ssrc->getSessionId() << "\"";
 		cout << " PublisherID=\"" << ssrc->getPublisherId() << "\"" << endl;
-		
-		if (!strcmp(pubId, "myself")) {
-			cout << "Purging with publisher-id=\"" 
-				<< ssrc->getPublisherId() << "\"... ";
-			ssrc->purgePublisher();
-		} else {
-			cout << "Purging with publisher-id=\"" 
-				<< pubId << "\"... ";
-			ssrc->purgePublisher(pubId);
-		}
+		cout << "Doing publish... ";
+		ssrc->publish(pubReq);
 		cout << "Ok!" << endl;;
 		cout << "Doing endSession... ";
 		ssrc->endSession();
@@ -94,6 +129,9 @@ int main(int argc, char* argv[])
 		cerr << "XmlUnmarshalError: ";
 		cerr << e.getMessage() << endl;
 	}
+
+	// delete the request and all childs that have been added
+	delete pubReq;
 
 	// delete the ssrc
 	delete ssrc;

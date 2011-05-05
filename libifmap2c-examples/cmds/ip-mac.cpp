@@ -41,6 +41,7 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
 
 // make life easier
 using namespace ifmap2c;
@@ -49,29 +50,40 @@ using namespace std;
 static void usage(const char *prog)
 {
 	cerr << "usage: " << prog << " update|delete ip-addr mac-addr"
-			" ifmap-server-url user password capath" << endl;
+		INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 8) {
+	char *ipArg, *macArg, *op;
+	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
+
+	if (argc != 8 && argc != 4) {
 		usage(argv[0]);
 	}
 
-	char* op = argv[1];
+	op = argv[1];
 	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
 		usage(argv[0]);
 	}
 
-	char* ipArg = argv[2];
-	char* macArg = argv[3];
-	char* url = argv[4];
-	char* user = argv[5];
-	char* password = argv[6];
-	char *capath = argv[7];
+	ipArg = argv[2];
+	macArg = argv[3];
+	
+	if (argc == 8) {
+		loadCmdParameters(&argv[4], &url, &user, &pass, &capath);
+	} else {
+		loadEnvParameters(&url, &user, &pass, &capath);
+		
+		if (!url || !user || !pass || !capath) {
+			cerr << "Environment variables not set?\n\n";
+			usage(argv[0]);
+		}
+	}
 
-	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
+	SSRC  *ssrc = SSRC::createSSRC(url, user, pass, capath);
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
 	XmlMarshalable *ipmac = NULL;

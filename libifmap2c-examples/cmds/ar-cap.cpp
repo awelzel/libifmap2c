@@ -31,6 +31,8 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
+
 
 // make life easier
 using namespace ifmap2c;
@@ -38,14 +40,19 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete arname mac-addr"
-			" ifmap-server-url user password capath" << endl;
+	cerr << "usage: " << prog << " update|delete arname capability"
+		INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 8) {
+	char *arArg, *capArg;
+	char *url, *user, *pass, *capath;
+	string str;
+	url = user = pass = capath = NULL;
+
+	if (argc != 8 && argc != 4) {
 		usage(argv[0]);
 	}
 
@@ -54,26 +61,35 @@ int main(int argc, char* argv[])
 		usage(argv[0]);
 	}
 
-	char* arArg = argv[2];
-	char* macArg = argv[3];
-	char* url = argv[4];
-	char* user = argv[5];
-	char* password = argv[6];
-	char *capath = argv[7];
+	arArg = argv[2];
+	capArg = argv[3];
+	
+	if (argc == 8) {
+		loadCmdParameters(&argv[4], &url, &user, &pass, &capath);
+	} else {
+		loadEnvParameters(&url, &user, &pass, &capath);
+		
+		if (!url || !user || !pass || !capath) {
+			cerr << "Environment variables not set?\n\n";
+			usage(argv[0]);
+		}
+	}
 
-	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
+	SSRC  *ssrc = SSRC::createSSRC(url, user, pass, capath);
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
-	XmlMarshalable *armac = NULL;
+	XmlMarshalable *cap = NULL;
 
 	Identifier *ar = Identifiers::createAr(arArg);
-	Identifier *mac = Identifiers::createMac(macArg);
-
+	
 	if (strcmp(op, "update") == 0) {
-		armac = Metadata::createArMac();
-		subReq = Requests::createPublishUpdate(armac, ar, forever, mac);
+		cap = Metadata::createCapability(capArg);
+		subReq = Requests::createPublishUpdate(cap, ar, forever);
 	} else {
-		subReq = Requests::createPublishDelete("meta:access-request-mac", ar, mac);
+		str.append("meta:capability[name='");
+		str.append(capArg);
+		str.append("']");
+		subReq = Requests::createPublishDelete(str.c_str(), ar);
 	}
 
 	// create the publish request
@@ -85,8 +101,8 @@ int main(int argc, char* argv[])
 
 	// no need to delete those, will be done when pubReq is deleted
 	subReq = NULL;
-	armac = NULL;
-	ar = NULL; mac = NULL;
+	cap = NULL;
+	ar = NULL;
 
 
 	try {

@@ -31,6 +31,7 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
 
 // make life easier
 using namespace ifmap2c;
@@ -38,46 +39,53 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete arname capability"
-			" ifmap-server-url user password capath" << endl;
+	cerr << "usage: " << prog << " update|delete arname device"
+		INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 8) {
+	char *arArg, *devArg, *op;
+	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
+
+	if (argc != 8 && argc != 4) {
 		usage(argv[0]);
 	}
 
-	char* op = argv[1];
+	op = argv[1];
 	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
 		usage(argv[0]);
 	}
 
-	char* arArg = argv[2];
-	char* capArg = argv[3];
-	char* url = argv[4];
-	char* user = argv[5];
-	char* password = argv[6];
-	char *capath = argv[7];
-	string str;
+	arArg = argv[2];
+	devArg = argv[3];
 
+	if (argc == 8) {
+		loadCmdParameters(&argv[4], &url, &user, &pass, &capath);
+	} else {
+		loadEnvParameters(&url, &user, &pass, &capath);
+		
+		if (!url || !user || !pass || !capath) {
+			cerr << "Environment variables not set?\n\n";
+			usage(argv[0]);
+		}
+	}
 
-	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
-	XmlMarshalable *cap = NULL;
+	XmlMarshalable *ardev = NULL;
 
 	Identifier *ar = Identifiers::createAr(arArg);
-	
+	Identifier *dev = Identifiers::createDev(devArg);
+
 	if (strcmp(op, "update") == 0) {
-		cap = Metadata::createCapability(capArg);
-		subReq = Requests::createPublishUpdate(cap, ar, forever);
+		ardev = Metadata::createArDev();
+		subReq = Requests::createPublishUpdate(ardev, ar, forever, dev);
 	} else {
-		str.append("meta:capability[name='");
-		str.append(capArg);
-		str.append("']");
-		subReq = Requests::createPublishDelete(str.c_str(), ar);
+		subReq = Requests::createPublishDelete("meta:access-request-device", ar, dev);
 	}
 
 	// create the publish request
@@ -89,8 +97,8 @@ int main(int argc, char* argv[])
 
 	// no need to delete those, will be done when pubReq is deleted
 	subReq = NULL;
-	cap = NULL;
-	ar = NULL;
+	ardev = NULL;
+	ar = NULL; dev = NULL;
 
 
 	try {

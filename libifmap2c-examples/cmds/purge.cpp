@@ -23,6 +23,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
 #include <cstring>
 
@@ -31,6 +32,7 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
 
 // make life easier
 using namespace ifmap2c;
@@ -38,55 +40,35 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete device ip"
-			" ifmap-server-url user password capath" << endl;
+	cerr << "usage: " << prog << " myself|<some-publisher-id>"
+		INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 8) {
+	char *pubId;
+	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
+
+	if (argc != 6 && argc != 2) {
 		usage(argv[0]);
 	}
 
-	char* op = argv[1];
-	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
-		usage(argv[0]);
-	}
-
-	char* devArg = argv[2];
-	char* ipArg = argv[3];
-	char* url = argv[4];
-	char* user = argv[5];
-	char* password = argv[6];
-	char *capath = argv[7];
-
-	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
-	PublishRequest *pubReq = NULL;
-	SubPublish *subReq = NULL;
-	XmlMarshalable *devip = NULL;
-
-	Identifier *dev = Identifiers::createDev(devArg);
-	Identifier *ip = Identifiers::createIPv4(ipArg);
-
-	if (strcmp(op, "update") == 0) {
-		devip = Metadata::createDevIp();
-		subReq = Requests::createPublishUpdate(devip, dev, forever, ip);
+	pubId = argv[1];
+	
+	if (argc == 6) {
+		loadCmdParameters(&argv[2], &url, &user, &pass, &capath);
 	} else {
-		subReq = Requests::createPublishDelete("meta:device-ip", dev, ip);
+		loadEnvParameters(&url, &user, &pass, &capath);
+		
+		if (!url || !user || !pass || !capath) {
+			cerr << "Environment variables not set?\n\n";
+			usage(argv[0]);
+		}
 	}
 
-	// create the publish request
-	pubReq = Requests::createPublishReq(subReq);
-
-	// declare the default meta namespace on the publish element
-	// it's not there by default
-	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
-
-	// no need to delete those, will be done when pubReq is deleted
-	subReq = NULL;
-	devip = NULL;
-	ip = NULL; dev = NULL;
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 
 
 	try {
@@ -94,8 +76,16 @@ int main(int argc, char* argv[])
 		ssrc->newSession();
 		cout << "Ok! SessionID=\"" << ssrc->getSessionId() << "\"";
 		cout << " PublisherID=\"" << ssrc->getPublisherId() << "\"" << endl;
-		cout << "Doing publish... ";
-		ssrc->publish(pubReq);
+		
+		if (!strcmp(pubId, "myself")) {
+			cout << "Purging with publisher-id=\"" 
+				<< ssrc->getPublisherId() << "\"... ";
+			ssrc->purgePublisher();
+		} else {
+			cout << "Purging with publisher-id=\"" 
+				<< pubId << "\"... ";
+			ssrc->purgePublisher(pubId);
+		}
 		cout << "Ok!" << endl;;
 		cout << "Doing endSession... ";
 		ssrc->endSession();
@@ -116,9 +106,6 @@ int main(int argc, char* argv[])
 		cerr << "XmlUnmarshalError: ";
 		cerr << e.getMessage() << endl;
 	}
-
-	// delete the request and all childs that have been added
-	delete pubReq;
 
 	// delete the ssrc
 	delete ssrc;
