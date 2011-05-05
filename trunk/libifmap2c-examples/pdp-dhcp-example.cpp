@@ -70,7 +70,7 @@ using namespace ifmap2c;
 #define AR_NUMBER	20
 
 // usec
-#define TIMEFACTOR		0
+#define TIMEFACTOR		10
 #define PDP_SLEEP		(500 * TIMEFACTOR)
 #define PDP_DHCP_SLEEP		(1000 * TIMEFACTOR)
 #define AR_SLEEP		(3000 * TIMEFACTOR)

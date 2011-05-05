@@ -31,6 +31,7 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
 
 // make life easier
 using namespace ifmap2c;
@@ -38,48 +39,55 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete arname device port"
-			" ifmap-server-url user password capath" << endl;
+	cerr << "usage: " << prog << " update|delete device ip"
+		INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 9) {
+	char *devArg, *ipArg, *op;
+	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
+
+	if (argc != 8 && argc != 4) {
 		usage(argv[0]);
 	}
 
-	char* op = argv[1];
+	op = argv[1];
 	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
 		usage(argv[0]);
 	}
 
-	char* arArg = argv[2];
-	char* devArg = argv[3];
-	char* port = argv[4];
-	char* url = argv[5];
-	char* user = argv[6];
-	char* password = argv[7];
-	char *capath = argv[8];
-	string str;
+	devArg = argv[2];
+	ipArg = argv[3];
 
-	SSRC  *ssrc = SSRC::createSSRC(url, user, password, capath);
+	if (argc == 8) {
+		loadCmdParameters(&argv[4], &url, &user, &pass, &capath);
+	} else {
+		loadEnvParameters(&url, &user, &pass, &capath);
+		
+		if (!url || !user || !pass || !capath) {
+			cerr << "Environment variables not set?\n\n";
+			usage(argv[0]);
+		}
+	}
+
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
-	XmlMarshalable *l2info = NULL;
+	XmlMarshalable *devip = NULL;
 
-	Identifier *ar = Identifiers::createAr(arArg);
 	Identifier *dev = Identifiers::createDev(devArg);
+	Identifier *ip = Identifiers::createIPv4(ipArg);
 
 	if (strcmp(op, "update") == 0) {
-		l2info = Metadata::createLayer2Info(NULL, NULL, port, NULL);
-		subReq = Requests::createPublishUpdate(l2info, ar, forever, dev);
+		devip = Metadata::createDevIp();
+		subReq = Requests::createPublishUpdate(devip, dev, forever, ip);
 	} else {
-		str.append("meta:layer2-information[port='");
-		str.append(port);
-		str.append("']");
-		subReq = Requests::createPublishDelete(str.c_str(), ar, dev);
+		subReq = Requests::createPublishDelete("meta:device-ip", dev, ip);
 	}
+
 	// create the publish request
 	pubReq = Requests::createPublishReq(subReq);
 
@@ -89,8 +97,8 @@ int main(int argc, char* argv[])
 
 	// no need to delete those, will be done when pubReq is deleted
 	subReq = NULL;
-	l2info = NULL;
-	ar = NULL; dev = NULL;
+	devip = NULL;
+	ip = NULL; dev = NULL;
 
 
 	try {
