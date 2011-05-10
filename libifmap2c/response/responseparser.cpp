@@ -699,8 +699,8 @@ ResponseParser::throwErrorResult(XmlMarshalable *const err)
 		errCode = InvalidMetadata;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSchemaVersion])) {
 		errCode = InvalidSchemaVersion;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSessionId])) {
-		errCode = InvalidSessionId;
+	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSessionID])) {
+		errCode = InvalidSessionID;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[MetadataTooLong])) {
 		errCode = MetadataTooLong;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[SearchResultsTooBig])) {
