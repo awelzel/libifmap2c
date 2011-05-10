@@ -36,7 +36,7 @@ const string ErrorResultError::errorCodeStrings[] = {
         "IdentifierTooLong",
         "InvalidMetadata",
         "InvalidSchemaVersion",
-        "InvalidSessionId",
+        "InvalidSessionID",
         "MetadataTooLong",
         "SearchResultsTooBig",
         "PollResultsTooBig",
