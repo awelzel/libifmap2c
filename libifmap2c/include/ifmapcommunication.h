@@ -24,16 +24,17 @@
 
 #ifndef IFMAPCOMMUNICATION_H_
 #define IFMAPCOMMUNICATION_H_
-
+#include <string>
+#include "communicationerror.h"
+#include "ifmaperror.h"
+#include "lowlevelcommunication.h"
 #include "requests.h"
+#include "responseparseerror.h"
+#include "responseparser.h"
 #include "responses.h"
 #include "tcgifmapbase.h"
 #include "xmlmarshaller.h"
 #include "xmlunmarshaller.h"
-#include "lowlevelcommunication.h"
-#include "responseparser.h"
-#include "responseparseerror.h"
-#include "communicationerror.h"
 
 namespace ifmap2c {
 

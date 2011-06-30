@@ -46,11 +46,12 @@ const string ErrorResultError::errorCodeStrings[] = {
 
 ErrorResultError::ErrorResultError(ErrorCode errCode,
 		const std::string& errStr) :
-		_errorCode(errCode), _errorString(errStr) { }
+	_errorCode(errCode), _errorString(errStr)
+{ }
 
 
-
-ErrorResultError::~ErrorResultError() {}
+ErrorResultError::~ErrorResultError()
+{ }
 
 
 ErrorCode
@@ -65,12 +66,17 @@ ErrorResultError::getErrorCodeString() const
 	return errorCodeStrings[_errorCode];
 }
 
-
-
 const std::string&
 ErrorResultError::getErrorString() const
 {
 	return _errorString;
+}
+
+ostream& operator<<(ostream& output, const ErrorResultError& err)
+{
+	output << err.getErrorCodeString() << ": ";
+	output << err.getErrorString();
+	return output;
 }
 
 } // namespace

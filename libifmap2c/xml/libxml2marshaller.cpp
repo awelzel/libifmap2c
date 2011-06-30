@@ -134,11 +134,10 @@ LibXml2Marshaller::marshalToXmlNode(XmlMarshalable *node)
 		}
 		
 		if (rit == rend) {
-			string msg = "Namespace not declared: ";
+			string msg = "Undeclared namespace: ";
 			msg.append(prefix);
 			throw XmlMarshalError(msg);
 		}
-
 	} else {
 		// no namespace
 	}
