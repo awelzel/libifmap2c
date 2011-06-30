@@ -20,9 +20,6 @@
 # be used in advertising or otherwise to promote the sale, use or other dealings
 # in this Software without prior written authorization of the copyright holder.
 #
-
-ADD_LIBRARY(common STATIC common.cpp)
-
 ADD_EXECUTABLE(ip-mac ip-mac.cpp)
 ADD_EXECUTABLE(ar-mac ar-mac.cpp)
 ADD_EXECUTABLE(dev-ip dev-ip.cpp)
