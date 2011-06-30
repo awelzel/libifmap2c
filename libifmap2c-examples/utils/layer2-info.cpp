@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	Identifier *ar, *dev;
 	string str;
 
-	checkAndLoadParameters(argc, argv, 5, usage, &url, &user,
+	checkAndLoadParameters(argc, argv, 4, usage, &url, &user,
 			&pass, &capath);
 
 	op = argv[1];

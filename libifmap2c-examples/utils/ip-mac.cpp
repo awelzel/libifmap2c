@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 	XmlMarshalable *ipmac = NULL;
 	Identifier *ip, *mac;
 
-	checkAndLoadParameters(argc, argv, 4, usage, &url, &user,
+	checkAndLoadParameters(argc, argv, 3, usage, &url, &user,
 			&pass, &capath);
 	op = argv[1];
 	ipArg = argv[2];
