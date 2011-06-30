@@ -29,9 +29,9 @@ using namespace std;
 
 namespace ifmap2c {
 
-SearchResult::SearchResult(const string& name) : _searchResultName(name) { }
-
-
+SearchResult::SearchResult(const string& name) :
+	_searchResultName(name)
+{ }
 
 SearchResult::~SearchResult()
 {
@@ -43,7 +43,6 @@ SearchResult::~SearchResult()
 
 	_resultItems.clear();
 }
-
 
 void
 SearchResult::addResultItem(ResultItem *const item)
@@ -91,7 +90,8 @@ SearchResult::getResultItemsByIdentifier(
 
 
 RILIST
-SearchResult::getResultItemsByType(Identifier *const i1, Identifier *const i2) const
+SearchResult::getResultItemsByType(Identifier *const i1,
+		Identifier *const i2) const
 {
 	CRILISTIT it = _resultItems.begin();
 	CRILISTIT end = _resultItems.end();
