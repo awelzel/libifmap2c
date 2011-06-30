@@ -44,6 +44,10 @@ const string ErrorResultError::errorCodeStrings[] = {
         "Unknown"
 };
 
+ErrorResultError::ErrorResultError() :
+	_errorCode(Unknown), _errorString(""), _name("")
+{ }
+
 ErrorResultError::ErrorResultError(ErrorCode errCode,
 		const std::string& errStr,
 		const std::string& name) :

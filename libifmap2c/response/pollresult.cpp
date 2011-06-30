@@ -40,7 +40,7 @@ PollResult::~PollResult()
 	SRLISTIT it = _searchResults.begin();
 	SRLISTIT end = _searchResults.end();
 	ERLISTIT iterr = _errorResults.begin();
-	ERLISTIT enderr = _errorResults.begin();
+	ERLISTIT enderr = _errorResults.end();
 
 	for (child = *it; it != end; child = *(++it))
 		delete child;
