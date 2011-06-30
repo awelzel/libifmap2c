@@ -21,32 +21,30 @@
  * be used in advertising or otherwise to promote the sale, use or other dealings
  * in this Software without prior written authorization of the copyright holder.
  */
-
-#ifndef IFMAPERROR_H_
-#define IFMAPERROR_H_
-#include <string>
-#include <ostream>
+#include "ifmaperror.h"
 
 namespace ifmap2c {
 
-class IfmapError {
+IfmapError::IfmapError(const std::string& type, const std::string& msg) : _type(type), _message(msg)
+{ }
 
-public:
-	virtual const std::string& getMessage() const;
-	virtual const std::string& getErrorType() const;
-	
-	virtual ~IfmapError();
-	
-	friend std::ostream& operator<<(std::ostream& output, const IfmapError& err);
+IfmapError::~IfmapError()
+{ }
 
-protected:
-	IfmapError(const std::string& type, const std::string& msg);
+const std::string& IfmapError::getMessage() const
+{
+	return _message;
+}
 
-private:
-	std::string _type;
-	std::string _message;
-	IfmapError();
-};
+const std::string& IfmapError::getErrorType() const
+{
+	return _type;
+}
 
+std::ostream& operator<<(std::ostream& output, const IfmapError& err)
+{
+	output << err.getErrorType() << ": ";
+	output << err.getMessage();
+	return output;
+}
 } // namespace
-#endif /* IFMAPERROR_H_ */

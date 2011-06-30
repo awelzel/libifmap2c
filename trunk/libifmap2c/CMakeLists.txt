@@ -64,6 +64,7 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	request/subscribeupdate.cpp
 	request/subsubscribe.cpp
 	response/errorresulterror.cpp
+	response/ifmaperror.cpp
 	response/newsessionresult.cpp
 	response/pollresult.cpp
 	response/responseparser.cpp

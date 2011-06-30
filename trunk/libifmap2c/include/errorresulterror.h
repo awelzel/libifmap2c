@@ -25,6 +25,7 @@
 #ifndef ERRORRESULTERROR_H_
 #define ERRORRESULTERROR_H_
 #include <string>
+#include <ostream>
 
 namespace ifmap2c {
 
@@ -52,16 +53,16 @@ public:
 
 	virtual ~ErrorResultError();
 
-	ErrorCode
-	getErrorCode() const;
+	ErrorCode getErrorCode() const;
 
-	const std::string&
-	getErrorCodeString() const;
+	const std::string& getErrorCodeString() const;
 
-	const std::string&
-	getErrorString() const;
+	const std::string& getErrorString() const;
 
 	static const std::string errorCodeStrings[];
+	
+	friend std::ostream& operator<<(std::ostream& output,
+			const ErrorResultError& err);
 
 private:
 	ErrorCode _errorCode;

@@ -33,7 +33,7 @@
 
 using namespace std;
 
-#define	CURL_DEBUG_VALUE 1L
+#define	CURL_DEBUG_VALUE 0L
 #define	CURL_VERIFY_HOST 0L
 #define	CURL_VERIFY_PEER 1L
 
