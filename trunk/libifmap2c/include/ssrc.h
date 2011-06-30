@@ -29,14 +29,12 @@
 
 namespace ifmap2c {
 
-// forward declaration
+// forward declaration for ARC, ARC depends on SSRC as well...
 class ARC;
-
 
 /**
  * SSRC encapsulates the Synchronous Send Receive Channel functionality
  * of IF-MAP.
- *
  */
 class SSRC : public IfmapCommunication {
 
@@ -112,11 +110,8 @@ public:
 	 * @param maxPollResSize optional value for the max-poll-result-size
 	 * 			 attribute
 	 *
-	 * \throw CommunicationError
+	 * \throw IfmapError
 	 * \throw ErrorResultError
-	 * \throw ResponseParserError
-	 * \throw XmlUnmarshalError
-	 * \throw XmlMarshalError
 	 */
 	void newSession(const std::string& maxPollResSize = "");
 
@@ -134,11 +129,8 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw CommunicationError
+	 * \throw IfmapError
 	 * \throw ErrorResultError
-	 * \throw ResponseParserError
-	 * \throw XmlUnmarshalError
-	 * \throw XmlMarshalError
 	 */
 	void endSession(const std::string& sessionId = "");
 
@@ -153,11 +145,8 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw CommunicationError
+	 * \throw IfmapError
 	 * \throw ErrorResultError
-	 * \throw ResponseParserError
-	 * \throw XmlUnmarshalError
-	 * \throw XmlMarshalError
 	 */
 	void publish(PublishRequest *const pr,
 			const std::string& sessionId = "");
@@ -175,11 +164,8 @@ public:
 	 * @return pointer to a SearchResult object which contains the answer
 	 *	   of the MAPS. The caller is responsible to delete the memory.
 	 *
-	 * \throw CommunicationError
+	 * \throw IfmapError
 	 * \throw ErrorResultError
-	 * \throw ResponseParserError
-	 * \throw XmlUnmarshalError
-	 * \throw XmlMarshalError
 	 */
 	SearchResult *search(SearchRequest *const sr,
 			const std::string& sessionId = "");
@@ -195,11 +181,8 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw CommunicationError
+	 * \throw IfmapError
 	 * \throw ErrorResultError
-	 * \throw ResponseParserError
-	 * \throw XmlUnmarshalError
-	 * \throw XmlMarshalError
 	 */
 	void subscribe(SubscribeRequest *const sr,
 			const std::string& sessionId = "");
@@ -211,11 +194,14 @@ public:
 	 *		    this value is used as the session-id, else the
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
+	 *
+	 * \throw IfmapError
+	 * \throw ErrorResultError
 	 */
 	void renewSession(const std::string& sessionId = "");
 
 
-/**
+	/**
 	 * Run a purgePublisher operation.
 	 *
 	 * @param publisherId if this value is set to a string with length > 0,
@@ -227,12 +213,17 @@ public:
 	 *		    this value is used as the session-id, else the
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
+	 *
+	 * \throw IfmapError
+	 * \throw ErrorResultError
 	 */
 	void purgePublisher(const std::string& publisherId = "",
 			const std::string& sessionId = "");
 
 	const std::string& getSessionId(void) const;
+
 	const std::string& getPublisherId(void) const;
+
 	const std::string& getMaxPollResultSize(void) const;
 
 
@@ -253,6 +244,5 @@ private:
 	std::string _currentMaxPollResSize;
 };
 
-
-}
+} // namespace
 #endif /* SSRC_H_ */

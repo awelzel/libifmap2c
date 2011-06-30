@@ -24,22 +24,14 @@
 
 #ifndef XMLMARSHALLER_H_
 #define XMLMARSHALLER_H_
-
-#include "payload.h"
-#include "xmlmarshalable.h"
-
 #include <string>
 
+#include "payload.h"
+#include "xmlerrors.h"
+#include "xmlmarshalable.h"
+
+
 namespace ifmap2c {
-
-class XmlMarshalError {
-	private:
-		std::string msg;
-	public:
-		XmlMarshalError(const std::string& errMsg = "") : msg(errMsg) {}
-
-		const std::string& getMessage() const { return msg; }
-};
 
 class XmlMarshaller {
 
@@ -54,7 +46,7 @@ class XmlMarshaller {
 		 * 	   the length of the memory area. The caller
 		 * 	   is responsible for freeing this memory.
 		 */
-		virtual Payload marshal(XmlMarshalable *root) = 0;
+		virtual Payload marshal(XmlMarshalable *const root) = 0;
 };
 
 } // namespace

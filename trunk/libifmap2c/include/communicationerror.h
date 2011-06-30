@@ -25,20 +25,17 @@
 #ifndef COMMUNICATIONERROR_H_
 #define COMMUNICATIONERROR_H_
 #include <string>
+#include "ifmaperror.h"
 
 namespace ifmap2c {
 
-class CommunicationError {
+class CommunicationError : public IfmapError {
 
 public:
-	CommunicationError(const std::string & msg);
-	virtual ~CommunicationError();
-
-	const std::string & getMessage();
-
-private:
-	std::string _message;
+	CommunicationError(const std::string& msg) :
+		IfmapError("CommunicationError", msg)
+	{ }
 };
 
 } // namespace
-#endif /* COMMUNICATIONEXCEPTION_H_ */
+#endif /* COMMUNICATIONERROR_H_ */
