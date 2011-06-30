@@ -23,8 +23,8 @@
  */
 
 /*
- * A sample for showing how libifmap2c can be used to implement a PDP
- * and a DHCP server or for demonstration purposes of MAP visualizations.
+ * A sample for showing how libifmap2c can be used to publish ip-mac
+ * links.
  */
 
 
@@ -43,10 +43,7 @@ using namespace ifmap2c;
 
 using namespace std;
 
-typedef pair<string, string> STRP;
-
-
-// Example client for the Wiki, very extensive documented.
+// Example client for the Wiki, extensively documented.
 int main(int argc, char *argv[])
 {
 	if (argc != 5) {
@@ -59,16 +56,20 @@ int main(int argc, char *argv[])
 	// authentication
 	// the parameters are as follows:
 	// ifmap-server-url, user, password, capath (path where the server
-	// certificate is lying prepared with c_rehas)
-	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3], argv[4]);
+	// certificate is stored, prepared with c_rehash
+	SSRC *ssrc = SSRC::createSSRC(
+			argv[1],	/* server url */
+			argv[2],	/* basic-auth user */
+			argv[3],	/* password */
+			argv[4]		/* capath */ );	
 
 	// Note:
 	// To use certificate based authentication one has to use
-	// SSRC::createSSRC(url, /* server url */
-	// 		    key, /* private key in PEM format */
-	// 		    password, /* private key password */
-	// 		    certificate, /* path to certificate */
-	// 		    capath /* as above */)
+	// SSRC::createSSRC(url,	/* server url */
+	// 		    key,	/* private key in PEM format */
+	// 		    password,	/* private key password */
+	// 		    certificate,/* path to certificate */
+	// 		    capath	/* as above */);
 
 	// Create identifiers used for the request using the
 	// Identifiers class
@@ -120,25 +121,15 @@ int main(int argc, char *argv[])
 		// run end session request
 		ssrc->endSession();
 
-	// CommunicationError occurs if something goes wrong with the
-	// certificate or the other side is not reachable
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
+	// If something goes wrong with the connection, marshalling
+	// requests / responses, an IfmapError is thrown.
+	} catch (IfmapError e) {
+		cerr << e << endl;
 
 	// ErrorResultError is thrown, if a errorResult is received from
 	// the server. For example InvalidSessionID or InvalidMetadata.
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult  " << endl;
-		cerr << " ErrorCode   " << e.getErrorCodeString() << endl;
-		cerr << " ErrorString " << e.getErrorString() << endl;
-
-	} catch (ResponseParseError e) {
-		cerr << "ResponseParseError: " << e.getMessage() << endl;
-
-	// other things can come up here, but we ignore that for now
-	} catch (...) {
-		cerr << "Unidentified Error." << endl;
-		throw; // Throw it up to print the name
+		cerr << e << endl;
 	}
 
 	// delting the publish request

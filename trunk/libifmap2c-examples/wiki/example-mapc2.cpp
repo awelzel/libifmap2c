@@ -46,9 +46,6 @@ using namespace ifmap2c;
 
 using namespace std;
 
-typedef pair<string, string> STRP;
-
-
 // Example client for the Wiki, very extensive documented.
 int main(int argc, char *argv[])
 {
@@ -231,23 +228,16 @@ int main(int argc, char *argv[])
 		cout << "endSession... ";
 		ssrc->endSession();
 		cout << "Ok!" << endl;;
-
-	// CommunicationError occurs if something goes wrong with the
-	// certificate or the other side is not reachable
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
-
+	
+	// If something goes wrong with the connection, marshalling
+	// requests / responses, an IfmapError is thrown.
+	} catch (IfmapError e) {
+		cerr << e << endl;
+	
 	// ErrorResultError is thrown, if a errorResult is received from
 	// the server. For example InvalidSessionID or InvalidMetadata.
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult  " << endl;
-		cerr << " ErrorCode   " << e.getErrorCodeString() << endl;
-		cerr << " ErrorString " << e.getErrorString() << endl;
-
-	// other things can come up here, but we ignore that for now
-	} catch (...) {
-		cerr << "Unidentified Error." << endl;
-		throw; // Throw it up to print the name
+		cerr << e << endl;
 	}
 
 	delete publishReq1;
