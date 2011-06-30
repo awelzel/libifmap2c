@@ -24,8 +24,9 @@
 
 
 /*
- * Check if running endSession while a poll is pending lead to an
- * EndSessionResult Exception.
+ * Check if polling on a second ARC results in an endSession on the
+ * first ARC, an InvalidSessionID on the second one and whether the
+ * session is closed in the end.
  */
 
 #include <iostream>
@@ -79,20 +80,21 @@ main(int argc, char *argv[])
 	void *tRet = 0;
 
 	SSRC *ssrc = NULL;
-	ARC *arc = NULL;
+	ARC *arc1 = NULL;
+	ARC *arc2 = NULL;
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
 
 	// create ssrc object which is used for synchronous communication
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
-	arc = ssrc->getARC();
+	arc1 = ssrc->getARC();
+	arc2 = ssrc->getARC();
 
 
 	try {	ssrc->newSession();
-		ret = pthread_create(&pollThread, NULL, pollThreadFunc,
-				(void*)arc);
+		ret = pthread_create(&pollThread, NULL, pollThreadFunc, (void*)arc1);
 		if (ret) {
-			cerr << "[ERROR] starting thread" << endl;
+			cerr << "[mainThread] Could not start pollThread" << endl;
 			goto clean;
 		}
 
@@ -101,8 +103,25 @@ main(int argc, char *argv[])
 		// on other systems than Linux. usleep(3) on linux
 		// says it will makes the calling thread sleep
 		usleep(100000);
-		ssrc->endSession();
+
+		try {	
+			arc2->poll();
+		} catch (ErrorResultError e) {
+			if (e.getErrorCode() != InvalidSessionID) {
+				cerr << "[ERROR] No InvalidSessionID";
+				cerr << " on second ARC" << endl;
+			}
+		}
 		pthread_join(pollThread, &tRet);
+
+		try {
+			ssrc->renewSession();
+		} catch (ErrorResultError e) {
+			if (e.getErrorCode() != InvalidSessionID) {
+				cerr << "[ERROR] No InvalidSessionID";
+				cerr << " on SSRC later on" << endl;
+			}
+		}
 
 	} catch (IfmapError e) {
 		cerr << "[mainThread] " << e << endl;
@@ -111,11 +130,12 @@ main(int argc, char *argv[])
 	}
 	if (tRet) {
 		cerr << "[ERROR] No EndSessionResult";
-		cerr << " on ARC while polling" << endl;
+		cerr << " on first ARC while polling" << endl;
 	}
 
 clean:
-	delete arc;
+	delete arc1;
+	delete arc2;
 	delete ssrc;
 	return 0;
 }
