@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	XmlMarshalable *devip = NULL;
 	Identifier *dev, *ip;
 
-	checkAndLoadParameters(argc, argv, 4, usage, &url, &user,
+	checkAndLoadParameters(argc, argv, 3, usage, &url, &user,
 			&pass, &capath);
 
 	op = argv[1];

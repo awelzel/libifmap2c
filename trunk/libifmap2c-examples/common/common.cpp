@@ -35,7 +35,9 @@ extern "C" {
 static void
 checkArgc(int argc, int app, void (*usage)(const char *), const char *name)
 {
-	if (argc != app && argc != (app + 4))
+	// we check for five because of:
+	// argv[0], url, user, pass, capath
+	if (argc != (app + 1) && argc != (app + 5))
 		usage(name);
 }
 
@@ -72,13 +74,13 @@ void checkAndLoadParameters(
 	*url = *user = *pass = *capath = NULL;
 	checkArgc(argc, app, usage, argv[0]);
 
-	if (argc == (app + 4))
-		loadCmdParameters(&argv[app], url, user, pass, capath);
+	if (argc == (app + 5))
+		loadCmdParameters(&argv[app + 1], url, user, pass, capath);
 	else 
 		loadEnvParameters(url, user, pass, capath);
 	
 	if (!*url || !*user || !*pass || !*capath) {
-		cerr << "Failed to load parameters\n";
+		cerr << "Failed to load environment parameters\n";
 		usage(argv[0]);
 	}
 	return;

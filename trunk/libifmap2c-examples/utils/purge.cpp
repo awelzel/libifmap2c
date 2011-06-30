@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 	char *url, *user, *pass, *capath;
 	SSRC *ssrc = NULL;
 	
-	checkAndLoadParameters(argc, argv, 2, usage, &url, &user,
+	checkAndLoadParameters(argc, argv, 1, usage, &url, &user,
 			&pass, &capath);
 	
 	pubId = argv[1];
