@@ -24,10 +24,10 @@
 
 #ifndef TYPEDEFS_H_
 #define TYPEDEFS_H_
-
+#include "errorresulterror.h"
+#include "resultitem.h"
 #include "searchresult.h"
 #include "xmlmarshalable.h"
-#include "resultitem.h"
 
 #include <string>
 #include <list>
@@ -55,6 +55,12 @@ typedef std::list<SearchResult *> SRLIST;
 typedef const SRLIST CSRLIST;
 typedef SRLIST::iterator SRLISTIT;
 typedef SRLIST::const_iterator CSRLISTIT;
+
+// ER = ErrorResultError
+typedef std::list<ErrorResultError *> ERLIST;
+typedef const ERLIST CERLIST;
+typedef ERLIST::iterator ERLISTIT;
+typedef ERLIST::const_iterator CERLISTIT;
 
 // RI = ResultItem
 typedef std::list<ResultItem *> RILIST;

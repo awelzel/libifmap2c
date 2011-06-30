@@ -24,7 +24,7 @@
 
 #ifndef POLLRESULT_H_
 #define POLLRESULT_H_
-
+#include "errorresulterror.h"
 #include "searchresult.h"
 
 #include <list>
@@ -40,17 +40,20 @@ public:
 	const std::list<SearchResult *>& getUpdateResults(void) const;
 	const std::list<SearchResult *>& getDeleteResults(void) const;
 	const std::list<SearchResult *>& getNotifyResults(void) const;
+	const std::list<ErrorResultError *>& getErrorResults(void) const;
 
 	void addSearchResult(SearchResult *const sr);
 	void addUpdateResult(SearchResult *const sr);
 	void addDeleteResult(SearchResult *const sr);
 	void addNotifyResult(SearchResult *const sr);
+	void addErrorResult(ErrorResultError *const sr);
 
 private:
 	std::list<SearchResult *> _searchResults;
 	std::list<SearchResult *> _updateResults;
 	std::list<SearchResult *> _deleteResults;
 	std::list<SearchResult *> _notifyResults;
+	std::list<ErrorResultError *> _errorResults;
 };
 
 } // namespace
