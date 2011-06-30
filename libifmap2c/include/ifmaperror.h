@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  * 
- * Copyright (c) 2010-2011, Arne Welzel, <arne.welzel@googlemail.com>
+ * Copyright (c) 2011, Arne Welzel, <arne.welzel@googlemail.com>
  * 		 
  * All rights reserved.
  * 		 
@@ -22,20 +22,29 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef RESPONSEPARSEERROR_H_
-#define RESPONSEPARSEERROR_H_
-#include <string>
-#include "ifmaperror.h"
+#ifndef IFMAPERROR_H_
+#define IFMAPERROR_H_
 
 namespace ifmap2c {
 
-class ResponseParseError : public IfmapError {
-public:
+class IfmapError {
 
-	ResponseParseError(const std::string& msg) : 
-		IfmapError("ResponseParserError", msg)
+public:
+	virtual const std::string& getMessage() const { return _message; }
+	virtual const std::string& getType() const { return _type; }
+	
+	virtual ~IfmapError() { }
+
+protected:
+	IfmapError(const std::string& type, const std::string& msg) 
+		: _type(type), _message(msg)
 	{ }
+
+private:
+	std::string _type;
+	std::string _message;
+	IfmapError() { }
 };
 
 } // namespace
-#endif /* RESPONSEPARSEERROR_H_ */
+#endif /* IFMAPERROR_H_ */

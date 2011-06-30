@@ -35,7 +35,6 @@ INCLUDE_DIRECTORIES(
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
 	communication/arc.cpp
-	communication/communicationerror.cpp
 	communication/ifmapcommunication.cpp
 	communication/lowlevelcurlcommunication.cpp
 	communication/ssrc.cpp
@@ -103,6 +102,7 @@ INSTALL(FILES
 	include/identifiers.h
 	include/identifierwithad.h
 	include/identity.h
+	include/ifmaperror.h
 	include/ifmapcommunication.h
 	include/ipaddress.h
 	include/libxml2marshaller.h
@@ -138,6 +138,7 @@ INSTALL(FILES
 	include/subsubscribe.h
 	include/tcgifmapbase.h
 	include/tcgifmapmeta.h
+	include/xmlerrors.h
 	include/xmlmarshalable.h
 	include/xmlmarshaller.h
 	include/xmlunmarshaller.h

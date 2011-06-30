@@ -33,7 +33,7 @@ namespace ifmap2c {
 
 
 Payload
-LibXml2Marshaller::marshal(XmlMarshalable *root)
+LibXml2Marshaller::marshal(XmlMarshalable *const root)
 {
 	if (!root)
 		throw XmlMarshalError("Root element not given");

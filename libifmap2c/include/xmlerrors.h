@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  * 
- * Copyright (c) 2010-2011, Arne Welzel, <arne.welzel@googlemail.com>
+ * Copyright (c) 2011, Arne Welzel, <arne.welzel@googlemail.com>
  * 		 
  * All rights reserved.
  * 		 
@@ -22,23 +22,26 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "communicationerror.h"
+#ifndef XMLERRORS_H_
+#define XMLERRORS_H_
+#include <string>
+#include "ifmaperror.h"
 
 namespace ifmap2c {
 
-CommunicationError::CommunicationError(const std::string& msg) :
-	_message(msg)
-{ }
+class XmlMarshalError : public IfmapError {
+public:
+	XmlMarshalError(const std::string& msg = "") : 
+		IfmapError("XmlMarshalError", msg)
+	{ }
+};
 
-
-
-CommunicationError::~CommunicationError() { }
-
-
-
-const std::string& CommunicationError::getMessage()
-{
-	return _message;
-}
+class XmlUnmarshalError : public IfmapError {
+public:
+	XmlUnmarshalError(const std::string& msg = "") : 
+		IfmapError("XmlUnmarshalError", msg)
+	{ }
+};
 
 } // namespace
+#endif /* XMLERRORS_H_ */

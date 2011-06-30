@@ -33,7 +33,7 @@
 
 using namespace std;
 
-#define	CURL_DEBUG_VALUE 0L
+#define	CURL_DEBUG_VALUE 1L
 #define	CURL_VERIFY_HOST 0L
 #define	CURL_VERIFY_PEER 1L
 
@@ -229,7 +229,7 @@ LowLevelCurlCommunication::doRequest(const Payload &p)
 		_payloadExchange->length = 0;
 
 		/* 
-		 * if any other status than 200 was receivec
+		 * if any other status than 200 was received
 		 * _statusBuffer[0] is set
 		 */
 		if (_statusBuffer[0]) {

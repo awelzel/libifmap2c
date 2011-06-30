@@ -24,23 +24,13 @@
 
 #ifndef XMLUNMARSHALLER_H_
 #define XMLUNMARSHALLER_H_
+#include <string>
 
-#include "xmlmarshalable.h"
 #include "payload.h"
+#include "xmlerrors.h"
+#include "xmlmarshalable.h"
 
 namespace ifmap2c {
-
-class XmlUnmarshalError {
-public:
-
-	XmlUnmarshalError(const std::string& m ="") : _message(m) { }
-
-	const std::string&
-	getMessage() const { return _message; }
-
-private:
-	std::string _message;
-};
 
 class XmlUnmarshaller {
 
