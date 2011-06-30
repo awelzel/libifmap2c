@@ -21,5 +21,12 @@
 # in this Software without prior written authorization of the copyright holder.
 #
 
+find_package (Threads)
+
 ADD_EXECUTABLE(test-identifiers test-identifiers.cpp)
+ADD_EXECUTABLE(test-poll-endsession test-poll-endsession.cpp)
 TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)
+TARGET_LINK_LIBRARIES(test-poll-endsession 
+	${LIBIFMAP2C_LIBRARIES}
+	common
+	${CMAKE_THREAD_LIBS_INIT})
