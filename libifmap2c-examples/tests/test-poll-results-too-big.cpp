@@ -24,8 +24,8 @@
 
 
 /*
- * Check if running endSession while a poll is pending lead to an
- * EndSessionResult Exception.
+ * Check if we get an appropiate ErrorResult back in case we used too
+ * much space on the MAPS.
  */
 
 #include <iostream>
@@ -33,13 +33,10 @@
 // libifmap2c includes
 #include <libifmap2c/ssrc.h>
 #include <libifmap2c/arc.h>
+#include <libifmap2c/identifiers.h>
+#include <libifmap2c/metadata.h>
 
 #include "common.h"
-
-extern "C" {
-	#include <pthread.h>
-	#include <unistd.h>
-}
 
 using namespace std;
 using namespace ifmap2c;
@@ -50,34 +47,22 @@ usage(const char *const name)
 	cerr << "usage: " << name << INDEPENDENT_USAGE_STRING << endl;
 }
 
-
-static void *
-pollThreadFunc(void *arg)
-{
-	ARC *arc = (ARC *)arg;
-	try {
-		arc->poll();
-	} catch (EndSessionResult e) {
-		return (void*)0;
-	} catch (IfmapError e) {
-		cerr << "[pollThread] " << e << endl;
-	} catch (ErrorResultError e) {
-		cerr << "[pollThread] " << e << endl;
-	}
-	cerr << "[pollThread] Should never end up here" << endl;
-	return (void*)1;
-}
-
 int
 main(int argc, char *argv[])
 {
 	char *url, *user, *pass, *capath;
-	pthread_t pollThread;
-	int ret;
-	void *tRet = 0;
 
 	SSRC *ssrc = NULL;
 	ARC *arc = NULL;
+	PublishRequest *pr = NULL;
+	PublishUpdate *pu = NULL;
+	SubscribeRequest *sr = NULL;
+	SubscribeUpdate *su = NULL;
+	PollResult *pres = NULL;
+	Identifier *ar;
+	XmlMarshalable *md;
+	bool ok = true;
+	
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
 
@@ -85,34 +70,59 @@ main(int argc, char *argv[])
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 	arc = ssrc->getARC();
 
+	ar = Identifiers::createAr("The Ar");
+	
+	// 200 bytes
+ 	md = Metadata::createDevAttr(
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		);
 
-	try {	ssrc->newSession();
-		ret = pthread_create(&pollThread, NULL, pollThreadFunc,
-				(void*)arc);
-		if (ret) {
-			cerr << "[ERROR] starting thread" << endl;
-			goto clean;
+	su = Requests::createSubscribeUpdate(
+			"subscription1",
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			ar->clone());
+	
+	sr = Requests::createSubscribeReq(su);
+
+	pu = Requests::createPublishUpdate(md, ar);
+	pr = Requests::createPublishReq(pu);
+	pr->addXmlNamespaceDefinition(TCG_META_NSPAIR);
+
+
+	try {	ssrc->newSession("400");
+		ssrc->subscribe(sr);
+		pres = arc->poll();
+		delete pres;
+		ssrc->publish(pr);
+		try {
+			pres = arc->poll();
+			ok = false;
+			delete pres;
+		} catch (ErrorResultError e){
+			if (e.getErrorCode() == PollResultsTooBig)
+				ok = true;
+			else
+				ok = false;
 		}
-
-		// Main thread  sleeps 100 msec to give the pollThread
-		// some time to do it's work. This may not work
-		// on other systems than Linux. usleep(3) on linux
-		// says it will makes the calling thread sleep
-		usleep(100000);
 		ssrc->endSession();
-		pthread_join(pollThread, &tRet);
-
 	} catch (IfmapError e) {
-		cerr << "[mainThread] " << e << endl;
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "[mainThread] " << e << endl;
-	}
-	if (tRet) {
-		cerr << "[ERROR] No EndSessionResult";
-		cerr << " on ARC while polling" << endl;
+		cerr << e << endl;
 	}
 
-clean:
+	if (!ok)
+		cerr << "No PollResultsTooBig reply" << endl;
+
+	delete sr;
+	delete pr;
 	delete arc;
 	delete ssrc;
 	return 0;
