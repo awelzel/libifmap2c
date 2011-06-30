@@ -145,6 +145,15 @@ processed in the same way.
 
 {{{
 /* filename example-mapc2.cpp */
+
+/*
+ * A sample MAPC showing how to handle SearchResults and ResultItems,
+ * respectively.
+ *
+ * The sanity checks might or might not be correct with some MAPSs
+ * implementation. This was against irond 0.2.2.
+ */
+
 #include <iostream>
 #include <list>
 
@@ -153,10 +162,14 @@ processed in the same way.
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+
 // libifmap2c namespace
 using namespace ifmap2c;
 
 using namespace std;
+
+typedef ResultItem *RI;
+typedef list<RI> RILIST;
 
 // Example client for the Wiki, very extensive documented.
 int main(int argc, char *argv[])
@@ -264,14 +277,16 @@ int main(int argc, char *argv[])
 
 		// if we search for the identity, we should get the wanted
 		// result item
-		ResultItem *ri = result1->getResultItem(id);
-		if (ri == NULL) {
+		RILIST rlist = result1->getResultItemsByIdentifier(id);
+		if (rlist.size() < 1) {
 			cout << "The identity was not in the "
 				"search result?!" << endl;
 		} else {
+			// get the first ResultItem of the list.
+			RI idRI = rlist.front();
 			// The identity identifier should not have any
 			// metadata attached to it:
-			if (ri->getMetadataList().size() != 0) {
+			if (idRI->getMetadataList().size() != 0) {
 				cout << "Identity has Metadata "
 					"attached to it?!" << endl;
 			}
@@ -297,20 +312,24 @@ int main(int argc, char *argv[])
 		}
 
 		// get the ip-mac link result item for ip1 and mac1
-		ri = result2->getResultItem(ip1, mac1);
-		if (ri == NULL) {
+		rlist = result2->getResultItemsByIdentifier(ip1, mac1);
+		if (rlist.size() < 1) {
 			cout << "Link between ip1 and mac1 not in the "
 				"search result?!" << endl;
 		} else {
-			if (ri->getMetadataList().size() != 1) {
-				cout << "More metadata than expected?" << endl;
-			}
+			// We only try the first element and hope
+			// there is no other one...
+			RI ipmacRI = rlist.front();
+			if (ipmacRI->getMetadataList().size() != 1)
+				cout << "Metadata not found?" << endl;
 
-			list<XmlMarshalable *>mdlist = XmlMarshalable::findMatchingElements(
-					ri->getMetadataList(), // where to look for matching elements
-					"ip-mac",	// element name
-					TCG_META_HREF);	// associated namespace
-			if (mdlist.size() != 1) {
+			list<XmlMarshalable *>mdlist =
+				XmlMarshalable::findMatchingElements(
+					ipmacRI->getMetadataList(),  // where to look 
+					"ip-mac",  // element name, no nsprefix
+					TCG_META_HREF);  // associated namespace
+
+			if (mdlist.size() < 1) {
 				cout << "ip-mac metadata not found!" << endl;
 			}
 		}
