@@ -34,8 +34,6 @@
 // libifmap2c includes
 #include <libifmap2c/ssrc.h>
 #include <libifmap2c/arc.h>
-#include <libifmap2c/identifiers.h>
-#include <libifmap2c/metadata.h>
 
 #include "common.h"
 
