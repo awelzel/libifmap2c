@@ -63,4 +63,4 @@ TARGET_LINK_LIBRARIES(test-update-twice ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(test-notify-event-twice ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(test-wrong-cardinality ${LIBIFMAP2C_LIBRARIES})
 
-add_subdirectory(cmds)
+add_subdirectory(utils)
