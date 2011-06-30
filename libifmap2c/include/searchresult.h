@@ -43,11 +43,11 @@ public:
 
 	/**
 	 * Search the list of ResultItems in the SearchResult for one
-	 * that matches exactly the given Identifiers.
-	 * *Should* only find one ResultItem... 
+	 * or more that matches exactly the given Identifiers.
 	 */
-	ResultItem *
-	getResultItem(Identifier *const i1, Identifier *const i2 = NULL) const;
+	std::list<ResultItem *>
+	getResultItemsByIdentifier(Identifier *const i1,
+			Identifier *const i2 = NULL) const;
 	
 	/**
 	 * Search the list of ResultItems in the SearchResult for one
@@ -55,7 +55,8 @@ public:
 	 * The content of the identifiers is not compared.
 	 */
 	std::list<ResultItem *>
-	getResultItemsByType(Identifier *const i1, Identifier *const i2 = NULL) const;
+	getResultItemsByType(Identifier *const i1,
+			Identifier *const i2 = NULL) const;
 
 private:
 	std::list<ResultItem *> _resultItems;
