@@ -24,21 +24,20 @@
 
 #include "common.h"
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
 
 using namespace std;
-
-extern "C" {
-	#include <stdlib.h>
-	#include <string.h>
-};
 
 static void
 checkArgc(int argc, int app, void (*usage)(const char *), const char *name)
 {
 	// we check for five because of:
 	// argv[0], url, user, pass, capath
-	if (argc != (app + 1) && argc != (app + 5))
+	if (argc != (app + 1) && argc != (app + 5)) {
 		usage(name);
+		exit(1);
+	}
 }
 
 static void
@@ -82,6 +81,7 @@ void checkAndLoadParameters(
 	if (!*url || !*user || !*pass || !*capath) {
 		cerr << "Failed to load environment parameters\n";
 		usage(argv[0]);
+		exit(1);
 	}
 	return;
 }
@@ -89,8 +89,10 @@ void checkAndLoadParameters(
 void checkUpdateOrDelete(char *str, void (*usage)(const char *),
 		char *name)
 {
-	if (strcmp(str, "update") != 0 && strcmp(str, "delete") != 0)
+	if (strcmp(str, "update") != 0 && strcmp(str, "delete") != 0) {
 		usage(name);
+		exit(1);
+	}
 }
 
 bool isUpdate(char *str)

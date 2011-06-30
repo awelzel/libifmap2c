@@ -24,7 +24,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <cstdlib>
 #include <cstring>
 
 // libifmap2c includes
@@ -42,7 +41,6 @@ static void usage(const char *prog)
 {
 	cerr << "usage: " << prog << " myself|<some-publisher-id>"
 		INDEPENDENT_USAGE_STRING << endl;
-	exit(1);
 }
 
 int main(int argc, char* argv[])
