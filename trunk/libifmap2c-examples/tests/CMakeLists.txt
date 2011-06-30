@@ -22,4 +22,4 @@
 #
 
 ADD_EXECUTABLE(test-identifiers test-identifiers.cpp)
-TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES})
+TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)

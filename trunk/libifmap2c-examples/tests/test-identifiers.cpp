@@ -41,6 +41,7 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include "common.h"
 
 using namespace std;
 using namespace ifmap2c;
@@ -50,7 +51,7 @@ using namespace ifmap2c;
 static void
 usage(const char *const name)
 {
-	cerr << "Usage: " << name << " ifmap-server-url username password capath" << endl;
+	cerr << "usage: " << name << INDEPENDENT_USAGE_STRING << endl;
 	exit(1);
 }
 
@@ -107,12 +108,8 @@ static void checkAr(SSRC *const ssrc)
 		cerr << "No AccessRequest in ResultItem!" << endl;
 		exit(1);
 	} else {
-		cout << "AccessRequests are\t";
-		if (compareAr(ar1, arrecv1) && compareAr(ar2, arrecv2)) {
-			cout << "Good!" << endl;
-		} else {
-			cout << "Bad!" << endl;
-		}
+		if (!(compareAr(ar1, arrecv1) && compareAr(ar2, arrecv2)))
+			cerr << "AccessRequests are bad!" << endl;
 	}
 
 	delete sres1;
@@ -180,12 +177,8 @@ checkMac(SSRC *const ssrc)
 		cerr << "No MacAddress in ResultItem!" << endl;
 		exit(1);
 	} else {
-		cout << "MacAddresses are\t";
-		if (compareMac(mac1, macrecv1) && compareMac(mac2, macrecv2)) {
-			cout << "Good!" << endl;
-		} else {
-			cout << "Bad!" << endl;
-		}
+		if (!(compareMac(mac1, macrecv1) && compareMac(mac2, macrecv2)))
+			cerr << "MacAddresses are bad!" << endl;
 	}
 
 	delete sres1;
@@ -200,15 +193,12 @@ compareDev(Device *dev1, Device  *dev2)
 	return !dev1->getValue().compare(dev2->getValue());
 }
 
-
-
 static void
 checkDev(SSRC *const ssrc)
 {
-	const string aikname = "iDontKnowHowItLooksLike";
 	const string devname = "NameOfTheDevice";
 
-	Device *dev1 = Identifiers::createDev(aikname);
+	Device *dev1 = Identifiers::createDev(devname);
 
 	SearchRequest *sreq1 = Requests::createSearchReq(
 			FILTER_MATCH_ALL,
@@ -234,12 +224,8 @@ checkDev(SSRC *const ssrc)
 		cerr << "No Device in ResultItem!" << endl;
 		exit(1);
 	} else {
-		cout << "Device are\t\t";
-		if (compareDev(dev1, devrecv1)) {
-			cout << "Good!" << endl;
-		} else {
-			cout << "Bad!" << endl;
-		}
+		if (!compareDev(dev1, devrecv1))
+			cerr << "Device is bad!" << endl;
 	}
 
 	delete sres1;
@@ -299,12 +285,8 @@ checkIPv4(SSRC *const ssrc)
 		cerr << "No IpAddresses in ResultItem!" << endl;
 		exit(1);
 	} else {
-		cout << "IPv4 Addresses are\t";
-		if (compareIp(ip1, iprecv1) && compareIp(ip2, iprecv2)) {
-			cout << "Good!" << endl;
-		} else {
-			cout << "Bad!" << endl;
-		}
+		if (!(compareIp(ip1, iprecv1) && compareIp(ip2, iprecv2)))
+			cerr << "IPv4 Addresses are bad!" << endl;
 	}
 
 	delete sres1;
@@ -356,12 +338,8 @@ checkIPv6(SSRC *const ssrc)
 		cerr << "No IpAddresses in ResultItem!" << endl;
 		exit(1);
 	} else {
-		cout << "IPv6 Addresses are\t";
-		if (compareIp(ip1, iprecv1) && compareIp(ip2, iprecv2)) {
-			cout << "Good!" << endl;
-		} else {
-			cout << "Bad!" << endl;
-		}
+		if (!(compareIp(ip1, iprecv1) && compareIp(ip2, iprecv2)))
+			cerr << "IPv6 Addresses are bad!" << endl;
 	}
 
 	delete sres1;
@@ -400,10 +378,9 @@ checkIdentity(SSRC *const ssrc)
 	std::string kerberos = "pri/lurk@DOM";
 	const string admind = "The Administrative Domain";
 	const string othert = "DefinitionOfAType";
+	bool foundBad = false;
 
-	// now that gets funny...
-
-	// this should result everything with NULL?
+	// now it gets funny...
 	Identity *identities[NIDENTITIES] = {0};
 	Identity *recvidentities[NIDENTITIES] = {0};
 	SearchRequest *srequests[NIDENTITIES] = {0};
@@ -432,7 +409,6 @@ checkIdentity(SSRC *const ssrc)
 	identities[19] = Identifiers::createOtherIdentity(othert,identname, admind);
 
 
-	bool foundBad = false;
 	for (int i = 0; i < NIDENTITIES; i++) {
 		srequests[i] = Requests::createSearchReq(
 				FILTER_MATCH_ALL,
@@ -443,19 +419,23 @@ checkIdentity(SSRC *const ssrc)
 				);
 
 		sresults[i] = ssrc->search(srequests[i]);
-		if (sresults[i]->getResultItems().size() != 1)
+
+		if (sresults[i]->getResultItems().size() != 1) {
 			cerr << "Wrong number of ResultItems in SearchResult!" << endl;
-		resultitems[i] = *sresults[i]->getResultItems().begin();
-		recvidentities[i] = resultitems[i]->getIdentity();
-		if (recvidentities[i] == NULL) {
-			cerr << "No IpAddresses in ResultItem!" << endl;
 			exit(1);
 		}
+
+		resultitems[i] = *sresults[i]->getResultItems().begin();
+		recvidentities[i] = resultitems[i]->getIdentity();
+
+		if (recvidentities[i] == NULL) {
+			cerr << "No identities in ResultItem!" << endl;
+			exit(1);
+		}
+
 		if (!compareIdentity(identities[i], recvidentities[i])) {
-			cout << "Identity[" << i << "] is bad" << endl;
+			cerr << "Identity[" << i << "] is bad" << endl;
 			foundBad = true;
-		} else {
-			//cout << "Identity[" << i << "] is good" << endl;
 		}
 
 		// free the memory
@@ -463,11 +443,8 @@ checkIdentity(SSRC *const ssrc)
 		delete sresults[i];
 	}
 
-	cout << "Identities are\t\t";
 	if (foundBad)
-		cout << "Bad!" << endl;
-	else
-		cout << "Good!" << endl;
+		cerr << "Identities are bad!" << endl;
 }
 
 
@@ -476,11 +453,12 @@ checkIdentity(SSRC *const ssrc)
 int
 main(int argc, char *argv[])
 {
-	if (argc != 5)
-		usage(argv[0]);
+	char *url, *user, *pass, *capath;
+	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
+			&pass, &capath);
 
 	// create ssrc object which is used for synchronous communication
-	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 
 	try {
 		ssrc->newSession();
