@@ -34,38 +34,35 @@ PollResult::PollResult()
 
 PollResult::~PollResult()
 {
-	SearchResult *child = NULL;
-	ErrorResultError *error = NULL;
-
 	SRLISTIT it = _searchResults.begin();
 	SRLISTIT end = _searchResults.end();
 	ERLISTIT iterr = _errorResults.begin();
 	ERLISTIT enderr = _errorResults.end();
 
-	for (child = *it; it != end; child = *(++it))
-		delete child;
+	for (/* */; it != end; ++it)
+		delete *it;
 	_searchResults.clear();
 
 	it = _updateResults.begin();
 	end = _updateResults.end();
-	for (child = *it; it != end; child = *(++it))
-		delete child;
+	for (/* */; it != end; ++it)
+		delete *it;
 	_updateResults.clear();
 
 	it = _deleteResults.begin();
 	end = _deleteResults.end();
-	for (child = *it; it != end; child = *(++it))
-		delete child;
+	for (/* */; it != end; ++it)
+		delete *it;
 	_deleteResults.clear();
 
 	it = _notifyResults.begin();
 	end = _notifyResults.end();
-	for (child = *it; it != end; child = *(++it))
-		delete child;
+	for (/* */; it != end; ++it)
+		delete *it;
 	_notifyResults.clear();
 	
-	for (error = *iterr; iterr != enderr; error = *(++iterr))
-		delete error;
+	for (/* */; iterr != enderr; ++iterr)
+		delete *iterr;
 	_errorResults.clear();
 }
 
