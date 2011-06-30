@@ -24,13 +24,19 @@
 
 #ifndef TYPEDEFS_H_
 #define TYPEDEFS_H_
-#include "errorresulterror.h"
-#include "resultitem.h"
-#include "searchresult.h"
-#include "xmlmarshalable.h"
-
 #include <string>
 #include <list>
+
+/* 
+ * Forward declarations for the typedef'ed classes.
+ *
+ * If we include the headers directly, we need to recompile nearly
+ * everything because typedefs.h is include nearly everywhere.
+ */
+class ErrorResultError;
+class ResultItem;
+class SearchResult;
+class XmlMarshalable;
 
 extern "C" {
 	#include <libxml/tree.h>
