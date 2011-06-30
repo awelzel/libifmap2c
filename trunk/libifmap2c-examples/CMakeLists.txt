@@ -28,14 +28,12 @@ add_definitions(-Wall -Wextra -Werror)
 SET (LIBIFMAP2C_INCLUDE_DIR "/usr/local/include")
 SET (LIBIFMAP2C_LIBRARIES "/usr/local/lib/libifmap2c.so")
 
-#FIND_PACKAGE(LibXml2)
-#FIND_PACKAGE(CURL)
-
 INCLUDE_DIRECTORIES(
-	#	include
-	#"${LIBXML2_INCLUDE_DIR}"
-	#"${CURL_INCLUDE_DIRS}"
+	"common/"
 	"${LIBIFMAP2C_INCLUDE_DIR}")
+
+# common functionality as a static library
+ADD_LIBRARY(common STATIC common/common.cpp)
 
 ADD_EXECUTABLE(subTest subTest.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example pdp-dhcp-example.cpp)
