@@ -51,7 +51,7 @@ SearchResult::addResultItem(ResultItem *const item)
 	_resultItems.push_back(item);
 }
 
-const list<ResultItem *>&
+const RILIST&
 SearchResult::getResultItems(void) const
 {
 	return _resultItems;
@@ -63,24 +63,30 @@ SearchResult::getSearchResultName(void) const
 	return _searchResultName;
 }
 
-ResultItem *
-SearchResult::getResultItem(Identifier *const i1, Identifier *const i2) const
+RILIST
+SearchResult::getResultItemsByIdentifier(
+		Identifier *const i1,
+		Identifier *const i2) const
 {
 	CRILISTIT it = _resultItems.begin();
 	CRILISTIT end = _resultItems.end();
+	RILIST ret;
 	ResultItem *ri;
+	Identifier *ri1, *ri2;
 
-	for (/* see above */; it != end; it++) {
+	for (/* */; it != end; it++) {
 		ri = *it;
-		Identifier *ri1 = ri->getIdentifier1();
-		Identifier *ri2 = ri->getIdentifier2();
+		ri1 = ri->getIdentifier1();
+		ri2 = ri->getIdentifier2();
 
-		if ((Identifiers::same(i1, ri1) && Identifiers::same(i2, ri2))
-				|| (Identifiers::same(i1, ri2) && Identifiers::same(i2, ri1))) {
-				return ri;
+		if ((Identifiers::same(i1, ri1) 
+				&& Identifiers::same(i2, ri2))
+			|| (Identifiers::same(i1, ri2) 
+				&& Identifiers::same(i2, ri1))) {
+			ret.push_back(ri);
 		}
 	}
-	return NULL;
+	return ret;
 }
 
 
@@ -91,14 +97,17 @@ SearchResult::getResultItemsByType(Identifier *const i1, Identifier *const i2) c
 	CRILISTIT end = _resultItems.end();
 	RILIST ret;
 	ResultItem *ri;
+	Identifier *ri1, *ri2;
 
 	for (/* see above */; it != end; it++) {
 		ri = *it;
-		Identifier *ri1 = ri->getIdentifier1();
-		Identifier *ri2 = ri->getIdentifier2();
+		ri1 = ri->getIdentifier1();
+		ri2 = ri->getIdentifier2();
 
-		if ((Identifiers::sameType(i1, ri1) && Identifiers::sameType(i2, ri2))
-				|| (Identifiers::sameType(i1, ri2) && Identifiers::sameType(i2, ri1))) {
+		if ((Identifiers::sameType(i1, ri1) 
+				&& Identifiers::sameType(i2, ri2))
+			|| (Identifiers::sameType(i1, ri2) 
+				&& Identifiers::sameType(i2, ri1))) {
 			ret.push_back(ri);
 		}
 	}
