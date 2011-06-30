@@ -23,27 +23,75 @@
  */
 
 #include "common.h"
+#include <iostream>
+
+using namespace std;
 
 extern "C" {
 	#include <stdlib.h>
+	#include <string.h>
 };
 
-void
-loadEnvParameters(char **url, char **user, char **pwd, char **capath)
+static void
+checkArgc(int argc, int app, void (*usage)(const char *), const char *name)
+{
+	if (argc != app && argc != (app + 4))
+		usage(name);
+}
+
+static void
+loadEnvParameters(char **url, char **user, char **pass, char **capath)
 {
 	*url = getenv(IFMAP_URL);
 	*user = getenv(IFMAP_USER);
-	*pwd = getenv(IFMAP_PASSWORD);
+	*pass = getenv(IFMAP_PASSWORD);
 	*capath = getenv(IFMAP_CAPATH);
 	return;
 }
 
-void
-loadCmdParameters(char **s, char **url, char **user, char **pwd, char **capath)
+static void
+loadCmdParameters(char **s, char **url, char **user, char **pass, char **capath)
 {
 	*url = s[0];
 	*user = s[1];
-	*pwd = s[2];
+	*pass = s[2];
 	*capath = s[3];
 	return;
+}
+
+void checkAndLoadParameters(
+		int argc,
+		char **argv,
+		int app,
+		void (*usage)(const char *),
+		char **url,
+		char **user,
+		char **pass,
+		char **capath)
+{
+	*url = *user = *pass = *capath = NULL;
+	checkArgc(argc, app, usage, argv[0]);
+
+	if (argc == (app + 4))
+		loadCmdParameters(&argv[app], url, user, pass, capath);
+	else 
+		loadEnvParameters(url, user, pass, capath);
+	
+	if (!*url || !*user || !*pass || !*capath) {
+		cerr << "Failed to load parameters\n";
+		usage(argv[0]);
+	}
+	return;
+}
+
+void checkUpdateOrDelete(char *str, void (*usage)(const char *),
+		char *name)
+{
+	if (strcmp(str, "update") != 0 && strcmp(str, "delete") != 0)
+		usage(name);
+}
+
+bool isUpdate(char *str)
+{
+	return !strcmp(str, "update");
 }

@@ -35,7 +35,23 @@
 		", " IFMAP_USER ",\n" IFMAP_PASSWORD " and " IFMAP_CAPATH	\
 		" instead of the corresponding parameters."			\
 
-void loadEnvParameters(char **url, char **user, char **pwd, char **capath);
-void loadCmdParameters(char **s, char **url, char **user, char **pwd, char **capath);
+
+void checkAndLoadParameters(
+		int argc,
+		char **argv,
+		int app,
+		void (*usage)(const char *),
+		char **url,
+		char **user,
+		char **pass,
+		char **capath);
+
+void checkUpdateOrDelete(
+		char *str,
+		void (*usage)(const char *),
+		char *name);
+
+bool isUpdate(char *str);
+		
 
 #endif // COMMON_H_

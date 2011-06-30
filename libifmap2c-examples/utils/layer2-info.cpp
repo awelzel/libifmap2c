@@ -47,96 +47,54 @@ static void usage(const char *prog)
 int main(int argc, char* argv[])
 {
 	char *arArg, *devArg, *portArg, *op;
-	string str;
 	char *url, *user, *pass, *capath;
-	url = user = pass = capath = NULL;
+	SSRC  *ssrc = NULL;
+	PublishRequest *pubReq = NULL;
+	SubPublish *subReq = NULL;
+	XmlMarshalable *l2info = NULL;
+	Identifier *ar, *dev;
+	string str;
 
-	if (argc != 9 && argc != 5) {
-		usage(argv[0]);
-	}
+	checkAndLoadParameters(argc, argv, 5, usage, &url, &user,
+			&pass, &capath);
 
 	op = argv[1];
-	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
-		usage(argv[0]);
-	}
-
 	arArg = argv[2];
 	devArg = argv[3];
 	portArg = argv[4];
 	
-	if (argc == 9) {
-		loadCmdParameters(&argv[5], &url, &user, &pass, &capath);
-	} else {
-		loadEnvParameters(&url, &user, &pass, &capath);
-		
-		if (!url || !user || !pass || !capath) {
-			cerr << "Environment variables not set?\n\n";
-			usage(argv[0]);
-		}
-	}
+	checkUpdateOrDelete(op, usage, argv[0]);
 
-	SSRC  *ssrc = SSRC::createSSRC(url, user, pass, capath);
-	PublishRequest *pubReq = NULL;
-	SubPublish *subReq = NULL;
-	XmlMarshalable *l2info = NULL;
+	ssrc = SSRC::createSSRC(url, user, pass, capath);
+	ar = Identifiers::createAr(arArg);
+	dev = Identifiers::createDev(devArg);
 
-	Identifier *ar = Identifiers::createAr(arArg);
-	Identifier *dev = Identifiers::createDev(devArg);
-
-	if (strcmp(op, "update") == 0) {
-		l2info = Metadata::createLayer2Info(NULL, NULL, portArg, NULL);
-		subReq = Requests::createPublishUpdate(l2info, ar, forever, dev);
+	if (isUpdate(op)) {
+		l2info = Metadata::createLayer2Info(
+				NULL, NULL, portArg, NULL);
+		subReq = Requests::createPublishUpdate(l2info, ar,
+				forever, dev);
 	} else {
 		str.append("meta:layer2-information[port='");
 		str.append(portArg);
 		str.append("']");
-		subReq = Requests::createPublishDelete(str.c_str(), ar, dev);
+		subReq = Requests::createPublishDelete(
+				str.c_str(), ar, dev);
 	}
-	// create the publish request
+	
 	pubReq = Requests::createPublishReq(subReq);
-
-	// declare the default meta namespace on the publish element
-	// it's not there by default
 	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
-	// no need to delete those, will be done when pubReq is deleted
-	subReq = NULL;
-	l2info = NULL;
-	ar = NULL; dev = NULL;
-
-
-	try {
-		cout << "Doing newSession... ";
-		ssrc->newSession();
-		cout << "Ok! SessionID=\"" << ssrc->getSessionId() << "\"";
-		cout << " PublisherID=\"" << ssrc->getPublisherId() << "\"" << endl;
-		cout << "Doing publish... ";
+	try {	ssrc->newSession();
 		ssrc->publish(pubReq);
-		cout << "Ok!" << endl;;
-		cout << "Doing endSession... ";
 		ssrc->endSession();
-		cout << "Ok!" << endl;
-
-		// catch some possible errors
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: ";
-		cerr << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "IF-MAP ErrorResult" << endl;
-		cerr << "   " << e.getErrorCodeString() << endl;
-		cerr << "   " << e.getErrorString() << endl;
-	} catch (XmlMarshalError e) {
-		cerr << "XmlMarshalError: ";
-		cerr << e.getMessage() << endl;
-	} catch (XmlUnmarshalError e) {
-		cerr << "XmlUnmarshalError: ";
-		cerr << e.getMessage() << endl;
+		cerr << e << endl;
 	}
 
-	// delete the request and all childs that have been added
 	delete pubReq;
-
-	// delete the ssrc
 	delete ssrc;
 
 	return 0;
