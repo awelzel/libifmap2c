@@ -22,13 +22,13 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
+/* filename example-mapc1.cpp */
+
 /*
  * A sample for showing how libifmap2c can be used to publish ip-mac
  * links.
  */
 
-
-/* filename example-mapc1.cpp */
 #include <iostream>
 #include <list>
 

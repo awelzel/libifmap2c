@@ -43,6 +43,8 @@ using namespace std;
 using namespace ifmap2c;
 
 typedef pair<string, string> STRP;
+typedef ResultItem *RI;
+typedef list<RI> RILIST;
 
 static STRP mdNs("myns", "http://mynamespace.com");
 
@@ -84,9 +86,9 @@ checkOnlyIp(PollResult *const pollres, IpAddress *const ip)
 		return;
 	}
 
-	ResultItem *ri = sres->getResultItem(ip);
-	if (ri) {
-		if (ri->getMetadataList().size() != 0) {
+	RILIST rlist = sres->getResultItemsByIdentifier(ip);
+	if (rlist.size() == 1) {
+		if (rlist.front()->getMetadataList().size() != 0) {
 			cout << " [ERROR: Metadata for IP?!] ";
 		}
 	} else {
@@ -124,15 +126,15 @@ checkForTwoEvents(PollResult *const pollres, IpAddress *const ip)
 		return;
 	}
 
-	ResultItem *ri = nres->getResultItem(ip);
-	if (ri) {
-		if (ri->getMetadataList().size() != 2) {
+	RILIST rlist = nres->getResultItemsByIdentifier(ip);
+	if (rlist.size() == 1) {
+		if (rlist.front()->getMetadataList().size() != 2) {
 			cout << " [ERROR: Wrong Metadata count for IP] ";
 			return;
 		} else {
 			list<XmlMarshalable *> found =
 				XmlMarshalable::findMatchingElements(
-				ri->getMetadataList(),
+				rlist.front()->getMetadataList(),
 				"simpleEvent",
 				"http://mynamespace.com");
 			if (found.size() != 2) {
@@ -175,15 +177,15 @@ checkForOneEvent(PollResult *const pollres, IpAddress *const ip)
 		return;
 	}
 
-	ResultItem *ri = nres->getResultItem(ip);
-	if (ri) {
-		if (ri->getMetadataList().size() != 1) {
+	RILIST rlist = nres->getResultItemsByIdentifier(ip);
+	if (rlist.size() == 1) {
+		if (rlist.front()->getMetadataList().size() != 1) {
 			cout << " [ERROR: Wrong Metadata count for IP] ";
 			return;
 		} else {
 			list<XmlMarshalable *> found =
 				XmlMarshalable::findMatchingElements(
-				ri->getMetadataList(),
+				rlist.front()->getMetadataList(),
 				"simpleEvent",
 				"http://mynamespace.com");
 			if (found.size() != 1) {

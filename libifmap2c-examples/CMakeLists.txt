@@ -38,7 +38,6 @@ INCLUDE_DIRECTORIES(
 	"${LIBIFMAP2C_INCLUDE_DIR}")
 
 ADD_EXECUTABLE(subTest subTest.cpp)
-ADD_EXECUTABLE(test-identifiers test-identifiers.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example pdp-dhcp-example.cpp)
 ADD_EXECUTABLE(test-purge-publisher test-purge-publisher.cpp)
 ADD_EXECUTABLE(metadata-examples metadata-examples.cpp)
@@ -51,7 +50,6 @@ ADD_EXECUTABLE(test-notify-event-twice test-notify-event-twice.cpp)
 ADD_EXECUTABLE(test-wrong-cardinality test-wrong-cardinality.cpp)
 
 TARGET_LINK_LIBRARIES(subTest ${LIBIFMAP2C_LIBRARIES})
-TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(pdp-dhcp-example ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(test-purge-publisher ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(metadata-examples ${LIBIFMAP2C_LIBRARIES})
@@ -64,3 +62,4 @@ TARGET_LINK_LIBRARIES(test-notify-event-twice ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(test-wrong-cardinality ${LIBIFMAP2C_LIBRARIES})
 
 add_subdirectory(utils)
+add_subdirectory(tests)
