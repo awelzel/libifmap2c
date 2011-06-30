@@ -67,7 +67,8 @@ using namespace ifmap2c;
 #define DHCP_BASIC_PW		"dhcp"
 
 // number of access requests to demonstrate
-#define AR_NUMBER	20
+#define PDP_REQUESTS		5
+#define AR_NUMBER		20
 
 // usec
 #define TIMEFACTOR		10
@@ -86,7 +87,6 @@ usage(const char *const name)
 	cerr << "Usage: " << name << " ifmap-server-url capath" << endl;
 	exit(1);
 }
-
 
 /*
  * pdp publishes information about himself and the two switches
@@ -195,8 +195,6 @@ int main(int argc, char *argv[])
 			Identity *id = Identity::createIdentity(username, idStr);
 
 			// bit crazy?
-#define PDP_REQUESTS	5
-
 			PublishRequest *pdpPublishRequests[PDP_REQUESTS];
 			pdpPublishRequests[0] = Requests::createPublishReq(
 					Requests::createPublishUpdate(
@@ -271,15 +269,10 @@ int main(int argc, char *argv[])
 		ssrcDHCP->endSession();
 		ssrcPDP->endSession();
 
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult:" << endl;
-		cerr << " " << e.getErrorCodeString() << endl;
-		cerr << " " << e.getErrorString() << endl;
-	} catch (...) {
-		cerr << "Unidentfied Exception" << endl;
-		throw;
+		cerr << e << endl;
 	}
 
 	delete pdpDevice;

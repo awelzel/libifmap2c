@@ -68,7 +68,7 @@ main(int argc, char *argv[])
 		ssrc->newSession();
 		cout << "Ok" << endl;
 
-		// store the sessionid for later requests, as we use
+		// store the session-id for later requests, as we use
 		// a new SSRC instance which does not know about it
 		sessionId = ssrc->getSessionId();
 
@@ -108,15 +108,10 @@ main(int argc, char *argv[])
 		ssrc->endSession(sessionId);
 		cout << "Ok" << endl;
 
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult:" << endl;
-		cerr << " " << e.getErrorCodeString() << endl;
-		cerr << " " << e.getErrorString() << endl;
-	} catch (...) {
-		cerr << "Uncatched Exception occured" << endl;
-		throw;
+		cerr << e << endl;
 	}
 
 	// delete the publish requests and all their childs

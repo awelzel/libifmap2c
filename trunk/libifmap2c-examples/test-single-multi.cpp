@@ -125,7 +125,7 @@ main(int argc, char *argv[])
 			ssrc->publish(pr2);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok (failed on purpose)" << endl;;
+			cout << "Ok (failed on purpose) [" << e << "]" << endl;
 		}
 
 		cout << "Doing publish3\t\t";
@@ -136,26 +136,24 @@ main(int argc, char *argv[])
 			ssrc->publish(pr4);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok (failed on purpose)" << endl;;
+			cout << "Ok (failed on purpose) [" << e << "]" << endl;
 		}
 
 		cout << "Doing endSession\t";
 		ssrc->endSession();
 		cout << "Ok" << endl;
 
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult:" << endl;
-		cerr << " " << e.getErrorCodeString() << endl;
-		cerr << " " << e.getErrorString() << endl;
-	} catch (...) {
-		cerr << "Uncatched Exception occured" << endl;
-		throw;
+		cerr << e << endl;
 	}
 
 	// delete the publish requests and all their childs
-	delete pr1; delete pr2; delete pr3; delete pr4;
+	delete pr1;
+	delete pr2;
+	delete pr3;
+	delete pr4;
 	
 	// this closes the TCP connection
 	delete ssrc;
