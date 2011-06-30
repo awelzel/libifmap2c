@@ -29,16 +29,19 @@ using namespace std;
 
 namespace ifmap2c {
 
-PollResult::PollResult() { }
-
-
+PollResult::PollResult()
+{ }
 
 PollResult::~PollResult()
 {
 	SearchResult *child = NULL;
+	ErrorResultError *error = NULL;
 
 	SRLISTIT it = _searchResults.begin();
 	SRLISTIT end = _searchResults.end();
+	ERLISTIT iterr = _errorResults.begin();
+	ERLISTIT enderr = _errorResults.begin();
+
 	for (child = *it; it != end; child = *(++it))
 		delete child;
 	_searchResults.clear();
@@ -60,11 +63,11 @@ PollResult::~PollResult()
 	for (child = *it; it != end; child = *(++it))
 		delete child;
 	_notifyResults.clear();
-
-
+	
+	for (error = *iterr; iterr != enderr; error = *(++iterr))
+		delete error;
+	_errorResults.clear();
 }
-
-
 
 const list<SearchResult *>&
 PollResult::getSearchResults(void) const
@@ -72,15 +75,11 @@ PollResult::getSearchResults(void) const
 	return _searchResults;
 }
 
-
-
 const list<SearchResult *>&
 PollResult::getUpdateResults(void) const
 {
 	return _updateResults;
 }
-
-
 
 const list<SearchResult *>&
 PollResult::getDeleteResults(void) const
@@ -88,15 +87,17 @@ PollResult::getDeleteResults(void) const
 	return _deleteResults;
 }
 
-
-
 const list<SearchResult *>&
 PollResult::getNotifyResults(void) const
 {
 	return _notifyResults;
 }
 
-
+const list<ErrorResultError *>&
+PollResult::getErrorResults(void) const
+{
+	return _errorResults;
+}
 
 void
 PollResult::addSearchResult(SearchResult *const sr)
@@ -104,14 +105,11 @@ PollResult::addSearchResult(SearchResult *const sr)
 	_searchResults.push_back(sr);
 }
 
-
-
 void
 PollResult::addUpdateResult(SearchResult *const sr)
 {
 	_updateResults.push_back(sr);
 }
-
 
 void
 PollResult::addDeleteResult(SearchResult *const sr)
@@ -119,12 +117,15 @@ PollResult::addDeleteResult(SearchResult *const sr)
 	_deleteResults.push_back(sr);
 }
 
-
-
 void
 PollResult::addNotifyResult(SearchResult *const sr)
 {
 	_notifyResults.push_back(sr);
+}
+void
+PollResult::addErrorResult(ErrorResultError *const er)
+{
+	_errorResults.push_back(er);
 }
 
 } // namespace

@@ -48,8 +48,8 @@ enum ErrorCode {
 
 class ErrorResultError {
 public:
-	ErrorResultError(ErrorCode errorCode,
-			const std::string& errStr = "");
+	ErrorResultError(ErrorCode errorCode, const std::string& errStr,
+			const std::string& name = "");
 
 	virtual ~ErrorResultError();
 
@@ -58,6 +58,12 @@ public:
 	const std::string& getErrorCodeString() const;
 
 	const std::string& getErrorString() const;
+
+	/**
+	 * This is only meaningful if the ErrorResultError is included
+	 * in a PollResult.
+	 */
+	const std::string& getName() const;
 
 	static const std::string errorCodeStrings[];
 	
@@ -68,6 +74,7 @@ private:
 	ErrorCode _errorCode;
 	std::string _errorCodeString;
 	std::string _errorString;
+	std::string _name;
 };
 } // namespace
 #endif /* ERRORRESULTERROR_H_ */

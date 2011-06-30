@@ -45,8 +45,9 @@ const string ErrorResultError::errorCodeStrings[] = {
 };
 
 ErrorResultError::ErrorResultError(ErrorCode errCode,
-		const std::string& errStr) :
-	_errorCode(errCode), _errorString(errStr)
+		const std::string& errStr,
+		const std::string& name) :
+	_errorCode(errCode), _errorString(errStr), _name(name)
 { }
 
 
