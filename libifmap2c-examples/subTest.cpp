@@ -133,11 +133,16 @@ static void examinePollResult(PollResult *const pollRes)
 
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+	if (argc != 5) {
+		cout << "Usage: " << argv[0] << " ifmap-server-url"
+				" user pass capath" << endl;
+		return 1;
+	}
 
 	/* communication objects */
-	ifmap2c::SSRC *ssrc = ifmap2c::SSRC::createSSRC("https://localhost:8443", "test", "test", "cadir");
+	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3], argv[4]);
 	ifmap2c::ARC *arc = ssrc->getARC();
 
 	Identifier *i1 = Identifiers::createAr("tnc:001");
@@ -192,27 +197,18 @@ int main()
 		ssrc->subscribe(subreqdel);
 		ssrc->endSession();
 
-	} catch (CommunicationError ce) {
-		cout << "COMM ERROR: " << ce.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cout << "Error=\"" << e.getErrorCodeString() << "\" String=\"" << e.getErrorString() << "\"" << endl;
-	} catch (XmlMarshalError e) {
-		cout << "MarshalError " << e.getMessage() << endl;
-	} catch (XmlUnmarshalError e) {
-		cout << "UnmarshalError " << e.getMessage() << endl;
-	} catch (ResponseParseError e) {
-		cout << "ResponseParse " << e.getMessage() << endl;
-
-
+		cerr << e << endl;
 	}
+
 	delete pr1;
 	delete pr2;
 	delete subreq;
 	delete subreqdel;
-
 	delete arc;
 	delete ssrc;
 
-	cout.flush();
 	return 0;
 }

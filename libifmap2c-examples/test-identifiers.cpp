@@ -73,8 +73,20 @@ static void checkAr(SSRC *const ssrc)
 	AccessRequest *ar1 = Identifiers::createAr(arname);
 	AccessRequest *ar2 = Identifiers::createAr(arname, admind);
 
-	SearchRequest *sreq1 = Requests::createSearchReq(NULL, 0, NULL, -1, ar1);
-	SearchRequest *sreq2 = Requests::createSearchReq(NULL, 0, NULL, -1, ar2);
+	SearchRequest *sreq1 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,		/* match-links */
+			SEARCH_NO_MAX_DEPTH,		/* max-depth*/
+			FILTER_MATCH_ALL,		/* result-filter */
+			SEARCH_NO_MAX_RESULT_SIZE,	/* max-size */
+			ar1				/* start-identifier */
+			);
+	SearchRequest *sreq2 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,		/* match-links */
+			SEARCH_NO_MAX_DEPTH,		/* max-depth*/
+			FILTER_MATCH_ALL,		/* result-filter */
+			SEARCH_NO_MAX_RESULT_SIZE,	/* max-size */
+			ar2				/* start-identifier */
+			);
 
 	SearchResult *sres1 = ssrc->search(sreq1);
 	SearchResult *sres2 = ssrc->search(sreq2);
@@ -134,8 +146,20 @@ checkMac(SSRC *const ssrc)
 	MacAddress *mac1 = Identifiers::createMac(mac);
 	MacAddress *mac2 = Identifiers::createMac(mac, admind);
 
-	SearchRequest *sreq1 = Requests::createSearchReq(NULL, 0, NULL, -1, mac1);
-	SearchRequest *sreq2 = Requests::createSearchReq(NULL, 0, NULL, -1, mac2);
+	SearchRequest *sreq1 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			mac1
+			);
+	SearchRequest *sreq2 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			mac2
+			);
 
 	SearchResult *sres1 = ssrc->search(sreq1);
 	SearchResult *sres2 = ssrc->search(sreq2);
@@ -186,7 +210,13 @@ checkDev(SSRC *const ssrc)
 
 	Device *dev1 = Identifiers::createDev(aikname);
 
-	SearchRequest *sreq1 = Requests::createSearchReq(NULL, 0, NULL, -1, dev1);
+	SearchRequest *sreq1 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			dev1
+			);
 
 	SearchResult *sres1 = ssrc->search(sreq1);
 
@@ -235,8 +265,20 @@ checkIPv4(SSRC *const ssrc)
 	IpAddress *ip1 = Identifiers::createIPv4(ipval);
 	IpAddress *ip2 = Identifiers::createIPv4(ipval,admind);
 
-	SearchRequest *sreq1 = Requests::createSearchReq(NULL, 0, NULL, -1, ip1);
-	SearchRequest *sreq2 = Requests::createSearchReq(NULL, 0, NULL, -1, ip2);
+	SearchRequest *sreq1 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			ip1
+			);
+	SearchRequest *sreq2 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			ip2
+			);
 
 	SearchResult *sres1 = ssrc->search(sreq1);
 	SearchResult *sres2 = ssrc->search(sreq2);
@@ -280,8 +322,20 @@ checkIPv6(SSRC *const ssrc)
 	IpAddress *ip1 = Identifiers::createIPv6(ipval);
 	IpAddress *ip2 = Identifiers::createIPv6(ipval,admind);
 
-	SearchRequest *sreq1 = Requests::createSearchReq(NULL, 0, NULL, -1, ip1);
-	SearchRequest *sreq2 = Requests::createSearchReq(NULL, 0, NULL, -1, ip2);
+	SearchRequest *sreq1 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			ip1
+			);
+	SearchRequest *sreq2 = Requests::createSearchReq(
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			ip2
+			);
 
 	SearchResult *sres1 = ssrc->search(sreq1);
 	SearchResult *sres2 = ssrc->search(sreq2);
@@ -380,7 +434,14 @@ checkIdentity(SSRC *const ssrc)
 
 	bool foundBad = false;
 	for (int i = 0; i < NIDENTITIES; i++) {
-		srequests[i] = Requests::createSearchReq(NULL, 0, NULL, -1, identities[i]);
+		srequests[i] = Requests::createSearchReq(
+				FILTER_MATCH_ALL,
+				SEARCH_NO_MAX_DEPTH,
+				FILTER_MATCH_ALL,
+				SEARCH_NO_MAX_RESULT_SIZE,
+				identities[i]
+				);
+
 		sresults[i] = ssrc->search(srequests[i]);
 		if (sresults[i]->getResultItems().size() != 1)
 			cerr << "Wrong number of ResultItems in SearchResult!" << endl;
@@ -422,30 +483,19 @@ main(int argc, char *argv[])
 	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
 
 	try {
-		cout << "Doing newSession\t";
 		ssrc->newSession();
-		cout << "Ok!" << endl;
 		checkAr(ssrc);
 		checkMac(ssrc);
 		checkDev(ssrc);
 		checkIPv4(ssrc);
 		checkIPv6(ssrc);
 		checkIdentity(ssrc);
-
-		cout << "Doing endSession\t";
 		ssrc->endSession();
-		cout << "Ok!" << endl;
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
+
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult:" << endl;
-		cerr << " " << e.getErrorCodeString() << endl;
-		cerr << " " << e.getErrorString() << endl;
-	} catch (XmlUnmarshalError e) {
-		cerr << "UnmarshalError:" << e.getMessage() << endl;
-	} catch (...) {
-		cerr << "Uncatched Exception occured" << endl;
-		throw;
+		cerr << e << endl;
 	}
 
 	delete ssrc;

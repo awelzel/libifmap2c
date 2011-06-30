@@ -162,9 +162,7 @@ main(int argc, char *argv[])
 			ssrc->publish(pr2);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok (failed on purpose: ";
-			cout << e.getErrorCodeString() << " | ";
-			cout << e.getErrorString() << ")" << endl;
+			cout << "Ok (failed on purpose) [" << e << "]" << endl;
 		}
 		
 		cout << "Doing publish3\t\t";
@@ -175,9 +173,7 @@ main(int argc, char *argv[])
 			ssrc->publish(pr4);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok (failed on purpose: ";
-			cout << e.getErrorCodeString() << " | ";
-			cout << e.getErrorString() << ")" << endl;
+			cout << "Ok (failed on purpose) [" << e << "]" << endl;
 		}
 		
 		cout << "Doing publish5\t\t";
@@ -185,9 +181,7 @@ main(int argc, char *argv[])
 			ssrc->publish(pr5);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok (failed on purpose: ";
-			cout << e.getErrorCodeString() << " | ";
-			cout << e.getErrorString() << ")" << endl;
+			cout << "Ok (failed on purpose) [" << e << "]" << endl;
 		}
 		
 		cout << "Doing publish6\t\t";
@@ -195,24 +189,17 @@ main(int argc, char *argv[])
 			ssrc->publish(pr6);
 			cout << "Should have failed..." << endl;
 		} catch (ErrorResultError e) {
-			cout << "Ok (failed on purpose: ";
-			cout << e.getErrorCodeString() << " | ";
-			cout << e.getErrorString() << ")" << endl;
+			cout << "Ok (failed on purpose) [" << e << "]" << endl;
 		}
 
 		cout << "Doing endSession\t";
 		ssrc->endSession();
 		cout << "Ok" << endl;
 
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult:" << endl;
-		cerr << " " << e.getErrorCodeString() << endl;
-		cerr << " " << e.getErrorString() << endl;
-	} catch (...) {
-		cerr << "Uncatched Exception occured" << endl;
-		throw;
+		cerr << e << endl;
 	}
 
 	// delete the publish requests and all their childs

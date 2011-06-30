@@ -64,8 +64,9 @@ int main(int argc, char *argv[])
 	XmlMarshalable *cap = Metadata::createCapability("finance");
 	XmlMarshalable *cap2 = Metadata::createCapability("finance", "myadm");
 	XmlMarshalable *devattr = Metadata::createDevAttr("AntiVirusRunning");
-	XmlMarshalable *devchar = Metadata::createDevChar("22.10.09", "122345", "fool",
-			"Intel", NULL, "Linux", NULL, "Desktop");
+	XmlMarshalable *devchar = Metadata::createDevChar(
+			"22.10.09", "122345", "fool", "Intel", NULL, "Linux",
+			NULL, "Desktop");
 	XmlMarshalable *discby = Metadata::createDiscoveredBy();
 	XmlMarshalable *role1 = Metadata::createRole("user", "domain");
 	XmlMarshalable *role2 = Metadata::createRole("admin");
@@ -87,31 +88,21 @@ int main(int argc, char *argv[])
 	metalist.push_back(role2);
 
 	PublishUpdate *pubUpdate = Requests::createPublishUpdate(metalist, ar, session, dev);
-
 	PublishRequest *publishReq = Requests::createPublishReq(pubUpdate);
-
 	publishReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 	try {
 		ssrc->newSession();
 		ssrc->publish(publishReq);
 		ssrc->endSession();
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: " << e.getMessage() << endl;
-
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "ErrorResult  " << endl;
-		cerr << " ErrorCode   " << e.getErrorCodeString() << endl;
-		cerr << " ErrorString " << e.getErrorString() << endl;
-
-	} catch (...) {
-		cerr << "Unidentified Error." << endl;
-		throw; // Throw it up to print the name
+		cerr << e << endl;
 	}
 
 	delete publishReq;
-
 	delete ssrc;
-
+	
 	return 0;
 }
