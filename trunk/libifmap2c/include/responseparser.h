@@ -102,7 +102,8 @@ public:
 
 	static void checkErrorResult(XmlMarshalable *const response);
 
-	static void throwErrorResult(XmlMarshalable *const err);
+	static ErrorResultError *
+		createErrorResult(XmlMarshalable *const err);
 
 	static void throwIfNull(XmlMarshalable *const m, const std::string& msg);
 

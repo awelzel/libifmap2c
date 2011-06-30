@@ -160,6 +160,7 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 	XmlMarshalable *xmlPollRes = NULL;
 	XmlMarshalable *child = NULL;
 	SearchResult *sr = NULL;
+	ErrorResultError *er = NULL;
 	xmlPollRes = locatePollResultElement(env);
 
 	if (xmlPollRes == NULL) {
@@ -197,8 +198,8 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 				retPollRes->addNotifyResult(sr);
 			} else if (compNameNs(child, POLLRESULT_ERROR_ELEMENT_NAME,
 					POLLRESULT_ERROR_ELEMENT_HREF)) {
-				// TODO: could throw a PollErrorResult here?
-				throwErrorResult(child);
+				er = createErrorResult(child);
+				retPollRes->addErrorResult(er);
 			} else {
 				throw ResponseParseError("Bad element in PollResult");
 			}
@@ -632,7 +633,8 @@ ResponseParser::isAttrWithName(const STRP& attr, const string& attrname)
 
 
 XmlMarshalable *
-ResponseParser::getChild(XmlMarshalable *marsh, const string& elname, const string& href)
+ResponseParser::getChild(XmlMarshalable *marsh, const string& elname,
+		const string& href)
 {
 	XMLMLIST children = marsh->getXmlChildren();
 	XMLMLISTIT it = children.begin();
@@ -650,19 +652,26 @@ ResponseParser::getChild(XmlMarshalable *marsh, const string& elname, const stri
 void
 ResponseParser::checkErrorResult(XmlMarshalable *const response)
 {
-	XmlMarshalable *errorResult = getChild(response, ERRORRESULT_ELEMENT_NAME,
+	ErrorResultError *error;
+	ErrorResultError toThrow;
+	XmlMarshalable *errorResult = getChild(response,
+			ERRORRESULT_ELEMENT_NAME,
 			ERRORRESULT_ELEMENT_HREF);
 
-	if (errorResult != NULL)
-		throwErrorResult(errorResult);
+	if (errorResult != NULL) {
+		error = createErrorResult(errorResult);
+		toThrow = *error;
+		delete error;
+		throw toThrow;
+	}
 }
 
 
-
-void
-ResponseParser::throwErrorResult(XmlMarshalable *const err)
+ErrorResultError *
+ResponseParser::createErrorResult(XmlMarshalable *const err)
 {
 	ErrorCode errCode = Unknown;
+	XmlMarshalable *errStrEle = NULL;
 	string errCodeString;
 	string errString;
 
@@ -675,14 +684,11 @@ ResponseParser::throwErrorResult(XmlMarshalable *const err)
 		}
 	}
 
-	XmlMarshalable *errStrEle = getChild(err, ERRORSTRING_ELEMENT_NAME,
+	errStrEle = getChild(err, ERRORSTRING_ELEMENT_NAME,
 			ERRORSTRING_ELEMENT_HREF);
 
-	if (errStrEle != NULL) {
-		errString = errStrEle->getXmlElementValue();
-	}
-
-
+	throwIfNull(errStrEle, "errorString");
+	errString = errStrEle->getXmlElementValue();
 
 	// Oh god... FIXME
 	if (!errCodeString.compare(ErrorResultError::errorCodeStrings[AccessDenied])) {
@@ -708,12 +714,10 @@ ResponseParser::throwErrorResult(XmlMarshalable *const err)
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[PollResultsTooBig])) {
 		errCode = PollResultsTooBig;
 	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[SystemError])) {
-		errCode = SystemError;;
-	} else {
-		errCode = Unknown;
+		errCode = SystemError;
 	}
 
-	throw ErrorResultError(errCode, errString);
+	return new ErrorResultError(errCode, errString);
 }
 
 

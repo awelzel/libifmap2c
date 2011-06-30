@@ -48,6 +48,8 @@ enum ErrorCode {
 
 class ErrorResultError {
 public:
+	ErrorResultError();
+
 	ErrorResultError(ErrorCode errorCode, const std::string& errStr,
 			const std::string& name = "");
 
