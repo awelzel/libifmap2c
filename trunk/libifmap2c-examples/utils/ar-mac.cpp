@@ -24,7 +24,6 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <cstring>
 
 // libifmap2c includes
 #include <libifmap2c/ssrc.h>
@@ -42,7 +41,6 @@ static void usage(const char *prog)
 {
 	cerr << "usage: " << prog << " update|delete arname mac-addr"
 		INDEPENDENT_USAGE_STRING << endl;
-	exit(1);
 }
 
 int main(int argc, char* argv[])
