@@ -49,66 +49,28 @@ int main(int argc, char* argv[])
 {
 	char *pubId;
 	char *url, *user, *pass, *capath;
-	url = user = pass = capath = NULL;
-
-	if (argc != 6 && argc != 2) {
-		usage(argv[0]);
-	}
-
-	pubId = argv[1];
+	SSRC *ssrc = NULL;
 	
-	if (argc == 6) {
-		loadCmdParameters(&argv[2], &url, &user, &pass, &capath);
-	} else {
-		loadEnvParameters(&url, &user, &pass, &capath);
-		
-		if (!url || !user || !pass || !capath) {
-			cerr << "Environment variables not set?\n\n";
-			usage(argv[0]);
-		}
-	}
+	checkAndLoadParameters(argc, argv, 2, usage, &url, &user,
+			&pass, &capath);
+	
+	pubId = argv[1];
 
-	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
+	ssrc = SSRC::createSSRC(url, user, pass, capath);
 
-
-	try {
-		cout << "Doing newSession... ";
-		ssrc->newSession();
-		cout << "Ok! SessionID=\"" << ssrc->getSessionId() << "\"";
-		cout << " PublisherID=\"" << ssrc->getPublisherId() << "\"" << endl;
-		
+	try {	ssrc->newSession();
 		if (!strcmp(pubId, "myself")) {
-			cout << "Purging with publisher-id=\"" 
-				<< ssrc->getPublisherId() << "\"... ";
 			ssrc->purgePublisher();
 		} else {
-			cout << "Purging with publisher-id=\"" 
-				<< pubId << "\"... ";
 			ssrc->purgePublisher(pubId);
 		}
-		cout << "Ok!" << endl;;
-		cout << "Doing endSession... ";
 		ssrc->endSession();
-		cout << "Ok!" << endl;
-
-		// catch some possible errors
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: ";
-		cerr << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "IF-MAP ErrorResult" << endl;
-		cerr << "   " << e.getErrorCodeString() << endl;
-		cerr << "   " << e.getErrorString() << endl;
-	} catch (XmlMarshalError e) {
-		cerr << "XmlMarshalError: ";
-		cerr << e.getMessage() << endl;
-	} catch (XmlUnmarshalError e) {
-		cerr << "XmlUnmarshalError: ";
-		cerr << e.getMessage() << endl;
+		cerr << e << endl;
 	}
 
-	// delete the ssrc
 	delete ssrc;
-
 	return 0;
 }

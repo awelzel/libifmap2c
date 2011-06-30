@@ -47,93 +47,50 @@ static void usage(const char *prog)
 
 int main(int argc, char* argv[])
 {
-	char *arArg, *macArg;
+	char *arArg, *macArg, *op;
 	char *url, *user, *pass, *capath;
-	url = user = pass = capath = NULL;
-
-	if (argc != 8 && argc != 4) {
-		usage(argv[0]);
-	}
-
-	char* op = argv[1];
-	if (strcmp(op, "update") != 0 && strcmp(op, "delete") != 0) {
-		usage(argv[0]);
-	}
-
-	arArg = argv[2];
-	macArg = argv[3];
-	
-	if (argc == 8) {
-		loadCmdParameters(&argv[4], &url, &user, &pass, &capath);
-	} else {
-		loadEnvParameters(&url, &user, &pass, &capath);
-		
-		if (!url || !user || !pass || !capath) {
-			cerr << "Environment variables not set?\n\n";
-			usage(argv[0]);
-		}
-	}
-
-	SSRC  *ssrc = SSRC::createSSRC(url, user, pass, capath);
+	SSRC *ssrc = NULL;
 	PublishRequest *pubReq = NULL;
 	SubPublish *subReq = NULL;
 	XmlMarshalable *armac = NULL;
+	Identifier *ar, *mac;
+	
+	checkAndLoadParameters(argc, argv, 4, usage, &url, &user,
+			&pass, &capath);
+	
+	op = argv[1];
+	arArg = argv[2];
+	macArg = argv[3];
+	
+	checkUpdateOrDelete(op, usage, argv[0]);
+	
+	ssrc = SSRC::createSSRC(url, user, pass, capath);
+	ar = Identifiers::createAr(arArg);
+	mac = Identifiers::createMac(macArg);
 
-	Identifier *ar = Identifiers::createAr(arArg);
-	Identifier *mac = Identifiers::createMac(macArg);
-
-	if (strcmp(op, "update") == 0) {
+	if (isUpdate(op)) {
 		armac = Metadata::createArMac();
-		subReq = Requests::createPublishUpdate(armac, ar, forever, mac);
+		subReq = Requests::createPublishUpdate(armac, ar,
+				forever, mac);
 	} else {
-		subReq = Requests::createPublishDelete("meta:access-request-mac", ar, mac);
+		subReq = Requests::createPublishDelete(
+				"meta:access-request-mac",
+				ar, mac);
 	}
 
-	// create the publish request
 	pubReq = Requests::createPublishReq(subReq);
-
-	// declare the default meta namespace on the publish element
-	// it's not there by default
 	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
-	// no need to delete those, will be done when pubReq is deleted
-	subReq = NULL;
-	armac = NULL;
-	ar = NULL; mac = NULL;
-
-
-	try {
-		cout << "Doing newSession... ";
-		ssrc->newSession();
-		cout << "Ok! SessionID=\"" << ssrc->getSessionId() << "\"";
-		cout << " PublisherID=\"" << ssrc->getPublisherId() << "\"" << endl;
-		cout << "Doing publish... ";
+	try {	ssrc->newSession();
 		ssrc->publish(pubReq);
-		cout << "Ok!" << endl;;
-		cout << "Doing endSession... ";
 		ssrc->endSession();
-		cout << "Ok!" << endl;
-
-		// catch some possible errors
-	} catch (CommunicationError e) {
-		cerr << "CommunicationError: ";
-		cerr << e.getMessage() << endl;
+	} catch (IfmapError e) {
+		cerr << e << endl;
 	} catch (ErrorResultError e) {
-		cerr << "IF-MAP ErrorResult" << endl;
-		cerr << "   " << e.getErrorCodeString() << endl;
-		cerr << "   " << e.getErrorString() << endl;
-	} catch (XmlMarshalError e) {
-		cerr << "XmlMarshalError: ";
-		cerr << e.getMessage() << endl;
-	} catch (XmlUnmarshalError e) {
-		cerr << "XmlUnmarshalError: ";
-		cerr << e.getMessage() << endl;
+		cerr << e << endl;
 	}
 
-	// delete the request and all childs that have been added
 	delete pubReq;
-
-	// delete the ssrc
 	delete ssrc;
 
 	return 0;
