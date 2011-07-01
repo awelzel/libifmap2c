@@ -28,6 +28,7 @@ ADD_EXECUTABLE(test-poll-endsession test-poll-endsession.cpp)
 ADD_EXECUTABLE(test-poll-twice test-poll-twice.cpp)
 ADD_EXECUTABLE(test-poll-results-too-big test-poll-results-too-big.cpp)
 ADD_EXECUTABLE(test-search-result-too-big test-search-result-too-big.cpp)
+ADD_EXECUTABLE(test-subscription-too-big test-subscription-too-big.cpp)
 
 TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(test-poll-endsession  ${LIBIFMAP2C_LIBRARIES} common
@@ -37,4 +38,6 @@ TARGET_LINK_LIBRARIES(test-poll-twice ${LIBIFMAP2C_LIBRARIES} common
 TARGET_LINK_LIBRARIES(test-poll-results-too-big ${LIBIFMAP2C_LIBRARIES}
 	common)
 TARGET_LINK_LIBRARIES(test-search-result-too-big ${LIBIFMAP2C_LIBRARIES}
+	common)
+TARGET_LINK_LIBRARIES(test-subscription-too-big ${LIBIFMAP2C_LIBRARIES}
 	common)
