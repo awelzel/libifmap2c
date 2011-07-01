@@ -51,8 +51,7 @@ LibXml2Marshaller::marshal(XmlMarshalable *const root)
 	
 	xmlChar *tmp;
 
-	xmlDocDumpFormatMemory(doc, &tmp,
-			&(ret.length), 1);
+	xmlDocDumpMemory(doc, &tmp, &ret.length);
 
 
 	// allocate new memory for the dumped document
