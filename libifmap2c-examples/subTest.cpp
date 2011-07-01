@@ -76,7 +76,7 @@ static void examinePollResult(PollResult *const pollRes)
 
 	cout << "SearchResults: " << list.size() << endl;
 	for (curSr = *it; it != end; curSr = *(++it)) {
-		cout << "Subscription: " << curSr->getSearchResultName() << endl;
+		cout << "Subscription: " << curSr->getName() << endl;
 		rList = curSr->getResultItems();
 		// cout << "We have " << rList.size() << " result items in here" << endl;
 		rIt = rList.begin();
@@ -91,7 +91,7 @@ static void examinePollResult(PollResult *const pollRes)
 	end = list.end();
 	cout << "UpdateResults: " << list.size() << endl;
 	for (curSr = *it; it != end; curSr = *(++it)) {
-		cout << "Subscription: " << curSr->getSearchResultName() << endl;
+		cout << "Subscription: " << curSr->getName() << endl;
 		rList = curSr->getResultItems();
 		// cout << "We have " << rList.size() << " result items in here" << endl;
 		rIt = rList.begin();
@@ -106,7 +106,7 @@ static void examinePollResult(PollResult *const pollRes)
 	end = list.end();
 	cout << "DeleteResults: " << list.size() << endl;
 	for (curSr = *it; it != end; curSr = *(++it)) {
-		cout << "Subscription: " << curSr->getSearchResultName() << endl;
+		cout << "Subscription: " << curSr->getName() << endl;
 		rList = curSr->getResultItems();
 		//cout << "We have " << rList.size() << " result items in here" << endl;
 		rIt = rList.begin();
@@ -121,7 +121,7 @@ static void examinePollResult(PollResult *const pollRes)
 	end = list.end();
 	cout << "NotifyResults: " << list.size() << endl;
 	for (curSr = *it; it != end; curSr = *(++it)) {
-		cout << "Subscription: " << curSr->getSearchResultName() << endl;
+		cout << "Subscription: " << curSr->getName() << endl;
 		rList = curSr->getResultItems();
 		// cout << "We have " << rList.size() << " result items in here" << endl;
 		rIt = rList.begin();
