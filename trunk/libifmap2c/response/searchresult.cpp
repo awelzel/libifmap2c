@@ -30,7 +30,7 @@ using namespace std;
 namespace ifmap2c {
 
 SearchResult::SearchResult(const string& name) :
-	_searchResultName(name)
+	_name(name)
 { }
 
 SearchResult::~SearchResult()
@@ -57,9 +57,9 @@ SearchResult::getResultItems(void) const
 }
 
 const string&
-SearchResult::getSearchResultName(void) const
+SearchResult::getName(void) const
 {
-	return _searchResultName;
+	return _name;
 }
 
 RILIST

@@ -39,7 +39,7 @@ public:
 
 	const std::list<ResultItem *>& getResultItems(void) const;
 
-	const std::string& getSearchResultName(void) const;
+	const std::string& getName(void) const;
 
 	/**
 	 * Search the list of ResultItems in the SearchResult for one
@@ -60,7 +60,7 @@ public:
 
 private:
 	std::list<ResultItem *> _resultItems;
-	std::string _searchResultName;
+	std::string _name;
 
 };
 
