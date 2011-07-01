@@ -24,8 +24,8 @@
 
 
 /*
- * Check if running endSession while a poll is pending lead to an
- * EndSessionResult Exception.
+ * Check if running endSession while a poll is pending leads to an
+ * EndSessionResult Exception from the ARC::poll() call.
  */
 
 #include <iostream>
