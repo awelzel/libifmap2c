@@ -76,6 +76,11 @@ ErrorResultError::getErrorString() const
 {
 	return _errorString;
 }
+const std::string&
+ErrorResultError::getName() const
+{
+	return _name;
+}
 
 ostream& operator<<(ostream& output, const ErrorResultError& err)
 {
