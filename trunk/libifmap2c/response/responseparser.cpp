@@ -674,14 +674,16 @@ ResponseParser::createErrorResult(XmlMarshalable *const err)
 	XmlMarshalable *errStrEle = NULL;
 	string errCodeString;
 	string errString;
+	string errName;
 
 	CSTRPLISTIT it = err->getXmlAttributes().begin();
 	CSTRPLISTIT end = err->getXmlAttributes().end();
 
 	for (/* see above */; it != end; it++) {
-		if (!it->first.compare(ERRORCODE_ATTR_NAME)) {
+		if (!it->first.compare(ERRORCODE_ATTR_NAME))
 			errCodeString = it->second;
-		}
+		else if (!it->first.compare(ERRORSUBSCRIPTON_ATTR_NAME))
+			errName = it->second;
 	}
 
 	errStrEle = getChild(err, ERRORSTRING_ELEMENT_NAME,
@@ -717,7 +719,7 @@ ResponseParser::createErrorResult(XmlMarshalable *const err)
 		errCode = SystemError;
 	}
 
-	return new ErrorResultError(errCode, errString);
+	return new ErrorResultError(errCode, errString, errName);
 }
 
 
