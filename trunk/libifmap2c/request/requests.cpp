@@ -74,6 +74,14 @@ Requests::createPublishUpdate(const XMLMLIST& metadata,
 	return PublishUpdate::createPublishUpdate(metadata, i1, lTime, i2);
 }
 
+PublishUpdate *
+Requests::createPublishUpdate(const XMLMLIST& mdlist,
+			Identifier *const i1,
+			Identifier *const i2,
+			LifeTimeType lTime)
+{
+	return createPublishUpdate(mdlist, i1, lTime, i2);
+}
 
 
 PublishUpdate*
@@ -84,7 +92,15 @@ Requests::createPublishUpdate(XmlMarshalable *const metadata,
 {
 	return PublishUpdate::createPublishUpdate(metadata, i1, lTime, i2);
 }
-
+PublishUpdate *
+Requests::createPublishUpdate(
+			XmlMarshalable *const md,
+			Identifier *const i1,
+			Identifier *const i2,
+			LifeTimeType ltime)
+{
+	return createPublishUpdate(md, i1, ltime, i2);
+}
 
 
 PublishDelete *

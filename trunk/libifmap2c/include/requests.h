@@ -74,30 +74,49 @@ public:
 	 * @param reqs list of PublishElement objects
 	 * 	(PublishUpdate, PublishDelete or PublishNotify)
 	 */
-	static PublishRequest *createPublishReq(const std::list<PublishElement *>& reqs);
+	static PublishRequest *createPublishReq(
+			const std::list<PublishElement *>& reqs);
 
 	/**
 	 * Create a publish request object.
 	 *
 	 * @param req PublishElement object
-	 * 	(PublishUpdate, PublishDelete or PublishNotify)
+	 *        (PublishUpdate, PublishDelete or PublishNotify)
 	 */
-	static PublishRequest *createPublishReq(PublishElement *const  req);
+	static PublishRequest *createPublishReq(
+			PublishElement *const  req);
 
 	/**
 	 * Create a publish update object.
 	 *
-	 * @param mdlist a list of metadata objects associated with this update
+	 * @param mdlist a list of metadata objects associated with this
+	 *        update
 	 * @param i1 first identifier object
 	 * @param ltime lifetime of the metadata
 	 * @param i2 second identifier object (link)
 	 */
-	static PublishUpdate *createPublishUpdate(const std::list<XmlMarshalable *>& mdlist,
+	static PublishUpdate *createPublishUpdate(
+			const std::list<XmlMarshalable *>& mdlist,
 			Identifier *const i1,
 			LifeTimeType lTime = session,
 			Identifier *const i2 = NULL);
 
 	/**
+	 * Create a publish update object containing a link.
+	 *
+	 * @param mdlist a list of metadata objects associated with this
+	 *        update
+	 * @param i1 first identifier object
+	 * @param i2 second identifier object
+	 * @param ltime lifetime of the metadata
+	 */
+	static PublishUpdate *createPublishUpdate(
+			const std::list<XmlMarshalable *>& mdlist,
+			Identifier *const i1,
+			Identifier *const i2,
+			LifeTimeType lTime = session);
+
+	/**
 	 * Create a publish update object.
 	 *
 	 * @param md a single metadata object associated with this update
@@ -105,37 +124,56 @@ public:
 	 * @param ltime lifetime of the metadata
 	 * @param i2 second identifier object (link)
 	 */
-	static PublishUpdate *createPublishUpdate(XmlMarshalable *const md,
+	static PublishUpdate *createPublishUpdate(
+			XmlMarshalable *const md,
 			Identifier *const i1,
 			LifeTimeType ltime = session,
 			Identifier *const i2 = NULL);
+	
+	/**
+	 * Create a publish update object containing a link.
+	 *
+	 * @param md a single metadata object associated with this update
+	 * @param i1 first identifier object
+	 * @param ltime lifetime of the metadata
+	 * @param i2 second identifier object (link)
+	 */
+	static PublishUpdate *createPublishUpdate(
+			XmlMarshalable *const md,
+			Identifier *const i1,
+			Identifier *const i2,
+			LifeTimeType ltime = session);
 
 
 	/**
 	 * Create a publish delete object.
 	 *
-	 * If you create a publish delete object, be aware that if namespace
-	 * prefixes are used in the filter, e.g. "meta:role", the corresponding
-	 * namespace must be defined somewhere in the request.
-	 * Use addXmlNamespaceDefinition() on the returned object to achieve
-	 * this.
+	 * If you create a PublishDelete object, be aware that if
+	 * namespace prefixes are used in the filter, e.g. "meta:role",
+	 * the corresponding namespace must be defined somewhere in
+	 * the request.
+	 * Use addXmlNamespaceDefinition() on the returned object to
+	 * achieve this.
 	 *
-	 * @param filter filterstring, use FILTER_MATCH_ALL or FILTER_MATCH_NOTHING,
-	 * 		 when this behaviour is wanted
+	 * @param filter filterstring, use FILTER_MATCH_ALL or
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
 	 * @param i1 first identifier object
 	 * @param i2 first identifier object (link)
 	 */
-	static PublishDelete *createPublishDelete(const char *const filter,
+	static PublishDelete *createPublishDelete(
+			const char *const filter,
 			Identifier *const i1,
 			Identifier *const i2 = NULL);
 	/**
 	 * Create a publish notify object.
 	 *
-	 * @param mdlist a list of metadata objects associated with this update
+	 * @param mdlist a list of metadata objects associated with this
+	 *        update
 	 * @param i1 first identifier object
 	 * @param i2 second identifier object (link)
 	 */
-	static PublishNotify *createPublishNotify(const std::list<XmlMarshalable *>& mdlist,
+	static PublishNotify *createPublishNotify(
+			const std::list<XmlMarshalable *>& mdlist,
 			Identifier *const i1,
 			Identifier *const i2 = NULL);
 
@@ -146,25 +184,27 @@ public:
 	 * @param i1 first identifier object
 	 * @param i2 second identifier object (link)
 	 */
-	static PublishNotify *createPublishNotify(XmlMarshalable *const metadata,
+	static PublishNotify *createPublishNotify(
+			XmlMarshalable *const metadata,
 			Identifier *const i1,
 			Identifier *const i2 = NULL);
-
 
 	/**
 	 * Create a search request object.
 	 *
 	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
-	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
-	 * 		   maximum depth
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not
+	 *        add a maximum depth
 	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
-	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
-	 * 			to not add a maximum result size
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use
+	 *        SEARCH_NO_MAX_RESULT_SIZE to not add a maximum result
+	 *        size
 	 * @param i1 identifier object where the search will start
 	 */
-	static SearchRequest *createSearchReq(const char *const matchLinksFilter,
+	static SearchRequest *createSearchReq(
+			const char *const matchLinksFilter,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
@@ -173,19 +213,21 @@ public:
 	 * Create a search request object.
 	 *
 	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
-	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
-	 * 		   maximum depth
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not
+	 *        add a maximum depth
 	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
-	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
-	 * 			to not add a maximum result size
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use
+	 *        SEARCH_NO_MAX_RESULT_SIZE to not add a maximum result
+	 *        size
 	 * @param terminalIdent terminal identifiers as string, separated
-	 * 			by commas, use SEARCH_NO_TERMINAL_IDENTIFIERS
-	 * 			to not add the terminal identifiers attribute
+	 *        by commas, use SEARCH_NO_TERMINAL_IDENTIFIERS to not add
+	 *        the terminal identifiers attribute
 	 * @param i1 identifier object where the search will start
 	 */
-	static SearchRequest *createSearchReq(const char *const matchLinksFilter,
+	static SearchRequest *createSearchReq(
+			const char *const matchLinksFilter,
 			const int maxDepth,
 			const char *const resultFilter,
 			const int maxResultSize,
@@ -207,21 +249,22 @@ public:
 	 * @param sub SubscribeElement object
 	 * 	      (SubscribeUpdate, SubscribeDelete)
 	 */
-	static SubscribeRequest *createSubscribeReq(SubscribeElement *const sub);
-
+	static SubscribeRequest *createSubscribeReq(
+			SubscribeElement *const sub);
 
 	/**
 	 * Create a subscribe update object.
 	 *
 	 * @param name name of the subscription
 	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
-	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
-	 * 		   maximum depth
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not
+	 *        add a maximum depth
 	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
-	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
-	 * 			to not add a maximum result size
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use
+	 *        SEARCH_NO_MAX_RESULT_SIZE to not add a maximum result
+	 *        size
 	 * @param i1 identifier object where the search will start
 	 */
 	static SubscribeUpdate *createSubscribeUpdate(
@@ -237,15 +280,17 @@ public:
 	 *
 	 * @param name name of the subscription
 	 * @param matchLinksFilter filter string, use FILTER_MATCH_ALL or
-	 * 			   FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not add a
-	 * 		   maximum depth
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxDepth maximum depth, use SEARCH_NO_MAX_DEPTH to not
+	 *        add a maximum depth
 	 * @param resultFilter filter string, use FILTER_MATCH_ALL or
-	 * 		       FILTER_MATCH_NOTHING, when this behaviour is wanted
-	 * @param maxResultSize maximum result size, use SEARCH_NO_MAX_RESULT_SIZE
+	 *        FILTER_MATCH_NOTHING, when this behaviour is wanted
+	 * @param maxResultSize maximum result size, use
+	 *        SEARCH_NO_MAX_RESULT_SIZE to not add a maximum result
+	 *        size
 	 * @param terminalIdent terminal-identifier-type as string, use
-	 * 			SEARCH_NO_TERMINAL_IDENTIFIERS if this
-	 * 			field should not be set.
+	 *        SEARCH_NO_TERMINAL_IDENTIFIERS if this field should not
+	 *        be set.
 	 * @param i1 identifier object where the search will start
 	 */
 	static SubscribeUpdate *createSubscribeUpdate(
@@ -261,7 +306,8 @@ public:
 	 *
 	 * @param name name of the subscription
 	 */
-	static SubscribeDelete *createSubscribeDelete(std::string const& name);
+	static SubscribeDelete *createSubscribeDelete(
+			std::string const& name);
 
 	/**
 	 * Used internally, not to be used by users of the library.
