@@ -29,28 +29,28 @@ using namespace std;
 
 namespace ifmap2c {
 
-SubscribeRequest::SubscribeRequest(const list<SubSubscribe *>& subList) :
+SubscribeRequest::SubscribeRequest(const list<SubscribeElement *>& subList) :
 		BasicXmlMarshalable(SUBSCRIBE_ELEMENT_NAME, EMPTY_VALUE,
 				IFMAP_OPERATION_NSPAIR)
 {
-	list<SubSubscribe *>::const_iterator it = subList.begin();
-	list<SubSubscribe *>::const_iterator end = subList.end();
+	list<SubscribeElement *>::const_iterator it = subList.begin();
+	list<SubscribeElement *>::const_iterator end = subList.end();
 
 	for (/* */; it != end; it++)
 		addXmlChild(*it);
 
 }
 SubscribeRequest *
-SubscribeRequest::createSubscribeRequest(const std::list<SubSubscribe *>& subList)
+SubscribeRequest::createSubscribeRequest(const std::list<SubscribeElement *>& subList)
 {
 	return new SubscribeRequest(subList);
 
 }
 
 SubscribeRequest *
-SubscribeRequest::createSubscribeRequest(SubSubscribe *const subreq)
+SubscribeRequest::createSubscribeRequest(SubscribeElement *const subreq)
 {
-	list<SubSubscribe *> subList;
+	list<SubscribeElement *> subList;
 	subList.push_back(subreq);
 	return createSubscribeRequest(subList);
 }

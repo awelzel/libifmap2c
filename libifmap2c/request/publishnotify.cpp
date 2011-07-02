@@ -31,7 +31,7 @@ namespace ifmap2c {
 PublishNotify::PublishNotify(const XMLMLIST& mlist,
 		Identifier *const i1,
 		Identifier *const i2) :
-		SubPublish(PUBLISH_NOTIFY_ELEMENT_NAME, i1, i2)
+		PublishElement(PUBLISH_NOTIFY_ELEMENT_NAME, i1, i2)
 {
 	BasicXmlMarshalable *metadatachild = new BasicXmlMarshalable(
 			METADATA_LIST_ELEMENT_NAME, EMPTY_VALUE,

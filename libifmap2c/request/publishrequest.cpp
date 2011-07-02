@@ -31,25 +31,25 @@ using namespace std;
 namespace ifmap2c {
 
 PublishRequest *
-PublishRequest::createPublishRequest(const std::list<SubPublish *>& rList)
+PublishRequest::createPublishRequest(const std::list<PublishElement *>& rList)
 {
 	return new PublishRequest(rList);
 }
 
 PublishRequest *
-PublishRequest::createPublishRequest(SubPublish *const subPublishRequest)
+PublishRequest::createPublishRequest(PublishElement *const subPublishRequest)
 {
-	list<SubPublish *> rList;
+	list<PublishElement *> rList;
 	rList.push_back(subPublishRequest);
 	return new PublishRequest(rList);
 }
 
-PublishRequest::PublishRequest(const list<SubPublish *>& rList) :
+PublishRequest::PublishRequest(const list<PublishElement *>& rList) :
 	BasicXmlMarshalable(PUBLISH_ELEMENT_NAME, EMPTY_VALUE,
 			IFMAP_OPERATION_NSPAIR)
 {
-	list<SubPublish *>::const_iterator it = rList.begin();
-	list<SubPublish *>::const_iterator end = rList.end();
+	list<PublishElement *>::const_iterator it = rList.begin();
+	list<PublishElement *>::const_iterator end = rList.end();
 
 	for (/* */; it != end; it++)
 		addXmlChild(*it);

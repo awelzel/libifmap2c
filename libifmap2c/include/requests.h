@@ -36,11 +36,11 @@
 #include "purgepublisherrequest.h"
 #include "renewsessionrequest.h"
 #include "searchrequest.h"
-#include "subpublish.h"
+#include "publishelement.h"
 #include "subscribedelete.h"
 #include "subscriberequest.h"
 #include "subscribeupdate.h"
-#include "subsubscribe.h"
+#include "subscribeelement.h"
 #include "xmlmarshalable.h"
 
 namespace ifmap2c {
@@ -71,18 +71,18 @@ public:
 	/**
 	 * Create a publish request object.
 	 *
-	 * @param reqs list of SubPublish objects
+	 * @param reqs list of PublishElement objects
 	 * 	(PublishUpdate, PublishDelete or PublishNotify)
 	 */
-	static PublishRequest *createPublishReq(const std::list<SubPublish *>& reqs);
+	static PublishRequest *createPublishReq(const std::list<PublishElement *>& reqs);
 
 	/**
 	 * Create a publish request object.
 	 *
-	 * @param req SubPublish object
+	 * @param req PublishElement object
 	 * 	(PublishUpdate, PublishDelete or PublishNotify)
 	 */
-	static PublishRequest *createPublishReq(SubPublish *const  req);
+	static PublishRequest *createPublishReq(PublishElement *const  req);
 
 	/**
 	 * Create a publish update object.
@@ -195,19 +195,19 @@ public:
 	/**
 	 * Create a subscribe request object.
 	 *
-	 * @param srList list of SubSubscribe objects
+	 * @param srList list of SubscribeElement objects
 	 * 		 (SubscribeUpdate, SubscribeDelete)
 	 */
 	static SubscribeRequest *createSubscribeReq(
-			const std::list<SubSubscribe *> srList);
+			const std::list<SubscribeElement *> srList);
 
 	/**
 	 * Create a subscribe request object.
 	 *
-	 * @param sub SubSubscribe object
+	 * @param sub SubscribeElement object
 	 * 	      (SubscribeUpdate, SubscribeDelete)
 	 */
-	static SubscribeRequest *createSubscribeReq(SubSubscribe *const sub);
+	static SubscribeRequest *createSubscribeReq(SubscribeElement *const sub);
 
 
 	/**

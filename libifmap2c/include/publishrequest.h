@@ -26,7 +26,7 @@
 #define PUBLISHREQUEST_H_
 
 #include "identifier.h"
-#include "subpublish.h"
+#include "publishelement.h"
 
 #include <list>
 
@@ -36,15 +36,15 @@ class PublishRequest : public BasicXmlMarshalable {
 
 public:
 	static PublishRequest *
-	createPublishRequest(const std::list<SubPublish *>& rList);
+	createPublishRequest(const std::list<PublishElement *>& rList);
 
 	static PublishRequest *
-	createPublishRequest(SubPublish *const subPublishRequest);
+	createPublishRequest(PublishElement *const subPublishRequest);
 
 	~PublishRequest();
 
 private:
-	PublishRequest(const std::list<SubPublish *>& rList);
+	PublishRequest(const std::list<PublishElement *>& rList);
 
 };
 

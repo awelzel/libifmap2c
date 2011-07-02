@@ -25,13 +25,13 @@
 #ifndef SUBSCRIBEDELETE_H_
 #define SUBSCRIBEDELETE_H_
 
-#include "subsubscribe.h"
+#include "subscribeelement.h"
 
 #include <string>
 
 namespace ifmap2c {
 
-class SubscribeDelete : public SubSubscribe {
+class SubscribeDelete : public SubscribeElement {
 
 public:
 	virtual ~SubscribeDelete() { }

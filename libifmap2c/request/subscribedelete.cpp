@@ -28,7 +28,7 @@
 namespace ifmap2c {
 
 SubscribeDelete::SubscribeDelete(const std::string& name) :
-	SubSubscribe(SUBSCRIBE_DELETE_ELEMENT_NAME, name)
+	SubscribeElement(SUBSCRIBE_DELETE_ELEMENT_NAME, name)
 { }
 
 SubscribeDelete *

@@ -25,11 +25,11 @@
 #ifndef DELETEREQUEST_H_
 #define DELETEREQUEST_H_
 
-#include "subpublish.h"
+#include "publishelement.h"
 
 namespace ifmap2c {
 
-class PublishDelete : public SubPublish {
+class PublishDelete : public PublishElement {
 
 public:
 

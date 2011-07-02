@@ -51,6 +51,7 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	request/newsessionrequest.cpp
 	request/pollrequest.cpp
 	request/publishdelete.cpp
+	request/publishelement.cpp
 	request/publishnotify.cpp
 	request/publishrequest.cpp
 	request/publishupdate.cpp
@@ -58,11 +59,10 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	request/renewsessionrequest.cpp
 	request/requests.cpp
 	request/searchrequest.cpp
-	request/subpublish.cpp
 	request/subscribedelete.cpp
+	request/subscribeelement.cpp
 	request/subscriberequest.cpp
 	request/subscribeupdate.cpp
-	request/subsubscribe.cpp
 	response/errorresulterror.cpp
 	response/ifmaperror.cpp
 	response/newsessionresult.cpp
@@ -118,6 +118,7 @@ INSTALL(FILES
 	include/pollrequest.h
 	include/pollresult.h
 	include/publishdelete.h
+	include/publishelement.h
 	include/publishnotify.h
 	include/publishrequest.h
 	include/publishupdate.h
@@ -132,11 +133,10 @@ INSTALL(FILES
 	include/searchresult.h
 	include/soap.h
 	include/ssrc.h
-	include/subpublish.h
 	include/subscribedelete.h
+	include/subscribeelement.h
 	include/subscriberequest.h
 	include/subscribeupdate.h
-	include/subsubscribe.h
 	include/tcgifmapbase.h
 	include/tcgifmapmeta.h
 	include/xmlerrors.h
