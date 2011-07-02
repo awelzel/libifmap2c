@@ -55,7 +55,10 @@ public:
 
 	/**
 	 * Used if the metadata is to be used in
-	 * publishNotify, needs no cardinality.
+	 * publishNotify, this sets the cardinality
+	 * to singleValue. If you do not like the
+	 * idea use the other UserMetadata() constructor
+	 * and set cardinality explicitly to multiValue.
 	 */
 	UserMetadata(const std::string& elName,
 			const std::string& prefix,

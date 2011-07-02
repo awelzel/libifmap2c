@@ -250,6 +250,10 @@ UserMetadata::UserMetadata(const string& elName,
 			const string &href,
 			const string &elValue) :
 	BasicXmlMarshalable(elName, elValue, STRP(prefix, href))
-{ }
+{
+	STRP cardattr = STRP(META_CARDINALITY_ATTR_NAME,
+			Metadata::cardinalityNames[single]);
+	addXmlAttribute(cardattr);
+}
 
 } // namespace
