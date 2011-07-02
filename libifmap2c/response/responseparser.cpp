@@ -35,12 +35,11 @@ using namespace std;
 namespace ifmap2c {
 
 
-//TODO: If we gave a max poll result size in the request, we have
-//      to get one back!
 NewSessionResult *
 ResponseParser::createNewSessionResult(XmlMarshalable *const env)
 {
-	string pId, sId, maxPs;
+	string pId, sId;
+	int maxPollResSize = NO_MAX_POLL_RES_SIZE;
 	bool pIdFound = false, sIdFound = false;
 	XmlMarshalable *newSessionResult = locateNewSessionResultElement(env);
 	throwIfNull(newSessionResult, NEWSESSIONRESULT_ELEMENT_NAME);
@@ -55,8 +54,12 @@ ResponseParser::createNewSessionResult(XmlMarshalable *const env)
 		} else if (isAttrWithName(*it, SESSIONID_ATTR_NAME)) {
 			sId = it->second;
 			sIdFound = true;
-		} else if (isAttrWithName(*it, MAX_POLL_RES_SIZE_ATTR_NAME)) {
-			maxPs = it->second;
+		} else if (isAttrWithName(*it,
+					MAX_POLL_RES_SIZE_ATTR_NAME)) {
+			stringstream ss(it->second);
+			if (!(ss >> maxPollResSize))
+				throw ResponseParseError("Invalid"
+						"max-poll-result-size");
 		} else {
 			// unknown attribute
 		}
@@ -68,7 +71,7 @@ ResponseParser::createNewSessionResult(XmlMarshalable *const env)
 	if(!sIdFound)
 		throw ResponseParseError("SessionId not found");
 
-	return new NewSessionResult(sId, pId, maxPs);
+	return new NewSessionResult(sId, pId, maxPollResSize);
 }
 
 

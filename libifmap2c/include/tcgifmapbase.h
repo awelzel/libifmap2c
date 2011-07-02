@@ -67,6 +67,7 @@
 #define PUBLISHERID_ATTR_NAME		"ifmap-publisher-id"
 #define MAX_POLL_RES_SIZE_ATTR_NAME	"max-poll-result-size"
 
+#define NO_MAX_POLL_RES_SIZE		-1
 
 #define PUBLISH_ELEMENT_NAME		"publish"
 

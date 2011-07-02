@@ -22,8 +22,8 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ssrc.h"
 #include "arc.h"
+#include "ssrc.h"
 
 #include <iostream>
 
@@ -90,15 +90,23 @@ SSRC::getARC(void) {
 
 
 void
-SSRC::newSession(const string& maxPollResSize)
+SSRC::newSession(const int maxPollResSize)
 {
 	NewSessionRequest *nsreq = Requests::createNewSessionReq(maxPollResSize);
 	XmlMarshalable *reply = NULL;
 	NewSessionResult *nsres = NULL;
+	int maxPollResSizeRecv;
 
 	try {
 		reply = processMessage(nsreq);
 		nsres = ResponseParser::createNewSessionResult(reply);
+		maxPollResSizeRecv = nsres->getMaxPollResultSize();
+		
+		if (maxPollResSize != NO_MAX_POLL_RES_SIZE)
+			if (maxPollResSizeRecv == NO_MAX_POLL_RES_SIZE)
+				throw CommunicationError("Server did not"
+						" set max-poll-result-size"
+						" in newSessionResult");
 	} catch (...) {
 		// free the memory
 		if (reply)
@@ -111,7 +119,7 @@ SSRC::newSession(const string& maxPollResSize)
 
 	_currentSessionId = nsres->getSessionId();
 	_currentPublisherId = nsres->getPublisherId();
-	_currentMaxPollResSize = nsres->getMaxPollResultSize();
+	_currentMaxPollResSize = maxPollResSizeRecv;
 	delete nsreq;
 	delete reply;
 	delete nsres;
@@ -272,7 +280,7 @@ SSRC::getPublisherId(void) const
 
 
 
-const string&
+int
 SSRC::getMaxPollResultSize(void) const
 {
 	return _currentMaxPollResSize;

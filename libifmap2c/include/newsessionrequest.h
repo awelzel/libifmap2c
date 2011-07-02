@@ -33,10 +33,10 @@ class NewSessionRequest : public BasicXmlMarshalable {
 
 public:
 	static NewSessionRequest *createNewSessionRequest(
-			const std::string& maxPollResSize);
+			const int maxPollResSize);
 
 private:
-	NewSessionRequest(const std::string& maxPollResSize);
+	NewSessionRequest(const int maxPollResSize);
 };
 
 } // namespace

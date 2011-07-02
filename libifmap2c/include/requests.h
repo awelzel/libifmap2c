@@ -56,7 +56,7 @@ public:
 	 * Used internally, not to be used by users of the library.
 	 */
 	static NewSessionRequest *createNewSessionReq(
-			const std::string& maxPollResSize = "");
+			const int maxPollResSize = NO_MAX_POLL_RES_SIZE);
 
 	/**
 	 * Used internally, not to be used by users of the library.
