@@ -34,20 +34,29 @@ class ARC : public IfmapCommunication {
 
 public:
 
-	virtual ~ARC();
 
 	/**
 	 * Start a poll request. This method may throw a EndSessionResult
-	 * object, if the underlying IF-MAP session is closed while the poll
-	 * call is pending.
+	 * object if the underlying IF-MAP session is closed while the poll
+	 * was pending.
+	 *
+	 * @return a pointer to a PollResult, the caller is responsible
+	 *         for freeing the memory.
+	 * @throws IfmapException if communication, marshalling or
+	 *         unmarshalling fail.
+	 * @throws ErrorResultError if the server returns an errorResult.
+	 * @throws EndSessionResult if the session was closed while a poll
+	 *         was pending.
 	 */
 	PollResult *poll(void);
 
 	const std::string& getSessionId(void) const;
+
 	const std::string& getPublisherId(void) const;
-	const std::string& getMaxPollResultSize(void) const;
 
+	int getMaxPollResultSize(void) const;
 
+	virtual ~ARC();
 private:
 	friend class SSRC;
 	SSRC *_ssrc;
@@ -65,7 +74,5 @@ private:
 			const std::string& capath,
 			SSRC *const ssrc);
 };
-
 }
 #endif /* ARC_H_ */
-

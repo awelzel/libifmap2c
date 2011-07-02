@@ -38,7 +38,6 @@ class ARC;
  */
 class SSRC : public IfmapCommunication {
 
-
 public:
 
 	/**
@@ -113,7 +112,7 @@ public:
 	 * \throw IfmapError
 	 * \throw ErrorResultError
 	 */
-	void newSession(const std::string& maxPollResSize = "");
+	void newSession(const int maxPollResSize = NO_MAX_POLL_RES_SIZE);
 
 	/**
 	 * Do a endSession operation.
@@ -224,7 +223,7 @@ public:
 
 	const std::string& getPublisherId(void) const;
 
-	const std::string& getMaxPollResultSize(void) const;
+	int getMaxPollResultSize(void) const;
 
 
 private:
@@ -241,7 +240,7 @@ private:
 
 	std::string _currentSessionId;
 	std::string _currentPublisherId;
-	std::string _currentMaxPollResSize;
+	int _currentMaxPollResSize;
 };
 
 } // namespace

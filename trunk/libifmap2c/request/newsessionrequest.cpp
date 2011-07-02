@@ -23,9 +23,10 @@
  */
 
 #include "newsessionrequest.h"
-#include "typedefs.h"
 #include "tcgifmapbase.h"
+#include "typedefs.h"
 
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -33,14 +34,14 @@ using namespace std;
 namespace ifmap2c {
 
 NewSessionRequest *
-NewSessionRequest::createNewSessionRequest(const string& maxPollResSize)
+NewSessionRequest::createNewSessionRequest(const int maxPollResSize)
 {
 	return new NewSessionRequest(maxPollResSize);
 }
 
 
 
-NewSessionRequest::NewSessionRequest(const string& maxPollResSize)
+NewSessionRequest::NewSessionRequest(const int maxPollResSize)
 	: BasicXmlMarshalable(
 			NEWSESSION_ELEMENT_NAME,
 			EMPTY_VALUE,
@@ -48,8 +49,13 @@ NewSessionRequest::NewSessionRequest(const string& maxPollResSize)
 
 
 {
-	if (maxPollResSize.size() > 0)
-		addXmlAttribute(STRP(MAX_POLL_RES_SIZE_ATTR_NAME, maxPollResSize));
+	if (maxPollResSize != NO_MAX_POLL_RES_SIZE
+			&& maxPollResSize >= 0) {
+		stringstream ss;
+		ss << maxPollResSize;
+		STRP attr = STRP(MAX_POLL_RES_SIZE_ATTR_NAME, ss.str());
+		addXmlAttribute(attr);
+	}
 }
 
 } // namespace

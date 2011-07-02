@@ -34,17 +34,17 @@ class NewSessionResult {
 public:
 	NewSessionResult(const std::string& sId,
 			const std::string& pId,
-			const std::string& maxPs);
+			const int maxPollResSize);
 
 
 	const std::string& getSessionId() const;
 	const std::string& getPublisherId() const;
-	const std::string& getMaxPollResultSize() const;
+	int getMaxPollResultSize() const;
 
 private:
 	std::string _sessionId;
 	std::string _publisherId;
-	std::string _maxPollResultSize;
+	int _maxPollResultSize;
 };
 
 } // namespace

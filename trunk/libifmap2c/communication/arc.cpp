@@ -22,13 +22,6 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-/*
- * ARC.cpp
- *
- *  Created on: Oct 9, 2010
- *      Author: awelzel
- */
-
 #include "arc.h"
 
 using namespace std;
@@ -96,7 +89,7 @@ ARC::getPublisherId(void) const
 	return _ssrc->getPublisherId();
 }
 
-const string&
+int
 ARC::getMaxPollResultSize(void) const
 {
 	return _ssrc->getMaxPollResultSize();

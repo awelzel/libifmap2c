@@ -25,6 +25,7 @@
 #ifndef IFMAPCOMMUNICATION_H_
 #define IFMAPCOMMUNICATION_H_
 #include <string>
+
 #include "communicationerror.h"
 #include "ifmaperror.h"
 #include "lowlevelcommunication.h"
@@ -42,9 +43,24 @@ namespace ifmap2c {
 class IfmapCommunication {
 
 public:
+	/**
+	 * @return the current session-id or an empty string
+	 * if none is set.
+	 */
 	virtual const std::string& getSessionId(void) const = 0;
+
+	/**
+	 * @return the current publisher-id or an empty string
+	 * if none is set.
+	 */
 	virtual const std::string& getPublisherId(void) const = 0;
-	virtual const std::string& getMaxPollResultSize(void) const = 0;
+
+	/**
+	 * @eturn the current max-poll-result-size, or
+	 * NO_MAX_POLL_RES_SIZE if no max-poll-result size was
+	 * specified.
+	 */
+	virtual int getMaxPollResultSize(void) const = 0;
 
 	virtual ~IfmapCommunication();
 
@@ -96,7 +112,6 @@ private:
 	bool containsSessionId(XmlMarshalable *req);
 
 	XmlMarshalable *buildEnvelope();
-
 };
 
 } // namespace
