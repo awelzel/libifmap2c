@@ -129,17 +129,17 @@ main(int argc, char *argv[])
 
 
 
-	SubPublish *up1 = Requests::createPublishUpdate(simplesingle,
+	PublishElement *up1 = Requests::createPublishUpdate(simplesingle,
 			dev->clone());
-	SubPublish *up2 = Requests::createPublishUpdate(simplemulti,
+	PublishElement *up2 = Requests::createPublishUpdate(simplemulti,
 			ip->clone());
-	SubPublish *up3 = Requests::createPublishUpdate(simplemulti2,
+	PublishElement *up3 = Requests::createPublishUpdate(simplemulti2,
 			ip->clone());
-	SubPublish *up4 = Requests::createPublishUpdate(simplesingle2,
+	PublishElement *up4 = Requests::createPublishUpdate(simplesingle2,
 			dev->clone());
-	SubPublish *up5 = Requests::createPublishUpdate(singleipmac,
+	PublishElement *up5 = Requests::createPublishUpdate(singleipmac,
 			mac, session, ip->clone());
-	SubPublish *up6 = Requests::createPublishUpdate(multidevip,
+	PublishElement *up6 = Requests::createPublishUpdate(multidevip,
 			dev, session, ip);
 
 

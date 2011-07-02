@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 	char *url, *user, *pass, *capath;
 	SSRC *ssrc = NULL;
 	PublishRequest *pubReq = NULL;
-	SubPublish *subReq = NULL;
+	PublishElement *subReq = NULL;
 	XmlMarshalable *ardev = NULL;
 	Identifier *ar, *dev;
 

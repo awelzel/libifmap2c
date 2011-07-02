@@ -73,19 +73,19 @@ main(int argc, char *argv[])
 	IpAddress *ip = Identifiers::createIPv4("192.168.1.11");
 	MacAddress *mac = Identifiers::createMac("00:11:22:33:44:55");
 
-	SubPublish *up1 = Requests::createPublishUpdate(ipmac->clone(),
+	PublishElement *up1 = Requests::createPublishUpdate(ipmac->clone(),
 			ip->clone(),
 			session,
 			mac->clone());
-	SubPublish *up2 = Requests::createPublishUpdate(single->clone(), ip->clone());
-	SubPublish *up3 = Requests::createPublishUpdate(single, ip->clone());
-	SubPublish *del = Requests::createPublishDelete(FILTER_MATCH_ALL,
+	PublishElement *up2 = Requests::createPublishUpdate(single->clone(), ip->clone());
+	PublishElement *up3 = Requests::createPublishUpdate(single, ip->clone());
+	PublishElement *del = Requests::createPublishDelete(FILTER_MATCH_ALL,
 			ip->clone(), mac->clone());
-	SubPublish *up4 = Requests::createPublishUpdate(ipmac, ip,
+	PublishElement *up4 = Requests::createPublishUpdate(ipmac, ip,
 			session,
 			mac);
 
-	list<SubPublish *> list;
+	list<PublishElement *> list;
 	list.push_back(up2);
 	list.push_back(up3);
 	list.push_back(del);

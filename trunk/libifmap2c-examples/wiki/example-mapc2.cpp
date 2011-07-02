@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 
 	// create lists of PublishUpdate objects to be used
 	// in PublishRequest objets
-	list<SubPublish *> publishList1, publishList2, publishList3;
+	list<PublishElement *> publishList1, publishList2, publishList3;
 	publishList1.push_back(pubUpdate1);
 	publishList1.push_back(pubUpdate2);
 	publishList2.push_back(pubUpdate3);

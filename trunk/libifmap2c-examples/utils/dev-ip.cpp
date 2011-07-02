@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	url = user = pass = capath = NULL;
 	SSRC *ssrc = NULL;
 	PublishRequest *pubReq = NULL;
-	SubPublish *subReq = NULL;
+	PublishElement *subReq = NULL;
 	XmlMarshalable *devip = NULL;
 	Identifier *dev, *ip;
 

@@ -103,10 +103,10 @@ main(int argc, char *argv[])
 	XmlMarshalable *multi2 = new MultiValueMetadata2();
 	IpAddress *i1 = IpAddress::createIpv4Address("192.168.0.1");
 
-	SubPublish *sub1 = PublishUpdate::createPublishUpdate(single, i1->clone(), session);
-	SubPublish *sub2 = PublishUpdate::createPublishUpdate(multi, i1->clone(), session);
-	SubPublish *sub3 = PublishUpdate::createPublishUpdate(multi2, i1->clone(), session);
-	SubPublish *sub4 = PublishUpdate::createPublishUpdate(single2, i1, session);
+	PublishElement *sub1 = PublishUpdate::createPublishUpdate(single, i1->clone(), session);
+	PublishElement *sub2 = PublishUpdate::createPublishUpdate(multi, i1->clone(), session);
+	PublishElement *sub3 = PublishUpdate::createPublishUpdate(multi2, i1->clone(), session);
+	PublishElement *sub4 = PublishUpdate::createPublishUpdate(single2, i1, session);
 
 	PublishRequest *pr1 = PublishRequest::createPublishRequest(sub1);
 	PublishRequest *pr2 = PublishRequest::createPublishRequest(sub2);

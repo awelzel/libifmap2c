@@ -71,7 +71,7 @@ using namespace ifmap2c;
 #define AR_NUMBER		20
 
 // usec
-#define TIMEFACTOR		10
+#define TIMEFACTOR		0
 #define PDP_SLEEP		(500 * TIMEFACTOR)
 #define PDP_DHCP_SLEEP		(1000 * TIMEFACTOR)
 #define AR_SLEEP		(3000 * TIMEFACTOR)
@@ -100,7 +100,7 @@ pdpPublishInfo(SSRC *ssrc, Device *pdpDevice,
 		Device *switchTwoDevice,
 		IpAddress *switchTwoIp)
 {
-	list<SubPublish *> pubOps;
+	list<PublishElement *> pubOps;
 	XmlMarshalable *meta = Metadata::createDevIp();
 	PublishRequest *pubReq;
 
