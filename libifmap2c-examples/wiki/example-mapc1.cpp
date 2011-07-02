@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 			ip2, session, mac2);
 
 	// store the publishUpdate elements in a list
-	list<SubPublish *> publishList;
+	list<PublishElement *> publishList;
 	publishList.push_back(pubUpdate1);
 	publishList.push_back(pubUpdate2);
 

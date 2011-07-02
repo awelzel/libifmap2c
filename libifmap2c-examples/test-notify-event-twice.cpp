@@ -224,12 +224,12 @@ main(int argc, char *argv[])
 	list<XmlMarshalable *> events;
 	events.push_back(new SimpleEvent("event1"));
 	events.push_back(new SimpleEvent("event2"));
-	SubPublish *up1 = Requests::createPublishNotify(events, ip->clone());
+	PublishElement *up1 = Requests::createPublishNotify(events, ip->clone());
 	PublishRequest *pr1 = Requests::createPublishReq(up1);
 	
 	
 
-	list<SubPublish *> uplist;
+	list<PublishElement *> uplist;
 	uplist.push_back(Requests::createPublishNotify(new SimpleEvent(
 					"event1"), ip->clone()));
 	uplist.push_back(Requests::createPublishNotify(new SimpleEvent(
@@ -244,7 +244,7 @@ main(int argc, char *argv[])
 					"event2"), ip->clone()));
 
 
-	SubSubscribe *subcreate = Requests::createSubscribeUpdate(
+	SubscribeElement *subcreate = Requests::createSubscribeUpdate(
 			"sub1",
 			FILTER_MATCH_ALL,
 			0,

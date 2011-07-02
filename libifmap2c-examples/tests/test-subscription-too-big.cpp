@@ -69,7 +69,7 @@ main(int argc, char *argv[])
 	SubscribeRequest *sr = NULL;
 	SubscribeUpdate *su1 = NULL;
 	SubscribeUpdate *su2 = NULL;
-	list<SubSubscribe *> sulist;
+	list<SubscribeElement *> sulist;
 	PollResult *pres = NULL;
 	Identifier *ar;
 	XmlMarshalable *md;
