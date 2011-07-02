@@ -692,8 +692,8 @@ ResponseParser::createErrorResult(XmlMarshalable *const err)
 	errStrEle = getChild(err, ERRORSTRING_ELEMENT_NAME,
 			ERRORSTRING_ELEMENT_HREF);
 
-	throwIfNull(errStrEle, "errorString");
-	errString = errStrEle->getXmlElementValue();
+	if (errStrEle)
+		errString = errStrEle->getXmlElementValue();
 
 	// Oh god... FIXME
 	if (!errCodeString.compare(ErrorResultError::errorCodeStrings[AccessDenied])) {

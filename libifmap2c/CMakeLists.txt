@@ -23,7 +23,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(ifmap2c)
 
-add_definitions(-Os -Wall -Wextra -Werror)
+add_definitions(-Wall -Wextra -Werror -O2)
 
 FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(CURL)
