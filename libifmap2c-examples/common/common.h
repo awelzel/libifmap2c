@@ -31,9 +31,10 @@
 
 #define INDEPENDENT_USAGE_STRING						\
 		" [url user password capath]\n\n"				\
-		"You may also set the enviroment variables " IFMAP_URL		\
-		", " IFMAP_USER ",\n" IFMAP_PASSWORD " and " IFMAP_CAPATH	\
-		" instead of using the command line\nparameters."		\
+		"You may also set the enviroment variables " IFMAP_URL ", "	\
+		IFMAP_USER ",\n" IFMAP_PASSWORD " and " IFMAP_CAPATH " instead "\
+		"of using the command line\nparameters url, user, password and "\
+		"capath."
 
 
 void checkAndLoadParameters(
