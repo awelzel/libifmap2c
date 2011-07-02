@@ -27,7 +27,7 @@
  * metdata. Further, demonstrates a bit how to create user-specific
  * metadata
  *
- * This might give MAPS specific results, depending on whehter the
+ * This might give MAPS specific results, depending on whether the
  * MAPS really supports namespaces...
  */
 

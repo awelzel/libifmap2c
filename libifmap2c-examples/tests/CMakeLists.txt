@@ -30,11 +30,14 @@ ADD_EXECUTABLE(test-poll-results-too-big test-poll-results-too-big.cpp)
 ADD_EXECUTABLE(test-search-result-too-big test-search-result-too-big.cpp)
 ADD_EXECUTABLE(test-subscription-too-big test-subscription-too-big.cpp)
 ADD_EXECUTABLE(test-single-multi test-single-multi.cpp)
+ADD_EXECUTABLE(test-notify test-notify.cpp)
 
 TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(test-poll-endsession  ${LIBIFMAP2C_LIBRARIES} common
 	${CMAKE_THREAD_LIBS_INIT})
 TARGET_LINK_LIBRARIES(test-poll-twice ${LIBIFMAP2C_LIBRARIES} common
+	${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES(test-notify ${LIBIFMAP2C_LIBRARIES} common
 	${CMAKE_THREAD_LIBS_INIT})
 TARGET_LINK_LIBRARIES(test-poll-results-too-big ${LIBIFMAP2C_LIBRARIES}
 	common)
