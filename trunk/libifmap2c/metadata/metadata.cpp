@@ -30,7 +30,7 @@ using namespace std;
 
 namespace ifmap2c {
 
-std::string Metadata::cardinalityNames[] = {
+string Metadata::cardinalityNames[] = {
 	"singleValue",
 	"multiValue"
 };
@@ -105,9 +105,8 @@ Metadata::createRole(const string& name, const string& admDomain)
 
 
 XmlMarshalable *
-Metadata::createIpMac(const std::string& start,
-		const std::string& end,
-		const std::string& dhcp)
+Metadata::createIpMac(const string& start, const string& end,
+		const string& dhcp)
 {
 	XmlMarshalable *elem, *child;
 	elem = createMetadata(META_IPMAC_ELEMENT_NAME, META_IPMAC_CARDINALITY);
@@ -179,7 +178,7 @@ Metadata::createCapability(const string& name, const string& ad)
 }
 
 XmlMarshalable *
-Metadata::createDevAttr(const std::string& name)
+Metadata::createDevAttr(const string& name)
 {
 	XmlMarshalable *ret = createMetadata(META_DEV_ATTR_ELEMENT_NAME,
 			META_DEV_ATTR_CARDINALITY);
@@ -234,5 +233,23 @@ Metadata::createDiscoveredBy(void)
 	return createMetadata(META_DISCBY_ELEMENT_NAME, META_DISCBY_CARDINALITY);
 }
 
+UserMetadata::UserMetadata(const string& elName,
+			const string &prefix,
+			const string &href,
+			CardinalityType card,
+			const string &elValue) :
+	BasicXmlMarshalable(elName, elValue, STRP(prefix, href))
+{
+	STRP cardattr = STRP(META_CARDINALITY_ATTR_NAME,
+			Metadata::cardinalityNames[card]);
+	addXmlAttribute(cardattr);
+}
+
+UserMetadata::UserMetadata(const string& elName,
+			const string &prefix,
+			const string &href,
+			const string &elValue) :
+	BasicXmlMarshalable(elName, elValue, STRP(prefix, href))
+{ }
 
 } // namespace
