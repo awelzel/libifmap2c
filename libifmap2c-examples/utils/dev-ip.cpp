@@ -37,7 +37,7 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete device ip"
+	cerr << "usage: " << prog << " update|delete dev ip"
 		INDEPENDENT_USAGE_STRING << endl;
 }
 
@@ -67,8 +67,8 @@ int main(int argc, char* argv[])
 
 	if (isUpdate(op)) {
 		devip = Metadata::createDevIp();
-		subReq = Requests::createPublishUpdate(devip, dev,
-				forever, ip);
+		subReq = Requests::createPublishUpdate(devip, dev, ip,
+				forever);
 	} else {
 		subReq = Requests::createPublishDelete(
 				"meta:device-ip",

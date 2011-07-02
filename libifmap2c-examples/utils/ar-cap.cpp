@@ -37,7 +37,7 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete arname capability"
+	cerr << "usage: " << prog << " update|delete ar capability"
 		INDEPENDENT_USAGE_STRING << endl;
 }
 
