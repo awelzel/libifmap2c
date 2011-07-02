@@ -35,12 +35,12 @@
 #include <libifmap2c/ssrc.h>
 #include <libifmap2c/arc.h>
 
-#include "common.h"
-
 extern "C" {
 	#include <pthread.h>
 	#include <unistd.h>
 }
+
+#include "common.h"
 
 using namespace std;
 using namespace ifmap2c;
