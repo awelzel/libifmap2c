@@ -216,7 +216,7 @@ ResultItem::addMetadata(XmlMarshalable *const md)
 
 
 const CXMLMLIST&
-ResultItem::getMetadataList(void) const
+ResultItem::getMetadata(void) const
 {
 	return _metadataList;
 }
