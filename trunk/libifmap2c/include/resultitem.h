@@ -66,7 +66,7 @@ public:
 
 	void addMetadata(XmlMarshalable *const md);
 
-	const std::list<XmlMarshalable *>& getMetadataList(void) const;
+	const std::list<XmlMarshalable *>& getMetadata(void) const;
 
 
 private:
