@@ -125,7 +125,7 @@ main(int argc, char *argv[])
 
 		pres = arc->poll();
 		if (pres->getSearchResults().size() != 2) {
-			cerr << "Bad searchResults count" << endl;
+			cerr << "Unexpected searchResults count" << endl;
 			goto clean;
 		}
 		delete pres;
@@ -133,12 +133,12 @@ main(int argc, char *argv[])
 		ssrc->publish(pr);
 		pres = arc->poll();
 		if (pres->getErrorResults().size() != 1) {
-			cerr << "Bad errorResuls count" << endl;
+			cerr << "Unexpected errorResuls count" << endl;
 			goto clean;
 		}
 
 		if (pres->getUpdateResults().size() != 1) {
-			cerr << "Bad updateResuls count" << endl;
+			cerr << "Unexpected updateResuls count" << endl;
 			goto clean;
 		}
 
@@ -154,7 +154,7 @@ main(int argc, char *argv[])
 		ssrc->publish(pr);
 		pres = arc->poll();
 		if (pres->getUpdateResults().size() != 1) {
-			cerr << "Bad updateResuls count" << endl;
+			cerr << "Unexpected updateResuls count" << endl;
 			goto clean;
 		}
 		
@@ -167,7 +167,7 @@ main(int argc, char *argv[])
 		if (pres->getErrorResults().size() != 0
 			|| pres->getSearchResults().size() != 0
 			|| pres->getDeleteResults().size() != 0) {
-			cerr << "Bad total poll result" << endl;
+			cerr << "Unexpected final poll result" << endl;
 		}
 		delete pres;
 clean:

@@ -41,6 +41,8 @@ extern "C" {
 
 #include "common.h"
 
+#define SLEEPTIME 250000
+
 using namespace std;
 using namespace ifmap2c;
 
@@ -98,7 +100,7 @@ main(int argc, char *argv[])
 		// some time to do it's work. This may not work
 		// on other systems than Linux. usleep(3) on linux
 		// says it will makes the calling thread sleep
-		usleep(100000);
+		usleep(SLEEPTIME);
 		ssrc->endSession();
 		pthread_join(pollThread, &tRet);
 

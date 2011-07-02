@@ -49,7 +49,7 @@ extern "C" {
 
 #include "common.h"
 
-#define SLEEPTIME 50000
+#define SLEEPTIME 200000
 
 using namespace std;
 using namespace ifmap2c;
@@ -124,8 +124,10 @@ pollThreadFunc(void *arg)
 			return (void*)0;
 		} catch (IfmapError e) {
 			cerr << "[poll] " << e << endl;
+			break;
 		} catch (ErrorResultError e) {
 			cerr << "[poll] " << e << endl;
+			break;
 		}
 	}
 	cerr << "[poll] bad control flow" << endl;
@@ -142,7 +144,7 @@ main(int argc, char *argv[])
 	XMLMLIST mlist;
 	PublishRequest *pr1, *pr2;
 	SubscribeRequest *sr;
-	Identifier *ip;
+	Identifier *id;
 	pthread_t pollThread;
 	void *tRet = 0;
 	int ret;
@@ -162,14 +164,14 @@ main(int argc, char *argv[])
 	md3 = new UserMetadata("simpl", "n1", "http://unwanted");
 	md3->addXmlNamespaceDefinition(STRP("n1", "http://unwanted"));
 
-	ip = IpAddress::createIpv4Address("192.168.0.1");
+	id = Identifiers::createIdentity(username, user);
 
 	mlist.push_back(md2);
 	mlist.push_back(md3);
 	pr1 = Requests::createPublishReq(
-			Requests::createPublishNotify(md1, ip->clone()));
+			Requests::createPublishNotify(md1, id->clone()));
 	pr2 = Requests::createPublishReq(
-			Requests::createPublishNotify(mlist, ip->clone()));
+			Requests::createPublishNotify(mlist, id->clone()));
 	sr = Requests::createSubscribeReq(
 			Requests::createSubscribeUpdate(
 				"sub1",
@@ -177,7 +179,7 @@ main(int argc, char *argv[])
 				SEARCH_NO_MAX_DEPTH,
 				"ns:simpl",	/* result filter */
 				SEARCH_NO_MAX_RESULT_SIZE,
-				ip));
+				id));
 	sr->addXmlNamespaceDefinition(STRP("ns", "http://testnotify"));
 
 	try {
