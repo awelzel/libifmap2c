@@ -47,7 +47,7 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete ip-addr mac-addr"
+	cerr << "usage: " << prog << " update|delete ip mac"
 		INDEPENDENT_USAGE_STRING << endl;
 }
 

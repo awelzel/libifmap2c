@@ -37,45 +37,46 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete dev ar"
+	cerr << "usage: " << prog << " update|delete ar ip"
 		INDEPENDENT_USAGE_STRING << endl;
 }
 
 int main(int argc, char* argv[])
 {
-	char *devArg, *arArg, *op;
+	char *arArg, *ipArg, *op;
 	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
 	SSRC *ssrc = NULL;
 	PublishRequest *pubReq = NULL;
 	PublishElement *subReq = NULL;
-	XmlMarshalable *authby = NULL;
-	Identifier *dev, *ar;
+	XmlMarshalable *arip = NULL;
+	Identifier *ar, *ip;
 
 	checkAndLoadParameters(argc, argv, 3, usage, &url, &user,
 			&pass, &capath);
-	
+
 	op = argv[1];
-	devArg = argv[2];
-	arArg = argv[3];
+	arArg = argv[2];
+	ipArg = argv[3];
 
 	checkUpdateOrDelete(op, usage, argv[0]);
 	
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
-	dev = Identifiers::createDev(devArg);
 	ar = Identifiers::createAr(arArg);
+	ip = Identifiers::createIPv4(ipArg);
 
 	if (isUpdate(op)) {
-		authby = Metadata::createAuthBy();
-		subReq = Requests::createPublishUpdate(authby, dev,
-				forever, ar);
+		arip= Metadata::createArIp();
+		subReq = Requests::createPublishUpdate(arip, ar, ip,
+				forever);
 	} else {
 		subReq = Requests::createPublishDelete(
-				"meta:authenticated-by",
-				dev, ar);
+				"meta:access-request-ip", ar, ip);
 	}
 
 	pubReq = Requests::createPublishReq(subReq);
 	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
+
 	try {
 		ssrc->newSession();
 		ssrc->publish(pubReq);
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
 	} catch (ErrorResultError e) {
 		cerr << e << endl;
 	}
-
+	
 	delete pubReq;
 	delete ssrc;
 

@@ -37,47 +37,51 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete dev ar"
+	cerr << "usage: " << prog << " update|delete ar username rolename"
 		INDEPENDENT_USAGE_STRING << endl;
 }
 
 int main(int argc, char* argv[])
 {
-	char *devArg, *arArg, *op;
+	char *arArg, *userArg, *roleArg, *op;
 	char *url, *user, *pass, *capath;
-	SSRC *ssrc = NULL;
+	SSRC  *ssrc = NULL;
 	PublishRequest *pubReq = NULL;
 	PublishElement *subReq = NULL;
-	XmlMarshalable *authby = NULL;
-	Identifier *dev, *ar;
+	XmlMarshalable *role = NULL;
+	Identifier *ar, *id;
+	string str;
 
-	checkAndLoadParameters(argc, argv, 3, usage, &url, &user,
+	checkAndLoadParameters(argc, argv, 4, usage, &url, &user,
 			&pass, &capath);
-	
-	op = argv[1];
-	devArg = argv[2];
-	arArg = argv[3];
 
-	checkUpdateOrDelete(op, usage, argv[0]);
+	op = argv[1];
+	arArg = argv[2];
+	userArg = argv[3];
+	roleArg = argv[4];
 	
+	checkUpdateOrDelete(op, usage, argv[0]);
+
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
-	dev = Identifiers::createDev(devArg);
 	ar = Identifiers::createAr(arArg);
+	id = Identifiers::createIdentity(username, userArg);
 
 	if (isUpdate(op)) {
-		authby = Metadata::createAuthBy();
-		subReq = Requests::createPublishUpdate(authby, dev,
-				forever, ar);
+		role = Metadata::createRole(roleArg);
+		subReq = Requests::createPublishUpdate(role, ar, id,
+				forever);
 	} else {
+		str.append("meta:role[name='");
+		str.append(roleArg);
+		str.append("']");
 		subReq = Requests::createPublishDelete(
-				"meta:authenticated-by",
-				dev, ar);
+				str.c_str(), ar, id);
 	}
-
+	
 	pubReq = Requests::createPublishReq(subReq);
 	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
-	try {
-		ssrc->newSession();
+
+	try {	ssrc->newSession();
 		ssrc->publish(pubReq);
 		ssrc->endSession();
 	} catch (IfmapError e) {
@@ -88,6 +92,5 @@ int main(int argc, char* argv[])
 
 	delete pubReq;
 	delete ssrc;
-
 	return 0;
 }

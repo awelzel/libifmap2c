@@ -37,45 +37,46 @@ using namespace std;
 
 static void usage(const char *prog)
 {
-	cerr << "usage: " << prog << " update|delete dev ar"
+	cerr << "usage: " << prog << " update|delete mac dev"
 		INDEPENDENT_USAGE_STRING << endl;
 }
 
 int main(int argc, char* argv[])
 {
-	char *devArg, *arArg, *op;
+	char *devArg, *macArg, *op;
 	char *url, *user, *pass, *capath;
+	url = user = pass = capath = NULL;
 	SSRC *ssrc = NULL;
 	PublishRequest *pubReq = NULL;
 	PublishElement *subReq = NULL;
-	XmlMarshalable *authby = NULL;
-	Identifier *dev, *ar;
+	XmlMarshalable *discby = NULL;
+	Identifier *dev, *mac;
 
 	checkAndLoadParameters(argc, argv, 3, usage, &url, &user,
 			&pass, &capath);
-	
+
 	op = argv[1];
-	devArg = argv[2];
-	arArg = argv[3];
+	macArg = argv[2];
+	devArg = argv[3];
 
 	checkUpdateOrDelete(op, usage, argv[0]);
 	
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
+	mac = Identifiers::createMac(macArg);
 	dev = Identifiers::createDev(devArg);
-	ar = Identifiers::createAr(arArg);
 
 	if (isUpdate(op)) {
-		authby = Metadata::createAuthBy();
-		subReq = Requests::createPublishUpdate(authby, dev,
-				forever, ar);
+		discby = Metadata::createDiscoveredBy();
+		subReq = Requests::createPublishUpdate(discby, mac, dev,
+				forever);
 	} else {
 		subReq = Requests::createPublishDelete(
-				"meta:authenticated-by",
-				dev, ar);
+				"meta:discovered-by", mac, dev);
 	}
 
 	pubReq = Requests::createPublishReq(subReq);
 	pubReq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
+
 	try {
 		ssrc->newSession();
 		ssrc->publish(pubReq);
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
 	} catch (ErrorResultError e) {
 		cerr << e << endl;
 	}
-
+	
 	delete pubReq;
 	delete ssrc;
 
