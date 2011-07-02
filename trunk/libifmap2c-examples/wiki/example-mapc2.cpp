@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 			RI idRI = rlist.front();
 			// The identity identifier should not have any
 			// metadata attached to it:
-			if (idRI->getMetadataList().size() != 0) {
+			if (idRI->getMetadata().size() != 0) {
 				cout << "Identity has Metadata "
 					"attached to it?!" << endl;
 			}
@@ -198,12 +198,12 @@ int main(int argc, char *argv[])
 			// We only try the first element and hope
 			// there is no other one...
 			RI ipmacRI = rlist.front();
-			if (ipmacRI->getMetadataList().size() != 1)
+			if (ipmacRI->getMetadata().size() != 1)
 				cout << "Metadata not found?" << endl;
 
 			list<XmlMarshalable *>mdlist =
 				XmlMarshalable::findMatchingElements(
-					ipmacRI->getMetadataList(),  // where to look 
+					ipmacRI->getMetadata(),  // where to look 
 					"ip-mac",  // element name, no nsprefix
 					TCG_META_HREF);  // associated namespace
 
