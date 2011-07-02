@@ -24,13 +24,44 @@
 
 #ifndef METADATAFACTORY_H_
 #define METADATAFACTORY_H_
+
+#include "basicxmlmarshalable.h"
 #include "xmlmarshalable.h"
 #include "tcgifmapmeta.h"
+
 #include <string>
 
 enum CardinalityType { single, multi };
 
 namespace ifmap2c {
+
+
+
+/*
+ * This class can be used to implement user-specific metadata
+ * to be sent.
+ */
+class UserMetadata : public BasicXmlMarshalable {
+public:
+	/**
+	 * Used if the metadata should be used in
+	 * publishUpdate elements.
+	 */
+	UserMetadata(const std::string& elName,
+			const std::string& prefix,
+			const std::string& href,
+			CardinalityType card,
+			const std::string& elValue = "");
+
+	/**
+	 * Used if the metadata is to be used in
+	 * publishNotify, needs no cardinality.
+	 */
+	UserMetadata(const std::string& elName,
+			const std::string& prefix,
+			const std::string& href,
+			const std::string& elValue = "");
+};
 
 class Metadata {
 
