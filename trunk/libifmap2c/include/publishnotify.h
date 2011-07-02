@@ -24,11 +24,11 @@
 
 #ifndef PUBLISHNOTIFY_H_
 #define PUBLISHNOTIFY_H_
-#include "subpublish.h"
+#include "publishelement.h"
 
 namespace ifmap2c {
 
-class PublishNotify : public SubPublish {
+class PublishNotify : public PublishElement {
 public:
 
 	static PublishNotify *

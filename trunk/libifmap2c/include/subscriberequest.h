@@ -24,7 +24,7 @@
 
 #ifndef SUBSCRIBEREQUEST_H_
 #define SUBSCRIBEREQUEST_H_
-#include "subsubscribe.h"
+#include "subscribeelement.h"
 #include <list>
 
 namespace ifmap2c {
@@ -35,13 +35,13 @@ public:
 	virtual ~SubscribeRequest() { }
 
 	static SubscribeRequest *createSubscribeRequest(
-			const std::list<SubSubscribe *>& subList);
+			const std::list<SubscribeElement *>& subList);
 
 	static SubscribeRequest *createSubscribeRequest(
-			SubSubscribe *const subreq);
+			SubscribeElement *const subreq);
 
 private:
-	SubscribeRequest(const std::list<SubSubscribe *>& subList);
+	SubscribeRequest(const std::list<SubscribeElement *>& subList);
 
 };
 

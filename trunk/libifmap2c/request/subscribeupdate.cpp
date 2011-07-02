@@ -51,7 +51,7 @@ SubscribeUpdate::SubscribeUpdate(const string& name,
 			const int maxResultSize,
 			const char *const terminalIdent,
 			Identifier *const i1) :
-			SubSubscribe(SUBSCRIBE_UPDATE_ELEMENT_NAME, name)
+			SubscribeElement(SUBSCRIBE_UPDATE_ELEMENT_NAME, name)
 {
 	// this is the same as in a search request
 	if (matchLinksFilter)

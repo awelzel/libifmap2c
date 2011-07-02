@@ -67,7 +67,7 @@ PublishUpdate::~PublishUpdate()	{ }
 
 PublishUpdate::PublishUpdate(const XMLMLIST& mlist,
 		Identifier *const i1, LifeTimeType lTime, Identifier *const i2) :
-	  SubPublish(PUBLISH_UPDATE_ELEMENT_NAME, i1, i2)
+	  PublishElement(PUBLISH_UPDATE_ELEMENT_NAME, i1, i2)
 {
 	addXmlAttribute(STRP(PUBLISH_UPDATE_LIFET_ATTR_NAME, lifeTimeNames[lTime]));
 

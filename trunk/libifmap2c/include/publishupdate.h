@@ -25,7 +25,7 @@
 #ifndef UPDATEREQUEST_H_
 #define UPDATEREQUEST_H_
 
-#include "subpublish.h"
+#include "publishelement.h"
 #include <list>
 
 namespace ifmap2c {
@@ -35,7 +35,7 @@ enum LifeTimeType {
 	forever
 };
 
-class PublishUpdate : public SubPublish
+class PublishUpdate : public PublishElement
 {
 public:
 

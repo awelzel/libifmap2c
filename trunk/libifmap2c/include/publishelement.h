@@ -22,19 +22,22 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef SUBSUBSCRIBE_H_
-#define SUBSUBSCRIBE_H_
-
+#ifndef PUBLISHELEMENT_H_
+#define PUBLISHELEMENT_H_
 #include "basicxmlmarshalable.h"
+#include "identifier.h"
 
 namespace ifmap2c {
 
-class SubSubscribe : public BasicXmlMarshalable {
-public:
-	SubSubscribe(const std::string& elname, const std::string& subname);
+class PublishElement : public BasicXmlMarshalable {
 
-	virtual ~SubSubscribe();
+	public:
+		virtual ~PublishElement();
+
+	protected:
+		PublishElement(const std::string& name,
+				Identifier *const i1, Identifier *const i2 = NULL);
 };
 
-}
-#endif /* SUBSUBSCRIBE_H_ */
+} // namespace
+#endif /* PUBLISHELEMENT_H_ */

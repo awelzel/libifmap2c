@@ -24,7 +24,7 @@
 
 #ifndef SUBSCRIBEUPDATE_H_
 #define SUBSCRIBEUPDATE_H_
-#include "subsubscribe.h"
+#include "subscribeelement.h"
 #include "identifier.h"
 #include "tcgifmapbase.h"
 
@@ -32,7 +32,7 @@ namespace ifmap2c {
 /*
  * generalize with SearchRequest (TODO)
  */
-class SubscribeUpdate : public SubSubscribe {
+class SubscribeUpdate : public SubscribeElement {
 public:
 
 	/*

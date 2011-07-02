@@ -22,22 +22,28 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef SUBPUBLISHREQUEST_H_
-#define SUBPUBLISHREQUEST_H_
-#include "basicxmlmarshalable.h"
-#include "identifier.h"
+#include "publishelement.h"
+#include "tcgifmapbase.h"
+
+using namespace std;
 
 namespace ifmap2c {
 
-class SubPublish : public BasicXmlMarshalable {
+PublishElement::PublishElement(const string& name,
+		Identifier *const i1, Identifier *const i2) :
+	BasicXmlMarshalable(name, EMPTY_VALUE, NO_NSPAIR)
+{ 
+	if (i1)
+		addXmlChild(i1);
+	
+	if (i2)
+		addXmlChild(i2);
 
-	public:
-		virtual ~SubPublish();
+}
 
-	protected:
-		SubPublish(const std::string& name,
-				Identifier *const i1, Identifier *const i2 = NULL);
-};
+PublishElement::~PublishElement()
+{
+
+}
 
 } // namespace
-#endif /* SUBPUBLISHREQUEST_H_ */

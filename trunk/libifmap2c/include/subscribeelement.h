@@ -22,19 +22,20 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "subsubscribe.h"
-#include "typedefs.h"
-#include "tcgifmapbase.h"
+#ifndef SUBSCRIBEELEMENT_H_
+#define SUBSCRIBEELEMENT_H_
+
+#include "basicxmlmarshalable.h"
 
 namespace ifmap2c {
 
-SubSubscribe::SubSubscribe(const std::string& elementName,
-		const std::string& subName) :
-		BasicXmlMarshalable(elementName, EMPTY_VALUE, NO_NSPAIR)
-{
-	addXmlAttribute(STRP(SUBSCRIBE_UPDATE_NAME_ATTR_NAME, subName));
-}
+class SubscribeElement : public BasicXmlMarshalable {
+public:
+	SubscribeElement(const std::string& elname,
+			const std::string& subname);
 
-SubSubscribe::~SubSubscribe() { }
+	virtual ~SubscribeElement();
+};
 
 } // namespace
+#endif /* SUBSCRIBEELEMENT_H_*/

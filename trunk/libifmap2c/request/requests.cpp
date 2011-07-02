@@ -50,7 +50,7 @@ Requests::createRenewSessionReq(void)
 }
 
 PublishRequest*
-Requests::createPublishReq(const std::list<SubPublish *>& reqs)
+Requests::createPublishReq(const std::list<PublishElement *>& reqs)
 {
 	return PublishRequest::createPublishRequest(reqs);
 }
@@ -58,7 +58,7 @@ Requests::createPublishReq(const std::list<SubPublish *>& reqs)
 
 
 PublishRequest*
-Requests::createPublishReq(SubPublish *const  req)
+Requests::createPublishReq(PublishElement *const  req)
 {
 	return PublishRequest::createPublishRequest(req);
 }
@@ -139,13 +139,13 @@ Requests::createSearchReq(const char *const matchLinksFilter,
 
 
 SubscribeRequest *
-Requests::createSubscribeReq(const std::list<SubSubscribe *> srList)
+Requests::createSubscribeReq(const std::list<SubscribeElement *> srList)
 {
 	return SubscribeRequest::createSubscribeRequest(srList);
 }
 
 SubscribeRequest *
-Requests::createSubscribeReq(SubSubscribe *const sr)
+Requests::createSubscribeReq(SubscribeElement *const sr)
 {
 	return SubscribeRequest::createSubscribeRequest(sr);
 }

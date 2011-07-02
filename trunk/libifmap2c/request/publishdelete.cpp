@@ -31,7 +31,7 @@ namespace ifmap2c {
 PublishDelete::PublishDelete(const char *const filter,
 		Identifier *const i1,
 		Identifier *const i2) :
-		SubPublish(PUBLISH_DELETE_ELEMENT_NAME, i1, i2)
+		PublishElement(PUBLISH_DELETE_ELEMENT_NAME, i1, i2)
 {
 	if (filter)
 		addXmlAttribute(STRP(PUBLISH_DELETE_FILTER_ATTR_NAME, filter));

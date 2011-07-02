@@ -22,28 +22,19 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "subpublish.h"
+#include "subscribeelement.h"
+#include "typedefs.h"
 #include "tcgifmapbase.h"
-
-using namespace std;
 
 namespace ifmap2c {
 
-SubPublish::SubPublish(const string& name,
-		Identifier *const i1, Identifier *const i2) :
-	BasicXmlMarshalable(name, EMPTY_VALUE, NO_NSPAIR)
-{ 
-	if (i1)
-		addXmlChild(i1);
-	
-	if (i2)
-		addXmlChild(i2);
-
-}
-
-SubPublish::~SubPublish()
+SubscribeElement::SubscribeElement(const std::string& elementName,
+		const std::string& subName) :
+		BasicXmlMarshalable(elementName, EMPTY_VALUE, NO_NSPAIR)
 {
-
+	addXmlAttribute(STRP(SUBSCRIBE_UPDATE_NAME_ATTR_NAME, subName));
 }
+
+SubscribeElement::~SubscribeElement() { }
 
 } // namespace
