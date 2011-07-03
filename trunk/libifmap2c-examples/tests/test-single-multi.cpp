@@ -98,7 +98,7 @@ main(int argc, char *argv[])
 		try {
 			ssrc->publish(pr2);
 			cerr << "Publishing multiValue allowed" << endl;
-		} catch (ErrorResultError e) {
+		} catch (ErrorResult e) {
 			// that's good
 		}
 
@@ -106,14 +106,14 @@ main(int argc, char *argv[])
 		try {
 			ssrc->publish(pr4);
 			cerr << "Publishing singleValue allowed" << endl;
-		} catch (ErrorResultError e) {
+		} catch (ErrorResult e) {
 			// that's good
 		}
 		ssrc->endSession();
 
 	} catch (IfmapError e) {
 		cerr << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
 

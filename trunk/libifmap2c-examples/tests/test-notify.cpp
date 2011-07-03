@@ -125,7 +125,7 @@ pollThreadFunc(void *arg)
 		} catch (IfmapError e) {
 			cerr << "[poll] " << e << endl;
 			break;
-		} catch (ErrorResultError e) {
+		} catch (ErrorResult e) {
 			cerr << "[poll] " << e << endl;
 			break;
 		}
@@ -201,7 +201,7 @@ main(int argc, char *argv[])
 
 	} catch (IfmapError e) {
 		cerr << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
 

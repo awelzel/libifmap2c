@@ -104,7 +104,7 @@ main(int argc, char *argv[])
 			pres = arc->poll();
 			cerr << "no error" << endl;
 			delete pres;
-		} catch (ErrorResultError e){
+		} catch (ErrorResult e){
 			if (e.getErrorCode() != PollResultsTooBig)
 				cerr << "bad error" << endl;
 		}
@@ -131,7 +131,7 @@ main(int argc, char *argv[])
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
 

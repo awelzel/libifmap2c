@@ -243,9 +243,9 @@ int main(int argc, char *argv[])
 	} catch (IfmapError e) {
 		cerr << e << endl;
 	
-	// ErrorResultError is thrown, if a errorResult is received from
+	// ErrorResult is thrown, if a errorResult is received from
 	// the server. For example InvalidSessionID or InvalidMetadata.
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
 

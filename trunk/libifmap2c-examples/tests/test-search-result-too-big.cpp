@@ -98,7 +98,7 @@ main(int argc, char *argv[])
 			sres = ssrc->search(sr);
 			isBad = 1;
 			delete sres;
-		} catch (ErrorResultError e){
+		} catch (ErrorResult e){
 			if (e.getErrorCode() == SearchResultsTooBig)
 				isBad = 0;
 			else
@@ -107,7 +107,7 @@ main(int argc, char *argv[])
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
 
