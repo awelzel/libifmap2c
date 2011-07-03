@@ -91,7 +91,8 @@ main(int argc, char *argv[])
 	arc2 = ssrc->getARC();
 
 
-	try {	ssrc->newSession();
+	try {	
+		ssrc->newSession();
 		ret = pthread_create(&pollThread, NULL, pollThreadFunc, (void*)arc1);
 		if (ret) {
 			cerr << "[mainThread] Could not start pollThread" << endl;

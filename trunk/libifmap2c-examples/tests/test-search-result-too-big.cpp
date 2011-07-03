@@ -66,7 +66,7 @@ main(int argc, char *argv[])
 	// create ssrc object which is used for synchronous communication
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 
-	ar = Identifiers::createAr("The Ar");
+	ar = Identifiers::createAr(user);
 	
 	// 200 bytes
  	md = Metadata::createDevAttr(
@@ -88,7 +88,8 @@ main(int argc, char *argv[])
 	pr = Requests::createPublishReq(pu);
 	pr->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
-	try {	ssrc->newSession();
+	try {	
+		ssrc->newSession();
 		sres = ssrc->search(sr);
 		delete sres;
 		

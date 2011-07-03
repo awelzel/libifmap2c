@@ -96,7 +96,8 @@ main(int argc, char *argv[])
 	pr->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 
-	try {	ssrc->newSession(200);
+	try {	
+		ssrc->newSession(200);
 		ssrc->subscribe(sr);
 		pres = arc->poll();
 		delete pres;
