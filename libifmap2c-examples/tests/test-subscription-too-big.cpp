@@ -83,7 +83,7 @@ main(int argc, char *argv[])
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 	arc = ssrc->getARC();
 
-	ar = Identifiers::createAr("The Ar");
+	ar = Identifiers::createAr(user);
 	
 	// 200 bytes
  	md = Metadata::createDevAttr(
@@ -120,7 +120,8 @@ main(int argc, char *argv[])
 	pr->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 
-	try {	ssrc->newSession();
+	try {	
+		ssrc->newSession();
 		ssrc->subscribe(sr);
 
 		pres = arc->poll();
