@@ -110,7 +110,7 @@ public:
 	 * 			 attribute
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	void newSession(const int maxPollResSize = NO_MAX_POLL_RES_SIZE);
 
@@ -129,7 +129,7 @@ public:
 	 *		    (Only use it if you know what you are doing.)
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	void endSession(const std::string& sessionId = "");
 
@@ -145,7 +145,7 @@ public:
 	 *		    (Only use it if you know what you are doing.)
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	void publish(PublishRequest *const pr,
 			const std::string& sessionId = "");
@@ -164,7 +164,7 @@ public:
 	 *	   of the MAPS. The caller is responsible to delete the memory.
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	SearchResult *search(SearchRequest *const sr,
 			const std::string& sessionId = "");
@@ -181,7 +181,7 @@ public:
 	 *		    (Only use it if you know what you are doing.)
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	void subscribe(SubscribeRequest *const sr,
 			const std::string& sessionId = "");
@@ -195,7 +195,7 @@ public:
 	 *		    (Only use it if you know what you are doing.)
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	void renewSession(const std::string& sessionId = "");
 
@@ -214,7 +214,7 @@ public:
 	 *		    (Only use it if you know what you are doing.)
 	 *
 	 * \throw IfmapError
-	 * \throw ErrorResultError
+	 * \throw ErrorResult
 	 */
 	void purgePublisher(const std::string& publisherId = "",
 			const std::string& sessionId = "");

@@ -22,8 +22,8 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef ERRORRESULTERROR_H_
-#define ERRORRESULTERROR_H_
+#ifndef ERRORRESULT_H_
+#define ERRORRESULT_H_
 #include <string>
 #include <ostream>
 
@@ -46,14 +46,14 @@ enum ErrorCode {
 };
 
 
-class ErrorResultError {
+class ErrorResult {
 public:
-	ErrorResultError();
+	ErrorResult();
 
-	ErrorResultError(ErrorCode errorCode, const std::string& errStr,
+	ErrorResult(ErrorCode errorCode, const std::string& errStr,
 			const std::string& name = "");
 
-	virtual ~ErrorResultError();
+	virtual ~ErrorResult();
 
 	ErrorCode getErrorCode() const;
 
@@ -62,7 +62,7 @@ public:
 	const std::string& getErrorString() const;
 
 	/**
-	 * This is only meaningful if the ErrorResultError is included
+	 * This is only meaningful if the ErrorResult is included
 	 * in a PollResult.
 	 */
 	const std::string& getName() const;
@@ -70,7 +70,7 @@ public:
 	static const std::string errorCodeStrings[];
 	
 	friend std::ostream& operator<<(std::ostream& output,
-			const ErrorResultError& err);
+			const ErrorResult& err);
 
 private:
 	ErrorCode _errorCode;
@@ -79,4 +79,4 @@ private:
 	std::string _name;
 };
 } // namespace
-#endif /* ERRORRESULTERROR_H_ */
+#endif /* ERRORRESULT_H_ */

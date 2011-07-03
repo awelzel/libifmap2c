@@ -22,13 +22,13 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "errorresulterror.h"
+#include "errorresult.h"
 
 using namespace std;
 
 namespace ifmap2c {
 
-const string ErrorResultError::errorCodeStrings[] = {
+const string ErrorResult::errorCodeStrings[] = {
         "AccessDenied",
         "Failure",
         "InvalidIdentifier",
@@ -44,45 +44,45 @@ const string ErrorResultError::errorCodeStrings[] = {
         "Unknown"
 };
 
-ErrorResultError::ErrorResultError() :
+ErrorResult::ErrorResult() :
 	_errorCode(Unknown), _errorString(""), _name("")
 { }
 
-ErrorResultError::ErrorResultError(ErrorCode errCode,
+ErrorResult::ErrorResult(ErrorCode errCode,
 		const std::string& errStr,
 		const std::string& name) :
 	_errorCode(errCode), _errorString(errStr), _name(name)
 { }
 
 
-ErrorResultError::~ErrorResultError()
+ErrorResult::~ErrorResult()
 { }
 
 
 ErrorCode
-ErrorResultError::getErrorCode() const
+ErrorResult::getErrorCode() const
 {
 	return _errorCode;
 }
 
 const std::string&
-ErrorResultError::getErrorCodeString() const
+ErrorResult::getErrorCodeString() const
 {
 	return errorCodeStrings[_errorCode];
 }
 
 const std::string&
-ErrorResultError::getErrorString() const
+ErrorResult::getErrorString() const
 {
 	return _errorString;
 }
 const std::string&
-ErrorResultError::getName() const
+ErrorResult::getName() const
 {
 	return _name;
 }
 
-ostream& operator<<(ostream& output, const ErrorResultError& err)
+ostream& operator<<(ostream& output, const ErrorResult& err)
 {
 	output << err.getErrorCodeString() << ": ";
 	output << err.getErrorString();
