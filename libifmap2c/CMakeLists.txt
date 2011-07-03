@@ -63,7 +63,7 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	request/subscribeelement.cpp
 	request/subscriberequest.cpp
 	request/subscribeupdate.cpp
-	response/errorresulterror.cpp
+	response/errorresult.cpp
 	response/ifmaperror.cpp
 	response/newsessionresult.cpp
 	response/pollresult.cpp
@@ -98,7 +98,7 @@ INSTALL(FILES
 	include/device.h
 	include/endsessionrequest.h
 	include/endsessionresult.h
-	include/errorresulterror.h
+	include/errorresult.h
 	include/identifier.h
 	include/identifiers.h
 	include/identifierwithad.h

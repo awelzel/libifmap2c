@@ -27,7 +27,7 @@
 
 #include "xmlmarshalable.h"
 #include "responses.h"
-#include "errorresulterror.h"
+#include "errorresult.h"
 #include "responseparseerror.h"
 
 namespace ifmap2c {
@@ -102,7 +102,7 @@ public:
 
 	static void checkErrorResult(XmlMarshalable *const response);
 
-	static ErrorResultError *
+	static ErrorResult *
 		createErrorResult(XmlMarshalable *const err);
 
 	static void throwIfNull(XmlMarshalable *const m, const std::string& msg);

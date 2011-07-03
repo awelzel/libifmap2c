@@ -90,7 +90,7 @@ PollResult::getNotifyResults(void) const
 	return _notifyResults;
 }
 
-const list<ErrorResultError *>&
+const list<ErrorResult *>&
 PollResult::getErrorResults(void) const
 {
 	return _errorResults;
@@ -120,7 +120,7 @@ PollResult::addNotifyResult(SearchResult *const sr)
 	_notifyResults.push_back(sr);
 }
 void
-PollResult::addErrorResult(ErrorResultError *const er)
+PollResult::addErrorResult(ErrorResult *const er)
 {
 	_errorResults.push_back(er);
 }

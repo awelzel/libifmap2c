@@ -33,7 +33,7 @@
  * If we include the headers directly, we need to recompile nearly
  * everything because typedefs.h is include nearly everywhere.
  */
-class ErrorResultError;
+class ErrorResult;
 class ResultItem;
 class SearchResult;
 class XmlMarshalable;
@@ -62,8 +62,8 @@ typedef const SRLIST CSRLIST;
 typedef SRLIST::iterator SRLISTIT;
 typedef SRLIST::const_iterator CSRLISTIT;
 
-// ER = ErrorResultError
-typedef std::list<ErrorResultError *> ERLIST;
+// ER = ErrorResult
+typedef std::list<ErrorResult *> ERLIST;
 typedef const ERLIST CERLIST;
 typedef ERLIST::iterator ERLISTIT;
 typedef ERLIST::const_iterator CERLISTIT;

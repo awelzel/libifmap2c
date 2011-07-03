@@ -44,7 +44,7 @@ public:
 	 *         for freeing the memory.
 	 * @throws IfmapException if communication, marshalling or
 	 *         unmarshalling fail.
-	 * @throws ErrorResultError if the server returns an errorResult.
+	 * @throws ErrorResult if the server returns an errorResult.
 	 * @throws EndSessionResult if the session was closed while a poll
 	 *         was pending.
 	 */

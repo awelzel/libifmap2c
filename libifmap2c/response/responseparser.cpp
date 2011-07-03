@@ -163,7 +163,7 @@ ResponseParser::createPollResult(XmlMarshalable *const env)
 	XmlMarshalable *xmlPollRes = NULL;
 	XmlMarshalable *child = NULL;
 	SearchResult *sr = NULL;
-	ErrorResultError *er = NULL;
+	ErrorResult *er = NULL;
 	xmlPollRes = locatePollResultElement(env);
 
 	if (xmlPollRes == NULL) {
@@ -655,8 +655,8 @@ ResponseParser::getChild(XmlMarshalable *marsh, const string& elname,
 void
 ResponseParser::checkErrorResult(XmlMarshalable *const response)
 {
-	ErrorResultError *error;
-	ErrorResultError toThrow;
+	ErrorResult *error;
+	ErrorResult toThrow;
 	XmlMarshalable *errorResult = getChild(response,
 			ERRORRESULT_ELEMENT_NAME,
 			ERRORRESULT_ELEMENT_HREF);
@@ -670,7 +670,7 @@ ResponseParser::checkErrorResult(XmlMarshalable *const response)
 }
 
 
-ErrorResultError *
+ErrorResult *
 ResponseParser::createErrorResult(XmlMarshalable *const err)
 {
 	ErrorCode errCode = Unknown;
@@ -696,33 +696,33 @@ ResponseParser::createErrorResult(XmlMarshalable *const err)
 		errString = errStrEle->getXmlElementValue();
 
 	// Oh god... FIXME
-	if (!errCodeString.compare(ErrorResultError::errorCodeStrings[AccessDenied])) {
+	if (!errCodeString.compare(ErrorResult::errorCodeStrings[AccessDenied])) {
 		errCode = AccessDenied;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[Failure])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[Failure])) {
 		errCode = Failure;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidIdentifier])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidIdentifier])) {
 		errCode = InvalidIdentifier;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidIdentifierType])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidIdentifierType])) {
 		errCode = InvalidIdentifierType;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[IdentifierTooLong])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[IdentifierTooLong])) {
 		errCode = IdentifierTooLong;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidMetadata])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidMetadata])) {
 		errCode = InvalidMetadata;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSchemaVersion])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidSchemaVersion])) {
 		errCode = InvalidSchemaVersion;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[InvalidSessionID])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidSessionID])) {
 		errCode = InvalidSessionID;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[MetadataTooLong])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[MetadataTooLong])) {
 		errCode = MetadataTooLong;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[SearchResultsTooBig])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[SearchResultsTooBig])) {
 		errCode = SearchResultsTooBig;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[PollResultsTooBig])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[PollResultsTooBig])) {
 		errCode = PollResultsTooBig;
-	} else if (!errCodeString.compare(ErrorResultError::errorCodeStrings[SystemError])) {
+	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[SystemError])) {
 		errCode = SystemError;
 	}
 
-	return new ErrorResultError(errCode, errString, errName);
+	return new ErrorResult(errCode, errString, errName);
 }
 
 
