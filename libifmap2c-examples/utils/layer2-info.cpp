@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
 

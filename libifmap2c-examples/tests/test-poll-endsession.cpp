@@ -63,7 +63,7 @@ pollThreadFunc(void *arg)
 		return (void*)0;
 	} catch (IfmapError e) {
 		cerr << "[pollThread] " << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << "[pollThread] " << e << endl;
 	}
 	cerr << "[pollThread] Should never end up here" << endl;
@@ -107,7 +107,7 @@ main(int argc, char *argv[])
 
 	} catch (IfmapError e) {
 		cerr << "[mainThread] " << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << "[mainThread] " << e << endl;
 	}
 	if (tRet) {

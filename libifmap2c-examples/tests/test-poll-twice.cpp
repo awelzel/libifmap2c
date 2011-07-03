@@ -64,7 +64,7 @@ pollThreadFunc(void *arg)
 		return (void*)0;
 	} catch (IfmapError e) {
 		cerr << "[pollThread] " << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << "[pollThread] " << e << endl;
 	}
 	cerr << "[pollThread] Should never end up here" << endl;
@@ -107,7 +107,7 @@ main(int argc, char *argv[])
 
 		try {	
 			arc2->poll();
-		} catch (ErrorResultError e) {
+		} catch (ErrorResult e) {
 			if (e.getErrorCode() != InvalidSessionID) {
 				cerr << "[ERROR] No InvalidSessionID";
 				cerr << " on second ARC" << endl;
@@ -117,7 +117,7 @@ main(int argc, char *argv[])
 
 		try {
 			ssrc->renewSession();
-		} catch (ErrorResultError e) {
+		} catch (ErrorResult e) {
 			if (e.getErrorCode() != InvalidSessionID) {
 				cerr << "[ERROR] No InvalidSessionID";
 				cerr << " on SSRC later on" << endl;
@@ -126,7 +126,7 @@ main(int argc, char *argv[])
 
 	} catch (IfmapError e) {
 		cerr << "[mainThread] " << e << endl;
-	} catch (ErrorResultError e) {
+	} catch (ErrorResult e) {
 		cerr << "[mainThread] " << e << endl;
 	}
 	if (tRet) {
