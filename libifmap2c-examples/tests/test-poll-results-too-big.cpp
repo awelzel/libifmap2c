@@ -56,10 +56,10 @@ main(int argc, char *argv[])
 	ARC *arc = NULL;
 	PublishRequest *pr = NULL;
 	PublishUpdate *pu = NULL;
-	SubscribeRequest *sr = NULL;
-	SubscribeUpdate *su = NULL;
+	SubscribeRequest *sr1, *sr2;
+	SubscribeUpdate *su1, *su2;
 	PollResult *pres = NULL;
-	Identifier *ar;
+	Identifier *ar1, *ar2;
 	XmlMarshalable *md;
 	bool ok = true;
 	
@@ -70,7 +70,8 @@ main(int argc, char *argv[])
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 	arc = ssrc->getARC();
 
-	ar = Identifiers::createAr(user);
+	ar1 = Identifiers::createAr(user);
+	ar2 = Identifiers::createAr(user, "secondOne");
 	
 	// 200 bytes
  	md = Metadata::createDevAttr(
@@ -81,24 +82,32 @@ main(int argc, char *argv[])
 			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 		);
 
-	su = Requests::createSubscribeUpdate(
+	su1 = Requests::createSubscribeUpdate(
 			"subscription1",
 			FILTER_MATCH_ALL,
 			SEARCH_NO_MAX_DEPTH,
 			FILTER_MATCH_ALL,
 			SEARCH_NO_MAX_RESULT_SIZE,
-			ar->clone());
+			ar1->clone());
+	su2 = Requests::createSubscribeUpdate(
+			"subscription2",
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_DEPTH,
+			FILTER_MATCH_ALL,
+			SEARCH_NO_MAX_RESULT_SIZE,
+			ar2);
 	
-	sr = Requests::createSubscribeReq(su);
+	sr1 = Requests::createSubscribeReq(su1);
+	sr2 = Requests::createSubscribeReq(su2);
 
-	pu = Requests::createPublishUpdate(md, ar);
+	pu = Requests::createPublishUpdate(md, ar1);
 	pr = Requests::createPublishReq(pu);
 	pr->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 
 	try {	
 		ssrc->newSession(200);
-		ssrc->subscribe(sr);
+		ssrc->subscribe(sr1);
 		pres = arc->poll();
 		delete pres;
 		ssrc->publish(pr);
@@ -112,6 +121,22 @@ main(int argc, char *argv[])
 			else
 				ok = false;
 		}
+
+		ssrc->subscribe(sr2);
+		pres = arc->poll();
+
+		if (pres->getSearchResults().size() != 1
+				|| pres->getUpdateResults().size() != 0
+				|| pres->getDeleteResults().size() != 0
+				|| pres->getNotifyResults().size() != 0
+				|| pres->getErrorResults().size() != 0) {
+			cerr << "bad third poll result" << endl;
+		} else {
+			SearchResult *sres = pres->getSearchResults().front();
+			if (sres->getName().compare("subscription2"))
+				cerr << "bad subscription name" << endl;
+		}
+		delete pres;
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
@@ -122,7 +147,7 @@ main(int argc, char *argv[])
 	if (!ok)
 		cerr << "No PollResultsTooBig reply" << endl;
 
-	delete sr;
+	delete sr1; delete sr2;
 	delete pr;
 	delete arc;
 	delete ssrc;
