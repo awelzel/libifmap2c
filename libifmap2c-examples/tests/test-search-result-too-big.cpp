@@ -58,7 +58,6 @@ main(int argc, char *argv[])
 	SearchResult *sres = NULL;
 	Identifier *ar;
 	XmlMarshalable *md;
-	int isBad = 0;
 	
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
@@ -96,13 +95,11 @@ main(int argc, char *argv[])
 		ssrc->publish(pr);
 		try {
 			sres = ssrc->search(sr);
-			isBad = 1;
+			cerr << "No error at all" << endl;
 			delete sres;
 		} catch (ErrorResult e){
-			if (e.getErrorCode() == SearchResultsTooBig)
-				isBad = 0;
-			else
-				isBad = 1;
+			if (e.getErrorCode() != SearchResultsTooBig)
+				cerr << "Wrong error" << endl;
 		}
 		ssrc->endSession();
 	} catch (IfmapError e) {
@@ -111,11 +108,8 @@ main(int argc, char *argv[])
 		cerr << e << endl;
 	}
 
-	if (isBad)
-		cerr << "No PollResultsTooBig reply" << endl;
-
 	delete sr;
 	delete pr;
 	delete ssrc;
-	return isBad;
+	return 0;
 }
