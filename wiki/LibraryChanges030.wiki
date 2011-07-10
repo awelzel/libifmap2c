@@ -1,6 +1,7 @@
-= 0.3.0 - 10.07.2010 =
+= libifmap2c-0.3.0 =
+10. July 2011
 
-  The "Lets break things" release ;)
+ The "Lets break things" release ;)
 
 == Changes ==
 
