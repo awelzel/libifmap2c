@@ -1,4 +1,4 @@
-= libifmap2c-examples 0.3.0 =
+= libifmap2c-examples 0.3.0 (10. July 2011) =
 == Changes ==
  * Adapted code to compile with 0.3.0, simplify exception handling, split things a bit.
  * Include a folder `utils/` which besides `ip-mac`, also provides other utilities to publish some standard metadata. Nice for testing and scripting. These tools optionally use environment variables for url. user, password and capath. Those are called `IFMAP_URL`, `IFMAP_USER`, `IFMAP_PASSWORD` and `IFMAP_CAPATH`, makes life easier.
