@@ -27,7 +27,7 @@
  * Disable "pretty printing" to generate the resulting XML document.
  * Rename !SearchResult::getSearchResultName() into ::getName().
  * SSRC::newSession() max-poll-result-size parameter changed to int.
-  * Add two more createPublishUpdate() methods which make creation of updates containing a link "look better".
+ * Add two more createPublishUpdate() methods which make creation of updates containing a link "look better".
  * Introduce a !UserMetadata class, which can be used to generate own metadata types.
  * Rename !ResultItem::getMetadataList() to ::getMetadata()
 
