@@ -7,7 +7,7 @@
 
  * Switch the arguments of SSRC::purge(), The publisher-id goes first, then the session-id. This makes it consistent with the other SSRC methods.
  * Rename !ErrorResultError into !ErrorResult.
- * Add a _name attribute to !ErrorResult, to be set if the !ErrorResult is contained in a !PollResult (name of subscription).
+ * Add a name attribute to !ErrorResult, to be set if the !ErrorResult is contained in a !PollResult (name of subscription).
  * Create !IfmapError as superclass for all errors except !ErrorResult. A user therefore only needs to catch !IfmapError and !ErrorResult.
 
  * !IfmapError and !ErrorResult now support output to a stream. No need for the `getMessage()` calls anymore, e.g:
