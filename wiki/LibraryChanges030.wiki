@@ -33,7 +33,7 @@
 
 == Bugfixes ==
 
- * Rename !InvalidSessionId back to !InvalidSessionID...
+ * Rename !InvalidSessionId back to InvalidSessionID...
  * !PollResult objects now correctly may contain !ErrorResult objects.
  * Revisited parsing of !PollResults. It was "pretty broken" before.
  * Uninitialized iterator dereferencing in !PollResult fixed.
