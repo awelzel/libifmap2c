@@ -222,6 +222,9 @@ checkFirstSearchResult(ARC *arc)
 		cerr << "Unexpected SearchResults" << endl;
 
 	count = getCountOfMetadata(pres);
+	
+	if (pres->getUpdateResults().size() > 0)
+		cout << "Note: MAPS Returns updateResults in first pollResult" << endl;
 		
 	if (count != mdNode * (signed int)graphSize) {
 		cerr << "Unexpected SearchResults Metadata ";
