@@ -71,8 +71,9 @@ main(int argc, char *argv[])
 
 	ar = Identifiers::createAr(user);
 	
-	// 200 bytes
+	// 240 bytes
  	md = Metadata::createDevAttr(
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"

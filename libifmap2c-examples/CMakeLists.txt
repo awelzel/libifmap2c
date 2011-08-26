@@ -23,7 +23,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(libifmap2c-examples)
 
-add_definitions(-Wall -Wextra -Werror -O2)
+add_definitions(-Wall -Wextra -Werror -O3)
 
 SET (LIBIFMAP2C_INCLUDE_DIR "/usr/local/include")
 SET (LIBIFMAP2C_LIBRARIES "/usr/local/lib/libifmap2c.so")
@@ -55,3 +55,4 @@ TARGET_LINK_LIBRARIES(test-notify-event-twice ${LIBIFMAP2C_LIBRARIES})
 
 add_subdirectory(utils)
 add_subdirectory(tests)
+add_subdirectory(perf)
