@@ -373,7 +373,7 @@ checkIdentity(SSRC *const ssrc)
 	std::string identname = "Aidentity";
 	std::string hiphit = "1:2:3:4:c:d:e:f";
 	std::string sipuri = "sip:ident@localhost:8842";
-	std::string teluri = "+4-12-123-1234";
+	std::string teluri = "tel:+4-12-123-1234";
 	std::string email = "ident@domain.tld";
 	std::string kerberos = "pri/lurk@DOM";
 	const string admind = "The Administrative Domain";
@@ -393,8 +393,8 @@ checkIdentity(SSRC *const ssrc)
 	identities[3] = Identifiers::createIdentity(distinguished_name, identname, admind);
 	identities[4] = Identifiers::createIdentity(dns_name, identname);
 	identities[5] = Identifiers::createIdentity(dns_name, identname, admind);
-	identities[6] = Identifiers::createIdentity(email_address, identname);
-	identities[7] = Identifiers::createIdentity(email_address, identname, admind);
+	identities[6] = Identifiers::createIdentity(email_address, email);
+	identities[7] = Identifiers::createIdentity(email_address, email, admind);
 	identities[8] = Identifiers::createIdentity(hip_hit, hiphit);
 	identities[9] = Identifiers::createIdentity(hip_hit, hiphit, admind);
 	identities[10] = Identifiers::createIdentity(kerberos_principal, kerberos);
