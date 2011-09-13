@@ -24,8 +24,8 @@
 
 
 /*
- * Check if the PollResults contains the newly addes subgraph, if
- * one is added while doing a publish update.
+ * Check if there is no off-by one for subscription depth corner
+ * case. Found in irond...
  */
 
 #include <iostream>
@@ -52,7 +52,6 @@ static void
 checkFirstPollResult(ARC *arc)
 {
 	SearchResult *sres;
-	ResultItem *ri;
 	PollResult *pres = arc->poll();
 	SRLIST tmp1, tmp2, tmp3;
 
@@ -62,54 +61,35 @@ checkFirstPollResult(ARC *arc)
 
 	if (tmp1.size() != 0 || tmp2.size() != 0 || tmp3.size() != 0) {
 		cerr << "unexpected second poll result with non-search results" << endl;
-		return;
+		goto clean;
 	}
 
 	if (pres->getSearchResults().size() != 1) {
 		cerr << "unexpected initial poll result" << endl;
-		return;
+		goto clean;
 	}
 
 	sres = *pres->getSearchResults().begin();
 
-	if (sres->getResultItems().size() != 1) {
-		cerr << "unexpected number of resultItems" << endl;
-		return;
+	if (sres->getResultItems().size() != 3) {
+		cerr << "unexpected number of resultItems: ";
+		cerr << sres->getResultItems().size()  << endl;
 	}
 
-	ri = *sres->getResultItems().begin();
-
-	if (ri->getAccessRequest() == NULL) {
-		cerr << "no access-request in first result" << endl;
-		return;
-	}
-
-	if (ri->getMetadata().size() != 0) {
-		cerr << "unexpected metadata count for resultItem" << endl;
-		return;
-	}
-
+clean:
 	delete pres;
 }
 
 static void
-checkAddedSubgraph(ARC *arc)
+checkOnlyArCap(ARC *arc)
 {
 	PollResult *pres = arc->poll();
 	SearchResult *sres;
 	ResultItem *ri;
 	AccessRequest *ar = Identifiers::createAr("abc");
-	IpAddress *ip = Identifiers::createIPv4("192.168.0.1");
-	MacAddress *mac = Identifiers::createMac("aa:bb:cc:dd:ee:ff");
-
-	bool macDone, ipDone, ipMacDone, arMacDone;
-	macDone = ipDone =  ipMacDone = arMacDone = false;
-
 
 	SRLIST updateResults;
 	SRLIST tmp1, tmp2, tmp3;
-	SRLISTIT srIt;
-	SRLISTIT srEnd;
 	RILIST rilist;
 
 	tmp1 = pres->getSearchResults();
@@ -118,132 +98,41 @@ checkAddedSubgraph(ARC *arc)
 
 	if (tmp1.size() != 0 || tmp2.size() != 0 || tmp3.size() != 0) {
 		cerr << "unexpected second poll result with non-update results" << endl;
-		return;
+		goto clean;
 	}
 
 	updateResults = pres->getUpdateResults();
 
-	if (updateResults.size() < 1) {
+	if (updateResults.size() != 1) {
 		cerr << "unexpected second poll result" << endl;
-		return;
+		goto clean;
 	}
 
 
-	srIt = updateResults.begin();
-	srEnd = updateResults.end();
+	sres = *updateResults.begin();
 
-	for ( ; srIt != srEnd; srIt++) {
-		sres = *srIt;
-
-		rilist = sres->getResultItemsByType(ar, mac);
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for ar-mac link" << endl;
-				return;
-			}
-
-			if (arMacDone) {
-				cerr << "ar-mac link twice???" << endl;
-				return;
-			}
-
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 1) {
-				cerr << "unexpected metadata for ar-mac link" << endl;
-				return;
-			}
-			
-			arMacDone = true;
-		}
-		
-		rilist = sres->getResultItemsByType(ip, mac);
-		
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for ip-mac link" << endl;
-				return;
-			}
-
-			if (ipMacDone) {
-				cerr << "ip-mac link twice???" << endl;
-				return;
-			}
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 1) {
-				cerr << "unexpected metadata for ip-mac link" << endl;
-				return;
-			}
-
-			ipMacDone = true;
-		}
-		
-		rilist = sres->getResultItemsByType(ip);
-		
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for ip identifier" << endl;
-				return;
-			}
-
-			if (ipDone) {
-				cerr << "ip twice???" << endl;
-				return;
-			}
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 1) {
-				cerr << "unexpected metadata mac identifier" << endl;
-				return;
-			}
-
-			ipDone = true;
-		}
-		
-		rilist = sres->getResultItemsByType(mac);
-		
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for mac identifier" << endl;
-				return;
-			}
-
-			if (macDone) {
-				cerr << "mac twice???" << endl;
-				return;
-			}
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 0) {
-				cerr << "unexpected metadata mac identifier" << endl;
-				return;
-			}
-
-			macDone = true;
-		}
+	rilist = sres->getResultItems();
+	if (rilist.size() != 1) {
+		cerr << "unexpected number of resultItems: ";
+		cerr << rilist.size() << endl;
+		goto clean;
 	}
-	
-	if (!arMacDone)
-		cerr << "Missing added metadata from ar-mac link" << endl;
 
-	if (!ipMacDone)
-		cerr << "Missing added metadata from ip-mac link" << endl;
 
-	if (!ipDone)
-		cerr << "Missing added metadata from ip identifier" << endl;
-	
-	if (!macDone)
-		cerr << "Missing mac identifier" << endl;
+	rilist = sres->getResultItemsByType(ar);
+	if (rilist.size() < 1) {
+		cerr << "no resultItem for ar" << endl;
+		goto clean;
+	}
 
+	ri = *rilist.begin();
+	if (ri->getMetadata().size() != 1) {
+		cerr << "unexpected number of metadata on ar identifier:";
+		cerr << ri->getMetadata().size() << endl;
+	}
+clean:
 	delete pres;
-	delete ip;
 	delete ar;
-	delete mac;
 }
 
 static void
@@ -260,14 +149,11 @@ main(int argc, char *argv[])
 	SSRC *ssrc = NULL;
 	ARC *arc = NULL;
 	PublishRequest *pr1, *pr2;
-	PublishUpdate *pu;
-	list<PublishElement *> pulist;
+	list<PublishElement *> pulist1, pulist2;
 	SubscribeRequest *sr;
 	SubscribeUpdate *su;
-	Identifier *mac, *ip, *ar;
-	XmlMarshalable *armac, *ipcap, *ipmac;
-	string errsub;
-	string goodsub;
+	Identifier *mac1, *mac2, *ar;
+	XmlMarshalable *arcap, *armac, *ipmac;
 	
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
@@ -279,27 +165,29 @@ main(int argc, char *argv[])
 	// Use user as administrative-domain to be able to run in
 	// with multiple instances at once.
 	ar = Identifiers::createAr("AR100", user);
-	ip = Identifiers::createIPv4("192.168.0.1", user);
-	mac = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
+	mac1 = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
+	mac2 = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
 
 	ipmac = Metadata::createIpMac();
-	ipcap = Metadata::createCapability("dummycap");
+	arcap = Metadata::createCapability("dummycap");
 	armac = Metadata::createArMac();
 	
-	pulist.push_back(Requests::createPublishUpdate(ipmac,
-				ip->clone(), mac->clone()));
-	pulist.push_back(Requests::createPublishUpdate(ipcap, ip));
-	pu = Requests::createPublishUpdate(armac, ar->clone(), mac);
+	pulist1.push_back(Requests::createPublishUpdate(armac->clone(),
+				ar->clone(), mac1->clone()));
+	pulist1.push_back(Requests::createPublishUpdate(armac, ar->clone(), mac2->clone()));
+	// This is cheating, but anyway ;)
+	pulist2.push_back(Requests::createPublishUpdate(ipmac, mac1, mac2));
+	pulist2.push_back(Requests::createPublishUpdate(arcap, ar->clone()));
 	
-	pr1 = Requests::createPublishReq(pulist);
-	pr2 = Requests::createPublishReq(pu);
+	pr1 = Requests::createPublishReq(pulist1);
+	pr2 = Requests::createPublishReq(pulist2);
 	pr1->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 	pr2->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 	
 	su = Requests::createSubscribeUpdate(
 			"sub1",
 			FILTER_MATCH_ALL,
-			16,
+			1,
 			FILTER_MATCH_ALL,
 			SEARCH_NO_MAX_RESULT_SIZE,
 			ar);
@@ -312,7 +200,7 @@ main(int argc, char *argv[])
 		ssrc->subscribe(sr);
 		checkFirstPollResult(arc);
 		ssrc->publish(pr2);
-		checkAddedSubgraph(arc);
+		checkOnlyArCap(arc);
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
