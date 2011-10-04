@@ -42,6 +42,7 @@
 
 #include <iostream>
 #include <list>
+#include <cstdlib>
 
 extern "C" {
 	#include <pthread.h>
@@ -197,7 +198,6 @@ main(int argc, char *argv[])
 		ssrc->publish(pr2);
 		usleep(SLEEPTIME);
 		ssrc->endSession();
-		pthread_join(pollThread, &tRet);
 
 	} catch (IfmapError e) {
 		cerr << e << endl;
@@ -211,5 +211,5 @@ clean:
 	delete pr1; delete pr2; delete sr;
 	delete arc;
 	delete ssrc;
-	return 0;
+	exit(0);
 }

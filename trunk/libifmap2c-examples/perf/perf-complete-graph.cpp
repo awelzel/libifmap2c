@@ -165,6 +165,13 @@ static int
 getCountOfMetadata(PollResult *pres)
 {
 	int ret = 0;
+	if (pres->getErrorResults().size() > 0) {
+		list<ErrorResult *>::const_iterator it = pres->getErrorResults().begin();
+		list<ErrorResult *>::const_iterator end = pres->getErrorResults().end();
+		for (/* */; it != end; it++) {
+			cerr << **it << endl;
+		}
+	}
 	ret += getCountOfMetadata(pres->getSearchResults());
 	ret += getCountOfMetadata(pres->getUpdateResults());
 	ret += getCountOfMetadata(pres->getDeleteResults());
@@ -180,6 +187,8 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 	int i, j, count, expected;
 	for_all_idents(i) {
 		for_all_idents(j) {
+			cout << ".";
+			cout.flush();
 			if (i == j)
 				continue;
 
@@ -204,11 +213,14 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 				cerr << "i=" << i << " j=" << j;
 				cerr << " count=" << count;
 				cerr << " expected=" << expected << endl;
+				return;
 			}
 
 
 			delete pres;
 		}
+		cout << endl;
+		break;
 	}
 }
 

@@ -23,13 +23,11 @@
  */
 
 
-/*
- * Check if the PollResults contains the newly addes subgraph, if
- * one is added while doing a publish update.
- */
+/* test-subgraph2.cpp */
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <list>
 
 // libifmap2c includes
@@ -49,69 +47,6 @@ typedef SRLIST::iterator SRLISTIT;
 typedef list<ResultItem *> RILIST;
 typedef RILIST::iterator RILISTIT;
 
-static char *url, *user, *pass, *capath;
-
-static void checkMetadataThere(PollResult *pres, ResultType type, string op)
-{
-	AccessRequest *ar = Identifiers::createAr("AR100", user);
-	IpAddress *ip = Identifiers::createIPv4("192.168.0.1", user);
-	MacAddress *mac = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
-
-	int tmp1, tmp2;
-
-	tmp1 = cntRi(pres, ar, mac, type);
-	tmp2 = cntRi(pres, ar, mac, type, 1);
-	
-	if (tmp1 != 1 || tmp2 != 1)
-		cerr << op << ": unexpected #RI for ar-mac link:" << tmp1  << " " << tmp2 << endl;
-
-	tmp1 = cntRi(pres, ip, mac, type);
-	tmp2 = cntRi(pres, ip, mac, type, 1);
-
-	if (tmp1 != 1 || tmp2 != 1)
-		cerr << op << ": unexpected #RI for ip-mac link:" << tmp1  << " " << tmp2 << endl;
-	
-	tmp1 = cntRi(pres, ip, type);
-	tmp2 = cntRi(pres, ip, type, 1);
-
-	if (tmp1 != 1 || tmp2 != 1)
-		cerr << op << ": unexpected #RI for ip ident:" << tmp1  << " " << tmp2 << endl;
-
-	delete ar;
-	delete mac;
-	delete ip;
-}
-
-static void
-checkFirstPollResult(ARC *arc)
-{
-	PollResult *pres = arc->poll();
-
-	if (cntUp(pres) != 0 || cntDe(pres) != 0 || cntNo(pres) != 0) {
-		cerr << "second poll result contains non-deleteResults" << endl;
-		return;
-	}
-
-	checkMetadataThere(pres, SEARCH,  "search");
-
-	delete pres;
-}
-
-static void
-checkDeletedSubgraph(ARC *arc)
-{
-	PollResult *pres = arc->poll();
-
-	if (cntSe(pres) != 0 || cntUp(pres) != 0 || cntNo(pres) != 0) {
-		cerr << "unexpected second poll result with non-delete results" << endl;
-		return;
-	}
-
-	checkMetadataThere(pres, DELETE, "deleted");
-
-	delete pres;
-}
-
 static void
 usage(const char *const name)
 {
@@ -124,15 +59,17 @@ main(int argc, char *argv[])
 
 	SSRC *ssrc = NULL;
 	ARC *arc = NULL;
-	PublishRequest *pr1, *pr2;
+	char *url, *user, *pass, *capath;
+
+	Identifier *ars[4];
+	int i;
+	PublishRequest *pr1, *pr2, *pr3;
 	PublishDelete *pd;
 	list<PublishElement *> pulist;
 	SubscribeRequest *sr;
 	SubscribeUpdate *su;
-	Identifier *mac, *ip, *ar;
-	XmlMarshalable *armac, *ipcap, *ipmac;
-	string errsub;
-	string goodsub;
+	XmlMarshalable *ipmac;
+	PollResult *pres;
 	
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
@@ -141,35 +78,40 @@ main(int argc, char *argv[])
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 	arc = ssrc->getARC();
 
-	// Use user as administrative-domain to be able to run in
-	// with multiple instances at once.
-	ar = Identifiers::createAr("AR100", user);
-	ip = Identifiers::createIPv4("192.168.0.1", user);
-	mac = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
+	for (i = 0; i < 4; i++) {
+		stringstream ss;
+		ss << "AR" << i;
+		ars[i] = Identifiers::createAr(ss.str(), user);
+	}
 
 	ipmac = Metadata::createIpMac();
-	ipcap = Metadata::createCapability("dummycap");
-	armac = Metadata::createArMac();
 	
-	pulist.push_back(Requests::createPublishUpdate(ipmac,
-				ip->clone(), mac->clone()));
-	pulist.push_back(Requests::createPublishUpdate(ipcap, ip));
-	pulist.push_back(Requests::createPublishUpdate(
-				armac, ar->clone(), mac->clone()));
+	pulist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+				ars[0]->clone(), ars[1]->clone()));
+	pulist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+				ars[1]->clone(), ars[2]->clone()));
+	pulist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+				ars[2]->clone(), ars[3]->clone()));
+	
 
-	pd = Requests::createPublishDelete(FILTER_MATCH_ALL, ar->clone(), mac);
+	pd = Requests::createPublishDelete(FILTER_MATCH_ALL,
+			ars[0]->clone(), ars[2]->clone());
 	
 	pr1 = Requests::createPublishReq(pulist);
-	pr2 = Requests::createPublishReq(pd);
+	pr2 = Requests::createPublishReq(Requests::createPublishUpdate(ipmac->clone(),
+				ars[0]->clone(), ars[2]->clone()));
+	pr3 = Requests::createPublishReq(pd);
+
 	pr1->addXmlNamespaceDefinition(TCG_META_NSPAIR);
+	pr2->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 	
 	su = Requests::createSubscribeUpdate(
 			"sub1",
 			FILTER_MATCH_ALL,
-			16,
+			2,
 			FILTER_MATCH_ALL,
 			SEARCH_NO_MAX_RESULT_SIZE,
-			ar);
+			ars[0]->clone());
 	
 	sr = Requests::createSubscribeReq(su);
 
@@ -177,9 +119,54 @@ main(int argc, char *argv[])
 		ssrc->newSession();
 		ssrc->publish(pr1);
 		ssrc->subscribe(sr);
-		checkFirstPollResult(arc);
+		pres = arc->poll();
+
+		checkContainsOnly(pres, SEARCH, "first poll", 1);
+
+		for (i = 0; i < 3; i++)
+			if (cntRi(pres, ars[i], SEARCH) != 1)
+				cerr << "unexpected RI# for AR" << i << endl;
+		
+		if (cntRi(pres, ars[0], ars[1], SEARCH) != 1)
+				cerr << "unexpected LINK 0 1" << endl;
+
+		if (cntRi(pres, ars[1], ars[2], SEARCH) != 1)
+				cerr << "unexpected LINK 1 2" << endl;
+
+		if (cntRi(pres, ars[2], ars[3], SEARCH) != 0)
+				cerr << "LINK 2 3 is there?" << endl;
+
+		delete pres;
+
 		ssrc->publish(pr2);
-		checkDeletedSubgraph(arc);
+		pres = arc->poll();
+
+		checkContainsOnly(pres, UPDATE, "second poll", -1);
+
+		checkRiCnt(pres, UPDATE, "second poll", 2);
+		
+		if (cntRi(pres, ars[0], ars[2], UPDATE, 1) != 1)
+			cerr << "LINK 0 2 not there?" << endl;
+		
+		if (cntRi(pres, ars[2], ars[3], UPDATE, 1) != 1)
+			cerr << "LINK 2 3 not there?" << endl;
+
+		delete pres;
+		
+		ssrc->publish(pr3);
+		pres = arc->poll();
+		
+		checkContainsOnly(pres, DELETE, "thrid poll", -1);
+
+		checkRiCnt(pres, DELETE, "thrid poll", 2);
+
+		if (cntRi(pres, ars[0], ars[2], DELETE, 1) != 1)
+			cerr << "LINK 0 2 not there?" << endl;
+		
+		if (cntRi(pres, ars[2], ars[3], DELETE, 1) != 1)
+			cerr << "LINK 2 3 not there?" << endl;
+
+		delete pres;
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
@@ -190,6 +177,7 @@ main(int argc, char *argv[])
 	delete sr;
 	delete pr1;
 	delete pr2;
+	delete pr3;
 	delete arc;
 	delete ssrc;
 	return 0;
