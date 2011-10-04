@@ -34,6 +34,8 @@ INCLUDE_DIRECTORIES(
 
 # common functionality as a static library
 ADD_LIBRARY(common STATIC common/common.cpp)
+ADD_LIBRARY(testcommon STATIC common/testcommon.cpp)
+
 
 ADD_EXECUTABLE(subTest subTest.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example pdp-dhcp-example.cpp)

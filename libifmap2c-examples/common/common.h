@@ -36,7 +36,6 @@
 		"of using the command line\nparameters url, user, password and "\
 		"capath."
 
-
 void checkAndLoadParameters(
 		int argc,
 		char **argv,
@@ -53,6 +52,4 @@ void checkUpdateOrDelete(
 		char *name);
 
 bool isUpdate(char *str);
-		
-
 #endif // COMMON_H_

@@ -24,7 +24,7 @@
 
 
 /*
- * Check if the PollResults contains the newly addes subgraph, if
+ * Check if the PollResults contains the newly added subgraph, if
  * one is added while doing a publish update.
  */
 
@@ -39,6 +39,7 @@
 #include <libifmap2c/metadata.h>
 
 #include "common.h"
+#include "testcommon.h"
 
 using namespace std;
 using namespace ifmap2c;
@@ -48,47 +49,36 @@ typedef SRLIST::iterator SRLISTIT;
 typedef list<ResultItem *> RILIST;
 typedef RILIST::iterator RILISTIT;
 
+static char *url, *user, *pass, *capath;
+
 static void
 checkFirstPollResult(ARC *arc)
 {
-	SearchResult *sres;
-	ResultItem *ri;
 	PollResult *pres = arc->poll();
-	SRLIST tmp1, tmp2, tmp3;
+	AccessRequest *ar = Identifiers::createAr("AR100", user);
+	int tmp;
 
-	tmp1 = pres->getUpdateResults();
-	tmp2 = pres->getDeleteResults();
-	tmp3 = pres->getNotifyResults();
-
-	if (tmp1.size() != 0 || tmp2.size() != 0 || tmp3.size() != 0) {
+	if (cntUp(pres) != 0 || cntDe(pres) != 0 || cntNo(pres) != 0) {
 		cerr << "unexpected second poll result with non-search results" << endl;
 		return;
 	}
 
-	if (pres->getSearchResults().size() != 1) {
+	if (cntSe(pres) != 1) {
 		cerr << "unexpected initial poll result" << endl;
 		return;
 	}
 
-	sres = *pres->getSearchResults().begin();
-
-	if (sres->getResultItems().size() != 1) {
+	if ((*pres->getSearchResults().begin())->getResultItems().size() != 1) {
 		cerr << "unexpected number of resultItems" << endl;
 		return;
 	}
 
-	ri = *sres->getResultItems().begin();
+	tmp = cntRi(pres, ar, SEARCH, 0);
+	
+	if (tmp != 1)
+		cerr << "wrong #access-request RI:" << tmp << endl;
 
-	if (ri->getAccessRequest() == NULL) {
-		cerr << "no access-request in first result" << endl;
-		return;
-	}
-
-	if (ri->getMetadata().size() != 0) {
-		cerr << "unexpected metadata count for resultItem" << endl;
-		return;
-	}
-
+	delete ar;
 	delete pres;
 }
 
@@ -96,149 +86,46 @@ static void
 checkAddedSubgraph(ARC *arc)
 {
 	PollResult *pres = arc->poll();
-	SearchResult *sres;
-	ResultItem *ri;
-	AccessRequest *ar = Identifiers::createAr("abc");
-	IpAddress *ip = Identifiers::createIPv4("192.168.0.1");
-	MacAddress *mac = Identifiers::createMac("aa:bb:cc:dd:ee:ff");
+	AccessRequest *ar = Identifiers::createAr("AR100", user);
+	IpAddress *ip = Identifiers::createIPv4("192.168.0.1", user);
+	MacAddress *mac = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
+	int tmp1, tmp2;
 
-	bool macDone, ipDone, ipMacDone, arMacDone;
-	macDone = ipDone =  ipMacDone = arMacDone = false;
-
-
-	SRLIST updateResults;
-	SRLIST tmp1, tmp2, tmp3;
-	SRLISTIT srIt;
-	SRLISTIT srEnd;
-	RILIST rilist;
-
-	tmp1 = pres->getSearchResults();
-	tmp2 = pres->getDeleteResults();
-	tmp3 = pres->getNotifyResults();
-
-	if (tmp1.size() != 0 || tmp2.size() != 0 || tmp3.size() != 0) {
+	if (cntSe(pres) != 0 || cntDe(pres) != 0 || cntNo(pres) != 0) {
 		cerr << "unexpected second poll result with non-update results" << endl;
 		return;
 	}
 
-	updateResults = pres->getUpdateResults();
-
-	if (updateResults.size() < 1) {
+	if (cntUp(pres) < 1) {
 		cerr << "unexpected second poll result" << endl;
 		return;
 	}
 
 
-	srIt = updateResults.begin();
-	srEnd = updateResults.end();
+	tmp1 = cntRi(pres, ar, mac, UPDATE);
+	tmp2 = cntRi(pres, ar, mac, UPDATE, 1);
 
-	for ( ; srIt != srEnd; srIt++) {
-		sres = *srIt;
-
-		rilist = sres->getResultItemsByType(ar, mac);
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for ar-mac link" << endl;
-				return;
-			}
-
-			if (arMacDone) {
-				cerr << "ar-mac link twice???" << endl;
-				return;
-			}
-
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 1) {
-				cerr << "unexpected metadata for ar-mac link" << endl;
-				return;
-			}
-			
-			arMacDone = true;
-		}
-		
-		rilist = sres->getResultItemsByType(ip, mac);
-		
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for ip-mac link" << endl;
-				return;
-			}
-
-			if (ipMacDone) {
-				cerr << "ip-mac link twice???" << endl;
-				return;
-			}
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 1) {
-				cerr << "unexpected metadata for ip-mac link" << endl;
-				return;
-			}
-
-			ipMacDone = true;
-		}
-		
-		rilist = sres->getResultItemsByType(ip);
-		
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for ip identifier" << endl;
-				return;
-			}
-
-			if (ipDone) {
-				cerr << "ip twice???" << endl;
-				return;
-			}
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 1) {
-				cerr << "unexpected metadata mac identifier" << endl;
-				return;
-			}
-
-			ipDone = true;
-		}
-		
-		rilist = sres->getResultItemsByType(mac);
-		
-		if (rilist.size() > 0) {
-			if (rilist.size() != 1) {
-				cerr << "unexpected resultItems for mac identifier" << endl;
-				return;
-			}
-
-			if (macDone) {
-				cerr << "mac twice???" << endl;
-				return;
-			}
-
-			ri = *rilist.begin();
-
-			if (ri->getMetadata().size() != 0) {
-				cerr << "unexpected metadata mac identifier" << endl;
-				return;
-			}
-
-			macDone = true;
-		}
-	}
+	if (tmp1 != 1 || tmp2 != 1)
+		cerr << "unexpected #RI for ar-mac link:" << tmp1  << " " << tmp2 << endl;
 	
-	if (!arMacDone)
-		cerr << "Missing added metadata from ar-mac link" << endl;
-
-	if (!ipMacDone)
-		cerr << "Missing added metadata from ip-mac link" << endl;
-
-	if (!ipDone)
-		cerr << "Missing added metadata from ip identifier" << endl;
+	tmp1 = cntRi(pres, ip, mac, UPDATE);
+	tmp2 = cntRi(pres, ip, mac, UPDATE, 1);
 	
-	if (!macDone)
-		cerr << "Missing mac identifier" << endl;
+	if (tmp1 != 1 || tmp2 != 1)
+		cerr << "unexpected #RI for ip-mac link:" << tmp1  << " " << tmp2 << endl;
+	
+	tmp1 = cntRi(pres, ip, UPDATE);
+	tmp2 = cntRi(pres, ip, UPDATE, 1);
+	
+	if (tmp1 != 1 || tmp2 != 1)
+		cerr << "unexpected #RI for ip identifier:" << tmp1  << " " << tmp2 << endl;
+	
+	tmp1 = cntRi(pres, mac, UPDATE);
+	tmp2 = cntRi(pres, mac, UPDATE, 0);
+
+	// don't expect the ResultItem if no metadata is there
+	if (tmp1 != 0 || tmp2 != 0)
+		cerr << "unexpected #RI for mac identifier:" << tmp1  << " " << tmp2 << endl;
 
 	delete pres;
 	delete ip;
@@ -255,7 +142,6 @@ usage(const char *const name)
 int
 main(int argc, char *argv[])
 {
-	char *url, *user, *pass, *capath;
 
 	SSRC *ssrc = NULL;
 	ARC *arc = NULL;
