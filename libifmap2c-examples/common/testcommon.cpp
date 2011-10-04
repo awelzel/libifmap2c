@@ -14,6 +14,10 @@ typedef RILIST::iterator RILISTIT;
 
 static SRLIST getResultsOfType(PollResult *pr, ResultType x)
 {
+
+	if (pr->getErrorResults().size() > 0)
+		cerr << "WARN: PollResult contains error results" << endl;
+
 	switch (x) {
 	case SEARCH:
 		return pr->getSearchResults();
