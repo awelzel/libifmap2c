@@ -24,7 +24,9 @@
 ADD_EXECUTABLE(perf-complete-graph perf-complete-graph.cpp)
 ADD_EXECUTABLE(perf-pulsing-star-int perf-pulsing-star-int.cpp)
 ADD_EXECUTABLE(perf-pulsing-star-ext perf-pulsing-star-ext.cpp)
+ADD_EXECUTABLE(perf-rand-graph perf-rand-graph.cpp)
 
-TARGET_LINK_LIBRARIES(perf-complete-graph ${LIBIFMAP2C_LIBRARIES} common)
+TARGET_LINK_LIBRARIES(perf-complete-graph ${LIBIFMAP2C_LIBRARIES} common testcommon)
 TARGET_LINK_LIBRARIES(perf-pulsing-star-int ${LIBIFMAP2C_LIBRARIES} common testcommon)
 TARGET_LINK_LIBRARIES(perf-pulsing-star-ext ${LIBIFMAP2C_LIBRARIES} common testcommon)
+TARGET_LINK_LIBRARIES(perf-rand-graph ${LIBIFMAP2C_LIBRARIES} common testcommon)
