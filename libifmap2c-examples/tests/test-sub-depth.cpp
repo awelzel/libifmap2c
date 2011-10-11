@@ -166,7 +166,7 @@ main(int argc, char *argv[])
 	// with multiple instances at once.
 	ar = Identifiers::createAr("AR100", user);
 	mac1 = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
-	mac2 = Identifiers::createMac("aa:bb:cc:dd:ee:ff", user);
+	mac2 = Identifiers::createMac("aa:bb:cc:dd:ee:f1", user);
 
 	ipmac = Metadata::createIpMac();
 	arcap = Metadata::createCapability("dummycap");
@@ -174,7 +174,7 @@ main(int argc, char *argv[])
 	
 	pulist1.push_back(Requests::createPublishUpdate(armac->clone(),
 				ar->clone(), mac1->clone()));
-	pulist1.push_back(Requests::createPublishUpdate(armac, ar->clone(), mac2->clone()));
+	pulist1.push_back(Requests::createPublishUpdate(armac, ar->clone(), mac1->clone()));
 	// This is cheating, but anyway ;)
 	pulist2.push_back(Requests::createPublishUpdate(ipmac, mac1, mac2));
 	pulist2.push_back(Requests::createPublishUpdate(arcap, ar->clone()));

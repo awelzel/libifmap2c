@@ -40,6 +40,7 @@
 #include <list>
 #include <string>
 #include <sstream>
+#include <cstdio>
 
 #include "common.h"
 
@@ -187,10 +188,10 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 	int i, j, count, expected;
 	for_all_idents(i) {
 		for_all_idents(j) {
+			if (j <= i)
+				continue;
 			cout << ".";
 			cout.flush();
-			if (i == j)
-				continue;
 
 			publishLink(idents[i], idents[j], ssrc);
 			pres = arc->poll();
@@ -219,8 +220,8 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 
 			delete pres;
 		}
+		//getchar();
 		cout << endl;
-		break;
 	}
 }
 
@@ -282,6 +283,7 @@ main(int argc, char *argv[])
 		checkFirstSearchResult(arc);
 
 		publishCompleteGraph(idents, ssrc, arc);
+		//getchar();
 
 		ssrc->endSession();
 	} catch (IfmapError e) {

@@ -23,7 +23,7 @@
  */
 
 
-/* test-subgraph2.cpp */
+/* test-subgraph4.cpp */
 
 #include <iostream>
 #include <string>
@@ -63,9 +63,8 @@ main(int argc, char *argv[])
 
 	Identifier *ars[4];
 	int i;
-	PublishRequest *pr1, *pr2, *pr3;
-	PublishDelete *pd;
-	list<PublishElement *> pulist;
+	PublishRequest *pr1, *pr2;
+	list<PublishElement *> pulist, pdlist;
 	SubscribeRequest *sr;
 	SubscribeUpdate *su;
 	XmlMarshalable *ipmac;
@@ -78,7 +77,7 @@ main(int argc, char *argv[])
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 	arc = ssrc->getARC();
 
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < 5; i++) {
 		stringstream ss;
 		ss << "AR" << i;
 		ars[i] = Identifiers::createAr(ss.str(), user);
@@ -90,25 +89,23 @@ main(int argc, char *argv[])
 				ars[0]->clone(), ars[1]->clone()));
 	pulist.push_back(Requests::createPublishUpdate(ipmac->clone(),
 				ars[1]->clone(), ars[2]->clone()));
-	pulist.push_back(Requests::createPublishUpdate(ipmac->clone(),
-				ars[2]->clone(), ars[3]->clone()));
 	
-
-	pd = Requests::createPublishDelete(FILTER_MATCH_ALL,
-			ars[0]->clone(), ars[2]->clone());
+	pdlist.push_back(Requests::createPublishDelete(FILTER_MATCH_ALL,
+			ars[0]->clone(), ars[1]->clone()));
+	pdlist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+				ars[0]->clone(), ars[3]->clone()));
+	pdlist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+				ars[3]->clone(), ars[1]->clone()));
 	
 	pr1 = Requests::createPublishReq(pulist);
-	pr2 = Requests::createPublishReq(Requests::createPublishUpdate(ipmac->clone(),
-				ars[0]->clone(), ars[2]->clone()));
-	pr3 = Requests::createPublishReq(pd);
-
+	pr2 = Requests::createPublishReq(pdlist);
 	pr1->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 	pr2->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 	
 	su = Requests::createSubscribeUpdate(
 			"sub1",
 			FILTER_MATCH_ALL,
-			2,
+			3,
 			FILTER_MATCH_ALL,
 			SEARCH_NO_MAX_RESULT_SIZE,
 			ars[0]->clone());
@@ -127,47 +124,32 @@ main(int argc, char *argv[])
 			if (cntRi(pres, ars[i], SEARCH) != 1)
 				cerr << "unexpected RI# for AR" << i << endl;
 		
-		if (cntRi(pres, ars[0], ars[1], SEARCH) != 1)
+		if (cntRi(pres, ars[0], ars[1], SEARCH, 1) != 1)
 				cerr << "unexpected LINK 0 1" << endl;
 
-		if (cntRi(pres, ars[1], ars[2], SEARCH) != 1)
+		if (cntRi(pres, ars[1], ars[2], SEARCH, 1) != 1)
 				cerr << "unexpected LINK 1 2" << endl;
-
-		if (cntRi(pres, ars[2], ars[3], SEARCH) != 0)
-				cerr << "LINK 2 3 is there?" << endl;
 
 		delete pres;
 
 		ssrc->publish(pr2);
+
 		pres = arc->poll();
 
-		checkContainsOnly(pres, UPDATE, "second poll", -1);
-
-		checkRiCnt(pres, UPDATE, "second poll", 2);
-		return 1;
+		checkRiCnt(pres, UPDATE, "second poll update", 2);
+		checkRiCnt(pres, DELETE, "second poll delete", 1);
+	
+		if (cntRi(pres, ars[0], ars[3], UPDATE, 1) != 1)
+				cerr << "unexpected LINK 0 3" << endl;
 		
-		if (cntRi(pres, ars[0], ars[2], UPDATE, 1) != 1)
-			cerr << "LINK 0 2 not there?" << endl;
+		if (cntRi(pres, ars[1], ars[3], UPDATE, 1) != 1)
+				cerr << "unexpected LINK 1 3" << endl;
 		
-		if (cntRi(pres, ars[2], ars[3], UPDATE, 1) != 1)
-			cerr << "LINK 2 3 not there?" << endl;
-
+		if (cntRi(pres, ars[0], ars[1], DELETE, 1) != 1)
+				cerr << "LINK 1 2 not deleted" << endl;
+		
 		delete pres;
-		
-		ssrc->publish(pr3);
-		pres = arc->poll();
-		
-		checkContainsOnly(pres, DELETE, "thrid poll", -1);
 
-		checkRiCnt(pres, DELETE, "thrid poll", 2);
-
-		if (cntRi(pres, ars[0], ars[2], DELETE, 1) != 1)
-			cerr << "LINK 0 2 not there?" << endl;
-		
-		if (cntRi(pres, ars[2], ars[3], DELETE, 1) != 1)
-			cerr << "LINK 2 3 not there?" << endl;
-
-		delete pres;
 		ssrc->endSession();
 	} catch (IfmapError e) {
 		cerr << e << endl;
@@ -178,7 +160,6 @@ main(int argc, char *argv[])
 	delete sr;
 	delete pr1;
 	delete pr2;
-	delete pr3;
 	delete arc;
 	delete ssrc;
 	return 0;
