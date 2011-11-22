@@ -84,8 +84,11 @@ ErrorResult::getName() const
 
 ostream& operator<<(ostream& output, const ErrorResult& err)
 {
+	if (err.getName().length() > 0)
+		output << "name: " << err.getName() << " - ";
 	output << err.getErrorCodeString() << ": ";
 	output << err.getErrorString();
+
 	return output;
 }
 
