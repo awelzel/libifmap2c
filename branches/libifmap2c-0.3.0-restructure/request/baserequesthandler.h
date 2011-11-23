@@ -22,40 +22,29 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "newsessionrequest.h"
-#include "tcgifmapbase.h"
-#include "typedefs.h"
-
-#include <sstream>
-#include <string>
-
-using namespace std;
+#ifndef BASEREQUESTHANDLER_H_
+#define BASEREQUESTHANDLER_H_
+#include "request.h"
+#include "requests.h"
 
 namespace ifmap2c {
 
-NewSessionRequest *
-NewSessionRequest::createNewSessionRequest(const int maxPollResSize)
-{
-	return new NewSessionRequest(maxPollResSize);
-}
+	IFMAP2C_RH_HEADER(NewSessionRequest);
 
+	IFMAP2C_RH_HEADER(EndSessionRequest);
 
+	IFMAP2C_RH_HEADER(RenewSessionRequest);
+	
+	IFMAP2C_RH_HEADER(PurgePublisherRequest);
 
-NewSessionRequest::NewSessionRequest(const int maxPollResSize)
-	: BasicXmlMarshalable(
-			NEWSESSION_ELEMENT_NAME,
-			EMPTY_VALUE,
-			IFMAP_NSPAIR)
+	IFMAP2C_RH_HEADER(PublishRequest);
 
-
-{
-	if (maxPollResSize != NO_MAX_POLL_RES_SIZE
-			&& maxPollResSize >= 0) {
-		stringstream ss;
-		ss << maxPollResSize;
-		STRP attr = STRP(MAX_POLL_RES_SIZE_ATTR_NAME, ss.str());
-		addXmlAttribute(attr);
-	}
-}
+	IFMAP2C_RH_HEADER(SearchRequest);
+	
+	IFMAP2C_RH_HEADER(SubscribeRequest);
+	
+	IFMAP2C_RH_HEADER(PollRequest);
 
 } // namespace
+
+#endif /* BASEREQUESTHANDLER_H_ */

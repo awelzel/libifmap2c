@@ -25,18 +25,27 @@
 #ifndef NEWSESSIONREQUEST_H_
 #define NEWSESSIONREQUEST_H_
 
-#include "basicxmlmarshalable.h"
+#include "request.h"
 
 namespace ifmap2c {
 
-class NewSessionRequest : public BasicXmlMarshalable {
+class NewSessionRequest : public Request {
 
 public:
 	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize);
+			const int maxPollResSize) {
+		return new NewSessionRequest(maxPollResSize);
+	}
+
+	int getMaxPollResultSize(void) const {
+		return _maxPollResSize;
+	}
 
 private:
-	NewSessionRequest(const int maxPollResSize);
+	NewSessionRequest(const int maxPollResSize) :
+		_maxPollResSize(maxPollResSize) { }
+
+	const int _maxPollResSize;
 };
 
 } // namespace

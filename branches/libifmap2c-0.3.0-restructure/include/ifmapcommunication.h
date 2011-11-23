@@ -33,6 +33,8 @@
 #include "responseparseerror.h"
 #include "responseparser.h"
 #include "responses.h"
+#include "request.h"
+#include "result.h"
 #include "tcgifmapbase.h"
 #include "xmlmarshaller.h"
 #include "xmlunmarshaller.h"
@@ -64,6 +66,8 @@ public:
 
 	virtual ~IfmapCommunication();
 
+	Result *genericRequest(Request *const req,
+			const std::string& sId = "");
 protected:
 	IfmapCommunication(const std::string& url,
 			const std::string& user,
@@ -77,12 +81,6 @@ protected:
 			const std::string& mycert,
 			const std::string& capath);
 
-	/**
-	 *
-	 *
-	 *
-	 */
-	XmlMarshalable *processMessage(XmlMarshalable *const msg);
 
 	/**
 	 * Set the a session-id attribute to the request.
@@ -112,6 +110,11 @@ private:
 	bool containsSessionId(XmlMarshalable *req);
 
 	XmlMarshalable *buildEnvelope();
+	
+	/**
+	 *
+	 */
+	XmlMarshalable *processMessage(XmlMarshalable *const msg);
 };
 
 } // namespace

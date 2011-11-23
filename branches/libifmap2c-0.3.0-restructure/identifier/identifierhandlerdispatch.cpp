@@ -22,25 +22,55 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "endsessionrequest.h"
-#include "tcgifmapbase.h"
+#include "identifier.h"
 
-#include <string>
-
+/*
+ * TODO: Somebody has to tell me something better than dispatching
+ *       on the name value of the type_info, please.
+ */
 using namespace std;
 
 namespace ifmap2c {
 
-EndSessionRequest *
-EndSessionRequest::createEndSessionRequest(void)
+void
+IdentifierHandlerDispatch::registerIdentifierHandler(
+		IdentifierHandler *const handler)
 {
-	return new EndSessionRequest();
+	handlers[handler->handles()->name()] = handler;
 }
 
-EndSessionRequest::EndSessionRequest() : BasicXmlMarshalable(
-			ENDSESSION_ELEMENT_NAME,
-			EMPTY_VALUE,
-			IFMAP_NSPAIR)
-{ }
+XmlMarshalable *
+IdentifierHandlerDispatch::toXml(Identifier *const i) const
+{
+	IdentifierHandler *handler = handlers[typeid(*i).name()];
+	
+	if (!handler) throw "NO HANDLER HERE";
 
+	return handler->toXml(i);
+}
+
+Identifier *
+IdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
+{
+	/*
+	 * Go through all registered handlers and try to use
+	 * fromXml(). They should return NULL if they cannot
+	 * handle this instance or throw an if there is an error
+	 * during parsing.
+	 */
+	Identifier *ret = NULL;
+	map<std::string, IdentifierHandler *>::const_iterator it, end;
+
+	it = handlers.begin();
+	end = handlers.end();
+
+	for (/* */; it != end; it++) {
+		ret = (*it).second->fromXml(xml);
+
+		if (ret)
+			return ret;
+	}
+
+	throw "NO APPROPIATE IDENTIFIERHANDLER";
+}
 } // namespace

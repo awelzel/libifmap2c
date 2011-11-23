@@ -28,6 +28,7 @@
 #include "xml/libxml2unmarshaller.h"
 #include "communication/lowlevelcurlcommunication.h"
 #include "typedefs.h"
+#include "result.h"
 
 #include <cstring>
 #include <iostream>
@@ -134,6 +135,11 @@ IfmapCommunication::buildEnvelope()
 	envelope->addXmlChild(body);
 
 	return envelope;
+}
+
+Result *genericRequest(Request *req)
+{
+	return (Result *)req;
 }
 
 

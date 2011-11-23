@@ -56,6 +56,15 @@ PollResult *
 ARC::poll(void)
 {
 	PollRequest *pollReq = Requests::createPollReq();
+	Result *res = genericRequest(pollReq);
+	PollResult *ret = dynamic_cast<PollResult *>(res);
+
+	if (!ret)
+		throw "UHM :( bad poll result"; //FIXME
+
+	return ret;
+
+/*
 	XmlMarshalable *reply = NULL;
 	PollResult *pollRes = NULL;
 	try {
@@ -74,6 +83,7 @@ ARC::poll(void)
 	delete pollReq;
 	delete reply;
 	return pollRes;
+	*/
 }
 
 const string&

@@ -22,24 +22,22 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "pollrequest.h"
-#include "typedefs.h"
-#include "tcgifmapbase.h"
-
-using namespace std;
+#ifndef RESULT_H_
+#define RESULT_H_
 
 namespace ifmap2c {
 
-PollRequest::PollRequest() :
-		BasicXmlMarshalable(POLLREQUEST_ELEMENT_NAME, EMPTY_VALUE,
-				IFMAP_OPERATION_NSPAIR)
-{ }
+/**
+ * Just a simple marker interface for results
+ */
+class Result {
 
-
-PollRequest *
-PollRequest::createPollRequest(void)
-{
-	return new PollRequest();
-}
+public:
+	virtual ~Result() { };
+	Result() { };
+};
 
 } // namespace
+
+#endif /* RESULT_H_ */
+

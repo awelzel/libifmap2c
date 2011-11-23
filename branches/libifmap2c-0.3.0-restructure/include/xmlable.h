@@ -22,20 +22,23 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "renewsessionrequest.h"
-#include "tcgifmapbase.h"
+#ifndef XMLABLE_H_
+#define XMLABLE_H_
 
 namespace ifmap2c {
 
-RenewSessionRequest::RenewSessionRequest() :
-	BasicXmlMarshalable(RENEWSESSION_ELEMENT_NAME, EMPTY_VALUE,
-			IFMAP_OPERATION_NSPAIR)
-{ }
+/**
+ * Just a simple marker interface for everything we can
+ * make XML out of...
+ */
+class XmlAble {
 
-RenewSessionRequest *
-RenewSessionRequest::createRenewSessionRequest(void)
-{
-	return new RenewSessionRequest();
-}
+public:
+	virtual ~XmlAble() { };
+	XmlAble() { };
+};
 
 } // namespace
+
+#endif /* XMLABLE_H_ */
+

@@ -22,21 +22,51 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef POLLREQUEST_H_
-#define POLLREQUEST_H_
-#include "request.h"
+#ifndef SEARCHPARAM_H_
+#define SEARCHPARAM_H_
+
+#include "identifier.h"
 
 namespace ifmap2c {
 
-class PollRequest : public Request {
+class SearchParam {
+
 public:
-	static PollRequest *createPollRequest(void) {
-		return new PollRequest();
-	}
+	const char *getMatchLinksFilter(void) const;
+
+	int getMaxDepth(void) const;
+
+	const char *getResultFilter(void) const;
+
+	int getMaxResultSize(void) const;
+
+	const char *getTerminalIdentifiers(void) const;
+
+	Identifier *getStartIdentifier(void) const;
+
+	SearchParam(const char *const matchLinksFilter,
+		const int maxDepth,
+		const char *const resultFilter,
+		const int maxResultSize,
+		const char *const terminalIdent,
+		Identifier *const i1);
+
+	virtual ~SearchParam() { }
 
 private:
-	PollRequest() { };
+	const char *_matchLinksFilter;
+
+	const int _maxDepth;
+
+	const char *_resultFilter;
+
+	const int _maxResultSize;
+
+	const char *_terminalIdentifiers;
+
+	Identifier *const _startIdentifier;
 };
 
 } // namespace
-#endif /* POLLREQUEST_H_ */
+
+#endif /* SEARCHPARAM_H_ */

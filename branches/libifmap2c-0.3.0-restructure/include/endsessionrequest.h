@@ -24,17 +24,20 @@
 
 #ifndef ENDSESSIONREQUEST_H_
 #define ENDSESSIONREQUEST_H_
-#include "basicxmlmarshalable.h"
+#include "request.h"
 
 namespace ifmap2c {
 
-class EndSessionRequest : public BasicXmlMarshalable {
+class EndSessionRequest : public Request {
 
 public:
-	static EndSessionRequest* createEndSessionRequest(void);
+	static EndSessionRequest* createEndSessionRequest(void)
+	{
+		return new EndSessionRequest();
+	}
 
 private:
-	EndSessionRequest();
+	EndSessionRequest() { }
 };
 
 } // namespace

@@ -93,13 +93,37 @@ void
 SSRC::newSession(const int maxPollResSize)
 {
 	NewSessionRequest *nsreq = Requests::createNewSessionReq(maxPollResSize);
-	XmlMarshalable *reply = NULL;
+	Result *res = NULL;
 	NewSessionResult *nsres = NULL;
-	int maxPollResSizeRecv;
-
+	int maxPollResSizeRecv = NO_MAX_POLL_RES_SIZE;
+	
 	try {
-		reply = processMessage(nsreq);
-		nsres = ResponseParser::createNewSessionResult(reply);
+		res = genericRequest(nsreq);
+
+
+/*
+NewSessionRequest::NewSessionRequest(const int maxPollResSize)
+	: BasicXmlMarshalable(
+			NEWSESSION_ELEMENT_NAME,
+			EMPTY_VALUE,
+			IFMAP_NSPAIR)
+
+
+{
+	if (maxPollResSize != NO_MAX_POLL_RES_SIZE
+			&& maxPollResSize >= 0) {
+		stringstream ss;
+		ss << maxPollResSize;
+		STRP attr = STRP(MAX_POLL_RES_SIZE_ATTR_NAME, ss.str());
+		addXmlAttribute(attr);
+	}
+}
+*/
+		nsres = dynamic_cast<NewSessionResult *>(res);
+
+		if (!nsres)
+			throw "UHM :( bad result"; //FIXME
+
 		maxPollResSizeRecv = nsres->getMaxPollResultSize();
 		
 		if (maxPollResSize != NO_MAX_POLL_RES_SIZE)
@@ -109,10 +133,10 @@ SSRC::newSession(const int maxPollResSize)
 						" in newSessionResult");
 	} catch (...) {
 		// free the memory
-		if (reply)
-			delete reply;
 		if (nsreq)
 			delete nsreq;
+		if (nsres)
+			delete nsres;
 		// throw exception up
 		throw;
 	}
@@ -121,31 +145,26 @@ SSRC::newSession(const int maxPollResSize)
 	_currentPublisherId = nsres->getPublisherId();
 	_currentMaxPollResSize = maxPollResSizeRecv;
 	delete nsreq;
-	delete reply;
 	delete nsres;
 }
-
-
 
 void
 SSRC::endSession(const string& sId)
 {
 	EndSessionRequest *esreq = Requests::createEndSessionReq();
-	XmlMarshalable *reply = NULL;
-
-	if (sId.length() > 0)
-		setSessionId(esreq, sId);
-
 	try {
-		reply = processMessage(esreq);
-		ResponseParser::checkEndSessionResult(reply);
+		genericRequest(esreq, sId);
 	} catch (...) {
 		delete esreq;
-		delete reply;
-		throw;
 	}
 	delete esreq;
-	delete reply;
+/*
+EndSessionRequest::EndSessionRequest() : BasicXmlMarshalable(
+			ENDSESSION_ELEMENT_NAME,
+			EMPTY_VALUE,
+			IFMAP_NSPAIR)
+{ }
+*/
 }
 
 
@@ -228,24 +247,19 @@ SSRC::subscribe(SubscribeRequest *const sr, const string& sId)
 void
 SSRC::renewSession(const string& sId)
 {
-	RenewSessionRequest *rsr = Requests::createRenewSessionReq();
-	XmlMarshalable *reply = NULL;
-
-	if (sId.length() > 0)
-		setSessionId(rsr, sId);
-
+	RenewSessionRequest *rnsreq = Requests::createRenewSessionReq();
 	try {
-		reply = processMessage(rsr);
-		ResponseParser::checkRenewSessionResult(reply);
+		genericRequest(rnsreq, sId);
 	} catch (...) {
-		if (rsr)
-			delete rsr;
-		if (reply)
-			delete reply;
-		throw;
+		delete rnsreq;
 	}
-	delete rsr;
-	delete reply;
+	delete rnsreq;
+	/*
+RenewSessionRequest::RenewSessionRequest() :
+	BasicXmlMarshalable(RENEWSESSION_ELEMENT_NAME, EMPTY_VALUE,
+			IFMAP_OPERATION_NSPAIR)
+{ }
+*/
 }
 
 
@@ -257,21 +271,22 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 	string pubId = (pId.length() > 0) ? pId : getPublisherId();
 
 	PurgePublisherRequest *ppr = Requests::createPurgePublisherReq(pubId);
-	XmlMarshalable *reply = NULL;
-
-	if (sId.length() > 0)
-		setSessionId(ppr, sId);
-
 	try {
-		reply = processMessage(ppr);
-		ResponseParser::checkPurgePublisherReceived(reply);
+		genericRequest(ppr, sId);
 	} catch (...) {
-		if (ppr) delete ppr;
-		if (reply) delete reply;
-		throw;
+		delete ppr;
 	}
 	delete ppr;
-	delete reply;
+
+	/*
+PurgePublisherRequest::PurgePublisherRequest(const string& publisherId) :
+
+	BasicXmlMarshalable(PURGEPUBLISHER_ELEMENT_NAME,
+	EMPTY_VALUE, IFMAP_OPERATION_NSPAIR)
+{
+	addXmlAttribute(STRP(PUBLISHERID_ATTR_NAME, publisherId));
+}
+*/
 }
 
 

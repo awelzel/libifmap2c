@@ -26,6 +26,7 @@
 #define IDENTIFIER_H_
 #include "xmlmarshalable.h"
 #include <typeinfo>
+#include <map>
 
 namespace ifmap2c {
 
@@ -53,39 +54,82 @@ private:
 };
 
 
+/**
+ * Interface for IdentifierHandler
+ */
 class IdentifierHandler {
 
 public:
 	virtual XmlMarshalable *toXml(Identifier *const ident) = 0;
 	virtual Identifier *fromXml(XmlMarshalable *const xml) = 0;
+	virtual bool canHandle(Identifier * const parname) const = 0;
+	virtual const std::type_info *handles(void) const = 0;
 };
 
 // Some macros to safe some typing for the IdentifierHandler thing
 #define IFMAP2C_IH_NAME(type)	type##Handler
 
 #define IFMAP2C_IH_TOXML_DEF(type, parname)			\
-XmlMarshalable *IFMAP2C_IH_NAME(type)::toXml(Identifier *const parname)
+ifmap2c::XmlMarshalable *IFMAP2C_IH_NAME(type)::toXml(		\
+		ifmap2c::Identifier *const parname)
 
 #define IFMAP2C_IH_FROMXML_DEF(type, parname)			\
-type *IFMAP2C_IH_NAME(type)::fromXml(XmlMarshalable *const parname)
+type *IFMAP2C_IH_NAME(type)::fromXml(				\
+		ifmap2c::XmlMarshalable *const parname)
 
 #define IFMAP2C_IH_TOXML_DECL(type, parname)			\
-XmlMarshalable *toXml(Identifier *const parname)
+ifmap2c::XmlMarshalable *toXml(					\
+		ifmap2c::Identifier *const parname)
 
 #define IFMAP2C_IH_FROMXML_DECL(type, parname)			\
-type *fromXml(XmlMarshalable *const parname)
+type *fromXml(ifmap2c::XmlMarshalable *const parname)
 
 #define IFMAP2C_IH_CANHANDLE_DEF(type, parname)			\
 bool canHandle(Identifier * const parname) const {		\
 	return typeid(*(parname)) == typeid(type);		\
 }
 
+#define IFMAP2C_IH_HANDLES_DEF(type)				\
+const std::type_info *handles(void) const {			\
+	return &typeid(type);					\
+}
+
 #define IFMAP2C_IH_HEADER(type)					\
-class IFMAP2C_IH_NAME(type) {					\
+class IFMAP2C_IH_NAME(type) : public ifmap2c::IdentifierHandler {\
 public:								\
 	IFMAP2C_IH_TOXML_DECL(type, param);			\
 	IFMAP2C_IH_FROMXML_DECL(type, param);			\
 	IFMAP2C_IH_CANHANDLE_DEF(type, param);			\
+	IFMAP2C_IH_HANDLES_DEF(type);				\
+};
+
+
+class IdentifierHandlerDispatch {
+
+public:
+	/**
+	 * Register a new IdentifierHandler
+	 */
+	static void
+	registerIdentifierHandler(IdentifierHandler *const handler);
+
+	/**
+	 * Dispatch XML generation to an appropiate IdentifierHandler.
+	 *
+	 * Find the responsible IdentifierHandler and delegate
+	 * the call accordingly to generate something we can make
+	 * XML out of
+	 */
+	XmlMarshalable *toXml(Identifier *const i) const;
+
+	/**
+	 * Try each registered IdentifierHandler to create an
+	 * Identifier from the given XML
+	 */
+	Identifier *fromXml(XmlMarshalable *const xml) const;
+
+private:
+	static std::map<std::string, IdentifierHandler *> handlers;
 };
 
 } // namespace

@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "identifier/stdhandler.h"
+#include "identifier/baseidentifierhandler.h"
 #include "basicxmlmarshalable.h"
 #include "typedefs.h"
 #include <string>

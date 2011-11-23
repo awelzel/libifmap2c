@@ -22,21 +22,32 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef POLLREQUEST_H_
-#define POLLREQUEST_H_
 #include "request.h"
+
+/*
+ * TODO: Somebody has to tell me something better than dispatching
+ *       on the name value of the type_info, please.
+ */
+using namespace std;
 
 namespace ifmap2c {
 
-class PollRequest : public Request {
-public:
-	static PollRequest *createPollRequest(void) {
-		return new PollRequest();
-	}
 
-private:
-	PollRequest() { };
-};
+void
+RequestHandlerDispatch::registerRequestHandler(
+		RequestHandler *const handler)
+{
+	handlers[handler->handles()->name()] = handler;
+}
+
+RequestHandler *
+RequestHandlerDispatch::dispatch(Request *const req) const
+{
+	RequestHandler *handler = handlers[typeid(*req).name()];
+	
+	if (!handler) throw "NO REQUEST HANDLER HERE";
+
+	return handler;
+}
 
 } // namespace
-#endif /* POLLREQUEST_H_ */

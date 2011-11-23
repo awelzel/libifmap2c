@@ -22,21 +22,23 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef POLLREQUEST_H_
-#define POLLREQUEST_H_
-#include "request.h"
+#ifndef BASEIDENTIFIERHANDLER_H_
+#define BASEIDENTIFIERHANDLER_H_
+#include "identifier.h"
+#include "identifiers.h"
 
 namespace ifmap2c {
 
-class PollRequest : public Request {
-public:
-	static PollRequest *createPollRequest(void) {
-		return new PollRequest();
-	}
+	IFMAP2C_IH_HEADER(AccessRequest);
 
-private:
-	PollRequest() { };
-};
+	IFMAP2C_IH_HEADER(Device);
+
+	IFMAP2C_IH_HEADER(Identity);
+
+	IFMAP2C_IH_HEADER(IpAddress);
+
+	IFMAP2C_IH_HEADER(MacAddress);
 
 } // namespace
-#endif /* POLLREQUEST_H_ */
+
+#endif /* BASEIDENTIFIERHANDLER_H_ */

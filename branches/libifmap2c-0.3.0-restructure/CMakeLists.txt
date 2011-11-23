@@ -46,17 +46,15 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	identifier/identity.cpp
 	identifier/ipaddress.cpp
 	identifier/macaddress.cpp
-	identifier/stdhandler.cpp
+	identifier/identifierhandlerdispatch.cpp
+	request/requesthandlerdispatch.cpp
+	identifier/baseidentifierhandler.cpp
+	request/baserequesthandler.cpp
 	metadata/metadata.cpp
-	request/endsessionrequest.cpp
-	request/newsessionrequest.cpp
-	request/pollrequest.cpp
 	request/publishdelete.cpp
 	request/publishnotify.cpp
 	request/publishrequest.cpp
 	request/publishupdate.cpp
-	request/purgepublisherrequest.cpp
-	request/renewsessionrequest.cpp
 	request/requests.cpp
 	request/searchparam.cpp
 	request/searchrequest.cpp
