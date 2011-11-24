@@ -23,6 +23,7 @@
  */
 
 #include "ifmapcommunication.h"
+#include "request.h"
 #include "xmlmarshalable.h"
 #include "xml/libxml2marshaller.h"
 #include "xml/libxml2unmarshaller.h"
@@ -54,6 +55,8 @@ IfmapCommunication::IfmapCommunication(const string& url,
 	_lowLevelCommunication = LowLevelCurlCommunication::create(url, user, pass, capath);
 	_xmlMarshaller = LibXml2Marshaller::createMarshaller();
 	_xmlUnmarshaller = LibXml2Unmarshaller::createUnmarshaller();
+	_requestHandlerDispatch = 
+		RequestHandlerDispatch::createRequestHandlerDispatch();
 }
 
 IfmapCommunication::IfmapCommunication(const string& url,
@@ -86,9 +89,13 @@ IfmapCommunication::~IfmapCommunication()
 	if (_xmlMarshaller)
 		delete _xmlMarshaller;
 
+	if (_requestHandlerDispatch)
+		delete _requestHandlerDispatch;
+
 	_lowLevelCommunication = NULL;
 	_xmlUnmarshaller = NULL;
 	_xmlMarshaller = NULL;
+	_requestHandlerDispatch = NULL;
 }
 
 
@@ -137,26 +144,60 @@ IfmapCommunication::buildEnvelope()
 	return envelope;
 }
 
-Result *genericRequest(Request *req)
+Result *
+IfmapCommunication::genericRequest(Request *req, const string& sId)
 {
-	return (Result *)req;
+	RequestHandler *handler = NULL;
+	XmlMarshalable *xmlContent = NULL;
+	XmlMarshalable *xmlReq = NULL;
+	XmlMarshalable *xmlResp = NULL;
+	Result *ret = NULL;
+
+	try {
+		handler = _requestHandlerDispatch->dispatch(req);
+		xmlContent = handler->toXml(req);
+		
+		if (sId.length() > 0)
+			setSessionId(xmlContent, sId);
+
+		xmlReq = buildEnvelope();
+		(*(xmlReq->getXmlChildren().begin()))->addXmlChild(xmlContent);
+		xmlContent = NULL;
+
+		xmlResp = xmlRequest(xmlReq);
+
+		ret = handler->fromXml(xmlResp);
+
+	} catch (...) {
+
+		if (xmlReq)
+			delete xmlReq;
+		
+		if (xmlContent)
+			delete xmlContent;
+
+		if (xmlResp)
+			delete xmlResp;
+
+		if (ret)
+			delete ret;
+
+		throw;
+	}
+
+	delete xmlReq;
+	delete xmlResp;
+
+	return ret;
 }
 
 
 
 XmlMarshalable *
-IfmapCommunication::processMessage(XmlMarshalable *const msg)
+IfmapCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
 {
 	Payload replyBuffer(NULL, 0), msgBuffer(NULL, 0);
-	XmlMarshalable *env = buildEnvelope();
-	XmlMarshalable *replyMarsh = NULL;
-	// add our message to the body
-	XmlMarshalable *body = *(env->getXmlChildren().begin());
-	body->addXmlChild(msg);
-
-	// check if we have to add a ifmap-session-id attribute
-	if (!containsSessionId(msg))
-		msg->addXmlAttribute(STRP(SESSIONID_ATTR_NAME, getSessionId()));
+	XmlMarshalable *xmlResp = NULL;
 
 #ifdef IN_OUT_DEBUG
 	cout << "======== OUTGOING =========" << endl;
@@ -165,31 +206,24 @@ IfmapCommunication::processMessage(XmlMarshalable *const msg)
 #endif /* IN_OUT_DEBUG */
 
 	try {
-		msgBuffer = _xmlMarshaller->marshal(env);
+		msgBuffer = _xmlMarshaller->marshal(xmlMsg);
 		replyBuffer = _lowLevelCommunication->doRequest(msgBuffer);
-		replyMarsh = _xmlUnmarshaller->unmarshal(replyBuffer);
+		xmlResp = _xmlUnmarshaller->unmarshal(replyBuffer);
 	} catch (...) {
-		// remove the message from the body, to not free it
-		body->clearXmlChildren();
 		msgBuffer.free();
 		replyBuffer.free();
-		delete env;
 		throw;
 	}
 
 #ifdef IN_OUT_DEBUG
 	cout << "======== INCOMING =========" << endl;
-	XmlMarshalable::putXmlMarshalable(replyMarsh);
+	XmlMarshalable::putXmlMarshalable(xmlResp);
 	cout << "======== INCOMING =========" << endl;
 #endif /* IN_OUT_DEBUG */
 
-	// remove the message from the body, to not free it
-	body->clearXmlChildren();
-
-	delete env;
 	msgBuffer.free();
 	replyBuffer.free();
-	return replyMarsh;
+	return xmlResp;
 }
 
 void

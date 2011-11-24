@@ -48,7 +48,7 @@ public:
 	 * @throws EndSessionResult if the session was closed while a poll
 	 *         was pending.
 	 */
-	PollResult *poll(void);
+	PollResult *poll(const std::string& sId = "");
 
 	const std::string& getSessionId(void) const;
 

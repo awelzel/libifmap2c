@@ -24,7 +24,7 @@
 
 #ifndef PUBLISHELEMENT_H_
 #define PUBLISHELEMENT_H_
-#include "identifierholder.h"
+#include "identifier.h"
 
 namespace ifmap2c {
 

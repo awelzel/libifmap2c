@@ -37,17 +37,27 @@ void
 RequestHandlerDispatch::registerRequestHandler(
 		RequestHandler *const handler)
 {
-	handlers[handler->handles()->name()] = handler;
+	handlers.push_back(handler);
+}
+
+RequestHandlerDispatch*
+RequestHandlerDispatch::createRequestHandlerDispatch(void)
+{
+	return new RequestHandlerDispatch();
 }
 
 RequestHandler *
 RequestHandlerDispatch::dispatch(Request *const req) const
 {
-	RequestHandler *handler = handlers[typeid(*req).name()];
-	
-	if (!handler) throw "NO REQUEST HANDLER HERE";
+	list<RequestHandler *>::const_iterator it, end;
+	it = handlers.begin();
+	end = handlers.end();
 
-	return handler;
+	for (/* */; it != end; it++)
+		if ((*it)->canHandle(req))
+			return *it;
+	
+	throw "NO REQUEST HANDLER FOUND";
 }
 
 } // namespace

@@ -55,8 +55,6 @@ Requests::createPublishReq(const std::list<PublishElement *>& reqs)
 	return PublishRequest::createPublishRequest(reqs);
 }
 
-
-
 PublishRequest*
 Requests::createPublishReq(PublishElement *const  req)
 {

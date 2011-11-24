@@ -53,10 +53,11 @@ ARC::~ARC() {
 
 
 PollResult *
-ARC::poll(void)
+ARC::poll(const string& sId)
 {
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 	PollRequest *pollReq = Requests::createPollReq();
-	Result *res = genericRequest(pollReq);
+	Result *res = genericRequest(pollReq, sessionId);
 	PollResult *ret = dynamic_cast<PollResult *>(res);
 
 	if (!ret)

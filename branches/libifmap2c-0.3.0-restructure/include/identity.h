@@ -25,6 +25,7 @@
 #ifndef IDENTITY_H_
 #define IDENTITY_H_
 #include "identifier.h"
+#include <map>
 
 namespace ifmap2c {
 
@@ -64,6 +65,8 @@ public:
 	Identity *clone(void) const;
 
 	static const std::string identityTypeNames[];
+
+	static const std::map<std::string, IdentityType> identityTypes;
 
 private:
 

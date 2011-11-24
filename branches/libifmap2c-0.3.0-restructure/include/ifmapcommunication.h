@@ -29,12 +29,11 @@
 #include "communicationerror.h"
 #include "ifmaperror.h"
 #include "lowlevelcommunication.h"
-#include "requests.h"
 #include "responseparseerror.h"
 #include "responseparser.h"
-#include "responses.h"
-#include "request.h"
 #include "result.h"
+#include "request.h"
+#include "responses.h"
 #include "tcgifmapbase.h"
 #include "xmlmarshaller.h"
 #include "xmlunmarshaller.h"
@@ -66,8 +65,9 @@ public:
 
 	virtual ~IfmapCommunication();
 
+	// TODO: get rid of the session-id here!
 	Result *genericRequest(Request *const req,
-			const std::string& sId = "");
+			const std::string& sId);
 protected:
 	IfmapCommunication(const std::string& url,
 			const std::string& user,
@@ -106,6 +106,7 @@ private:
 	LowLevelCommunication *_lowLevelCommunication;
 	XmlMarshaller *_xmlMarshaller;
 	XmlUnmarshaller *_xmlUnmarshaller;
+	RequestHandlerDispatch *_requestHandlerDispatch;
 
 	bool containsSessionId(XmlMarshalable *req);
 
@@ -114,7 +115,7 @@ private:
 	/**
 	 *
 	 */
-	XmlMarshalable *processMessage(XmlMarshalable *const msg);
+	XmlMarshalable *xmlRequest(XmlMarshalable *const xmlMsg);
 };
 
 } // namespace

@@ -44,6 +44,26 @@ const string Identity::identityTypeNames[] = {
 	"other"
 };
 
+static const map<string, IdentityType> loadTypes(void)
+{
+	map<string, IdentityType> ret;
+	ret[Identity::identityTypeNames[aik_name]] = aik_name;
+	ret[Identity::identityTypeNames[distinguished_name]] 
+		= distinguished_name;
+	ret[Identity::identityTypeNames[dns_name]] = dns_name;
+	ret[Identity::identityTypeNames[email_address]] = email_address;
+	ret[Identity::identityTypeNames[hip_hit]] = hip_hit;
+	ret[Identity::identityTypeNames[kerberos_principal]] 
+		= kerberos_principal;
+	ret[Identity::identityTypeNames[username]] = username;
+	ret[Identity::identityTypeNames[sip_uri]] = sip_uri;
+	ret[Identity::identityTypeNames[tel_uri]] = tel_uri;
+	ret[Identity::identityTypeNames[other]] = other;
+	return ret;
+}
+
+const map<string, IdentityType> Identity::identityTypes(loadTypes());
+
 Identity::Identity(IdentityType type, const string& name, const string& ad,
 	const string& ot) : 
 	IdentifierAdmin(ad),

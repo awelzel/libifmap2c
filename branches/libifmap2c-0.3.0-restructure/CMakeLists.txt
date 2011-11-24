@@ -125,6 +125,7 @@ INSTALL(FILES
 	include/responses.h
 	include/resultitem.h
 	include/request.h
+	include/result.h
 	include/searchparam.h
 	include/searchrequest.h
 	include/searchresult.h

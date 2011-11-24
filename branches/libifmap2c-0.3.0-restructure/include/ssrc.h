@@ -26,6 +26,7 @@
 #define SSRC_H_
 
 #include "ifmapcommunication.h"
+#include "requests.h"
 
 namespace ifmap2c {
 

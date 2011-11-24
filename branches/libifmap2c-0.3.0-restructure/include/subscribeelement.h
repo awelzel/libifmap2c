@@ -25,12 +25,11 @@
 #ifndef SUBSCRIBEELEMENT_H_
 #define SUBSCRIBEELEMENT_H_
 
-#include "xmlable.h"
 #include <string>
 
 namespace ifmap2c {
 
-class SubscribeElement : public XmlAble {
+class SubscribeElement {
 
 public:
 	const std::string getName(void) const {

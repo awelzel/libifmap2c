@@ -98,7 +98,7 @@ SSRC::newSession(const int maxPollResSize)
 	int maxPollResSizeRecv = NO_MAX_POLL_RES_SIZE;
 	
 	try {
-		res = genericRequest(nsreq);
+		res = genericRequest(nsreq, "");
 
 
 /*
@@ -152,10 +152,13 @@ void
 SSRC::endSession(const string& sId)
 {
 	EndSessionRequest *esreq = Requests::createEndSessionReq();
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+
 	try {
-		genericRequest(esreq, sId);
+		genericRequest(esreq, sessionId);
 	} catch (...) {
 		delete esreq;
+		throw;
 	}
 	delete esreq;
 /*
@@ -248,8 +251,10 @@ void
 SSRC::renewSession(const string& sId)
 {
 	RenewSessionRequest *rnsreq = Requests::createRenewSessionReq();
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+
 	try {
-		genericRequest(rnsreq, sId);
+		genericRequest(rnsreq, sessionId);
 	} catch (...) {
 		delete rnsreq;
 	}
@@ -269,10 +274,12 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 {
 	// take either the given or the actual publisherId for this request.
 	string pubId = (pId.length() > 0) ? pId : getPublisherId();
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 
-	PurgePublisherRequest *ppr = Requests::createPurgePublisherReq(pubId);
+	PurgePublisherRequest *ppr = 
+		Requests::createPurgePublisherReq(pubId);
 	try {
-		genericRequest(ppr, sId);
+		genericRequest(ppr, sessionId);
 	} catch (...) {
 		delete ppr;
 	}

@@ -25,10 +25,10 @@
 #ifndef REQUEST_H_
 #define REQUEST_H_
 
-#include "xmlable.h"
 #include "result.h"
 #include "xmlmarshalable.h"
-#include <map>
+
+#include <list>
 #include <string>
 #include <typeinfo>
 
@@ -37,7 +37,7 @@ namespace ifmap2c {
 /**
  * Just a simple marker interface for requests...
  */
-class Request : public XmlAble {
+class Request {
 
 public:
 	virtual ~Request() { };
@@ -47,9 +47,9 @@ public:
 class RequestHandler {
 
 public:
-	virtual XmlMarshalable *toXml(Request *const req) = 0;
-	virtual Result *fromXml(XmlMarshalable *const xml) = 0;
-	virtual const std::type_info *handles(void) const = 0;
+	virtual XmlMarshalable *toXml(Request *const req) const = 0;
+	virtual Result *fromXml(XmlMarshalable *const xml) const = 0;
+	virtual bool canHandle(Request *const req) const = 0;
 };
 
 // Some macros to safe some typing for the RequestHandler thing
@@ -76,18 +76,12 @@ bool canHandle(Request * const parname) const {		\
 	return typeid(*(parname)) == typeid(type);		\
 }
 
-#define IFMAP2C_RH_HANDLES_DEF(type, parname)			\
-const std::type_info *handles(void) const {			\
-	return &typeid(type);					\
-}
-
 #define IFMAP2C_RH_HEADER(type)					\
 class IFMAP2C_RH_NAME(type) : public ifmap2c::RequestHandler {	\
 public:								\
 	IFMAP2C_RH_TOXML_DECL(type, param);			\
 	IFMAP2C_RH_FROMXML_DECL(type, param);			\
 	IFMAP2C_RH_CANHANDLE_DEF(type, param);			\
-	IFMAP2C_RH_HANDLES_DEF(type, parname);			\
 };
 
 
@@ -105,8 +99,13 @@ public:
 	 */
 	RequestHandler *dispatch(Request *const req) const;
 
+	static RequestHandlerDispatch*
+	createRequestHandlerDispatch(void);
+
 private:
-	static std::map<std::string, RequestHandler*> handlers;
+	static std::list<RequestHandler*> handlers;
+
+	RequestHandlerDispatch() { }
 };
 
 } // namespace

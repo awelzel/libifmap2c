@@ -25,12 +25,13 @@
 #include "identifier/baseidentifierhandler.h"
 #include "basicxmlmarshalable.h"
 #include "typedefs.h"
-#include <string>
 
+#include <string>
 
 using namespace std;
 namespace ifmap2c {
 
+/* FIXME: Helpers... */
 static ifmap2c::XmlMarshalable *getFor(const string &name, const string &val = "")
 {
 	return new BasicXmlMarshalable(
@@ -45,6 +46,18 @@ static void handleAd(ifmap2c::XmlMarshalable *ret, ifmap2c::IdentifierAdmin *id)
 		ret->addXmlAttribute(STRP(ADMIN_DOMAIN_ATTR_NAME,
 			id->getAdministrativeDomain()));
 }
+
+static bool cmpName(XmlMarshalable *const el, const string& name,
+		const string& href)
+{
+	return XmlMarshalable::compNameNs(el, name, href);
+}
+
+static bool cmpAttrName(const STRP& attr, const string& attrname)
+{
+	return !attr.first.compare(attrname);
+}
+
 
 IFMAP2C_IH_TOXML_DEF(AccessRequest, id)
 {
@@ -118,37 +131,162 @@ IFMAP2C_IH_TOXML_DEF(MacAddress, id) {
 	handleAd(ret, mac);
 	ret->addXmlAttribute(STRP(MACADDR_VALUE_ATTR_NAME,
 				mac->getValue()));
-	return NULL;
+	return ret;
 }
 
 IFMAP2C_IH_FROMXML_DEF(AccessRequest, xml) {
-	XmlMarshalable *xx = xml;
-	xx++;
-	return NULL;
+	bool foundName = false;
+	CSTRPLISTIT it, end;
+	string name, ad;
+
+	/* Bail out if not AccessRequest */
+	if (!cmpName(xml, ACCESSREQ_ELEMENT_NAME, ACCESSREQ_ELEMENT_HREF)) 
+		return NULL;
+
+	it = xml->getXmlAttributes().begin();
+	end = xml->getXmlAttributes().end();
+
+	for (/* see above */; it != end; it++) {
+		if (cmpAttrName(*it, ACCESSREQ_NAME_ATTR_NAME)) {
+			name = (*it).second;
+			foundName = true;
+		} else if (cmpAttrName(*it, ADMIN_DOMAIN_ATTR_NAME)) {
+			ad = (*it).second;
+		}
+	}
+
+	if (!foundName)
+		throw BadIdentifier("AccessRequest has no name");
+
+	return AccessRequest::createAccessRequest(name, ad);
 }
 
 IFMAP2C_IH_FROMXML_DEF(Device, xml) {
-	XmlMarshalable *xx = xml;
-	xx++;
-	return NULL;
+	CXMLMLISTIT it;
+
+	/* Bail out if not Device */
+	if (!cmpName(xml, DEVICE_ELEMENT_NAME, DEVICE_ELEMENT_HREF))
+		return NULL;
+
+	if (xml->getXmlChildren().size() > 1)
+		throw BadIdentifier("Device has multiple child elements");
+
+	it = xml->getXmlChildren().begin();
+
+	if (!cmpName(*it, DEVICE_NAME_ELEMENT, DEVICE_NAME_HREF))
+		throw BadIdentifier("Device has no \"name\" element");
+
+	return Device::createDevice((*it)->getXmlElementValue());
 }
 
 IFMAP2C_IH_FROMXML_DEF(Identity, xml) {
-	XmlMarshalable *xx = xml;
-	xx++;
-	return NULL;
+	bool foundType = false, foundName = false, foundOther = false;
+	string typeStr, name, otherDefStr, ad;
+	IdentityType type;
+	CSTRPLISTIT it, end;
+	map<string, IdentityType>::const_iterator typeIt;
+
+	/* Bail out if not Identity */
+	if (!cmpName(xml, IDENTITY_ELEMENT_NAME, IDENTITY_ELEMENT_HREF))
+		return NULL;
+
+	it = xml->getXmlAttributes().begin();
+	end = xml->getXmlAttributes().end();
+
+	for (/* see above */; it != end; it++) {
+		if (cmpAttrName(*it, IDENTITY_TYPE_ATTR_NAME)) {
+			typeStr = (*it).second;
+			foundType = true;
+		} else if (cmpAttrName(*it, IDENTITY_NAME_ATTR_NAME)) {
+			name = (*it).second;
+			foundName = true;
+		} else if (cmpAttrName(*it,IDENTITY_OTHER_DEF_ATTR_NAME)) {
+			otherDefStr = (*it).second;
+			foundOther = true;
+		} else if (cmpAttrName(*it, ADMIN_DOMAIN_ATTR_NAME)) {
+			ad = (*it).second;
+		}
+	}
+	
+	if (!foundType)
+		throw BadIdentifier("Identity has no type");
+
+	if (!foundName)
+		throw BadIdentifier("Identity has no name");
+
+	typeIt = Identity::identityTypes.find(typeStr);
+
+	if (typeIt == Identity::identityTypes.end())
+		throw BadIdentifier("Identity has unknown type");
+
+	type = (*typeIt).second;
+
+	if (type == other && !foundOther)
+		throw BadIdentifier("Identity with other type definition"
+			" has no other-type-definition attribute");
+
+	if (type != other)
+		return Identity::createIdentity(type, name, ad);
+
+	return Identity::createOtherIdentity(otherDefStr, name, ad);
 }
 
 IFMAP2C_IH_FROMXML_DEF(IpAddress, xml) {
-	XmlMarshalable *xx = xml;
-	xx++;
-	return NULL;
+	IpAddressType type = ipv4;
+	bool foundValue = false;
+	string value, ad;
+	CSTRPLISTIT it, end;
+
+	if (!cmpName(xml, IPADDR_ELEMENT_NAME, IPADDR_ELEMENT_HREF))
+		return NULL;
+	it = xml->getXmlAttributes().begin();
+	end = xml->getXmlAttributes().end();
+
+	for (/* see above */; it != end; it++) {
+		if (cmpAttrName(*it, IPADDR_VALUE_ATTR_NAME)) {
+			value = (*it).second;
+			foundValue = true;
+		} else if (cmpAttrName(*it, ADMIN_DOMAIN_ATTR_NAME)) {
+			ad = (*it).second;
+		} else if (cmpAttrName(*it, IPADDR_TYPE_ATTR_NAME)) {
+			if (!(*it).second.compare(IPADDR_TYPE_IPV6))
+				type = ipv6;
+		}
+	}
+
+	if (!foundValue)
+		throw BadIdentifier("IpAddress has no value");
+
+	if (type != ipv4)
+		return IpAddress::createIpv6Address(value, ad);
+
+	return IpAddress::createIpv4Address(value, ad);
 }
 
 IFMAP2C_IH_FROMXML_DEF(MacAddress, xml) {
-	XmlMarshalable *xx = xml;
-	xx++;
-	return NULL;
+	bool valueFound = false;
+	string value, ad;
+	CSTRPLISTIT it, end;
+
+	if (!cmpName(xml, MACADDR_ELEMENT_NAME, MACADDR_ELEMENT_HREF))
+		return NULL;
+
+	it = xml->getXmlAttributes().begin();
+	end = xml->getXmlAttributes().end();
+
+	for (/* see above */; it != end; it++) {
+		if (cmpAttrName(*it, MACADDR_VALUE_ATTR_NAME)) {
+			value = (*it).second;
+			valueFound = true;
+		} else if (cmpAttrName(*it, ADMIN_DOMAIN_ATTR_NAME)) {
+			ad = (*it).second;
+		}
+	}
+
+	if (!valueFound)
+		throw BadIdentifier("MacAddress has no value");
+
+	return MacAddress::createMacAddress(value, ad);
 }
 
-}
+} // namespace

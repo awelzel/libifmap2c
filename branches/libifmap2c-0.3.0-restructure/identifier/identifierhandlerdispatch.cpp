@@ -23,30 +23,51 @@
  */
 
 #include "identifier.h"
+#include "identifier/baseidentifierhandler.h"
 
 /*
- * TODO: Somebody has to tell me something better than dispatching
- *       on the name value of the type_info, please.
+ * TODO: Somebody has to give me a good idea how to do better
+ *       dispatching :-/
  */
 using namespace std;
 
 namespace ifmap2c {
 
+static list<IdentifierHandler *> baseHandlers(void)
+{
+	list<IdentifierHandler *> ret;
+	ret.push_back(IFMAP2C_IH_CREATE_CALL(AccessRequest));
+	ret.push_back(IFMAP2C_IH_CREATE_CALL(Device));
+	ret.push_back(IFMAP2C_IH_CREATE_CALL(Identity));
+	ret.push_back(IFMAP2C_IH_CREATE_CALL(IpAddress));
+	ret.push_back(IFMAP2C_IH_CREATE_CALL(MacAddress));
+
+	return ret;
+}
+
+list<IdentifierHandler *> IdentifierHandlerDispatch::handlers(baseHandlers());
+
+
+
 void
 IdentifierHandlerDispatch::registerIdentifierHandler(
 		IdentifierHandler *const handler)
 {
-	handlers[handler->handles()->name()] = handler;
+	handlers.push_back(handler);
 }
 
 XmlMarshalable *
 IdentifierHandlerDispatch::toXml(Identifier *const i) const
 {
-	IdentifierHandler *handler = handlers[typeid(*i).name()];
-	
-	if (!handler) throw "NO HANDLER HERE";
+	list<IdentifierHandler *>::const_iterator it, end;
+	it = handlers.begin();
+	end = handlers.end();
 
-	return handler->toXml(i);
+	for (/* */; it != end; it++)
+		if ((*it)->canHandle(i))
+			return (*it)->toXml(i);
+	
+	throw "NO IDENTIFIER HANDLER FOUND";
 }
 
 Identifier *
@@ -59,13 +80,13 @@ IdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
 	 * during parsing.
 	 */
 	Identifier *ret = NULL;
-	map<std::string, IdentifierHandler *>::const_iterator it, end;
+	list<IdentifierHandler *>::const_iterator it, end;
 
 	it = handlers.begin();
 	end = handlers.end();
 
 	for (/* */; it != end; it++) {
-		ret = (*it).second->fromXml(xml);
+		ret = (*it)->fromXml(xml);
 
 		if (ret)
 			return ret;
