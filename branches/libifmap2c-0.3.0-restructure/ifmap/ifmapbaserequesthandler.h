@@ -24,8 +24,57 @@
 
 #ifndef BASEREQUESTHANDLER_H_
 #define BASEREQUESTHANDLER_H_
-#include "request.h"
+#include "ifmaprequest.h"
 #include "requests.h"
+
+// Some macros to safe some typing for the RequestHandler thing
+// FIXME: how to unify with IdentifierHandler? Templates?
+#define IFMAP2C_RH_NAME(type)	type##Handler
+
+#define IFMAP2C_RH_TOXML_DEF(type, parname)			\
+ifmap2c::XmlMarshalable *IFMAP2C_RH_NAME(type)::toXml(		\
+		ifmap2c::Request *const parname) const
+
+#define IFMAP2C_RH_FROMXML_DEF(type, parname)			\
+Result *IFMAP2C_RH_NAME(type)::fromXml(				\
+		ifmap2c::XmlMarshalable *const parname) const
+
+#define IFMAP2C_RH_TOXML_DECL(type, parname)			\
+ifmap2c::XmlMarshalable *toXml(					\
+		ifmap2c::Request *const parname) const
+
+#define IFMAP2C_RH_FROMXML_DECL(type, parname)			\
+Result *fromXml(ifmap2c::XmlMarshalable *const parname) const
+
+#define IFMAP2C_RH_CANHANDLE_DEF(type, parname)			\
+bool canHandle(Request * const parname) const {			\
+	return typeid(*(parname)) == typeid(type);		\
+}
+
+#define IFMAP2C_RH_CREATE_F	create
+
+#define IFMAP2C_RH_CREATE_CALL(type)				\
+	IFMAP2C_RH_NAME(type)::IFMAP2C_RH_CREATE_F()
+
+#define IFMAP2C_RH_CREATE_DEF(type)				\
+static IFMAP2C_RH_NAME(type) *					\
+IFMAP2C_RH_CREATE_F(void)					\
+{								\
+	return new IFMAP2C_RH_NAME(type)();			\
+}
+
+#define IFMAP2C_RH_HEADER(type)					\
+class IFMAP2C_RH_NAME(type) : public ifmap2c::RequestHandler{	\
+public:								\
+	IFMAP2C_RH_TOXML_DECL(type, param);			\
+	IFMAP2C_RH_FROMXML_DECL(type, param);			\
+	IFMAP2C_RH_CANHANDLE_DEF(type, param);			\
+	IFMAP2C_RH_CREATE_DEF(type);				\
+								\
+private:							\
+	IFMAP2C_RH_NAME(type)() { };				\
+};
+
 
 namespace ifmap2c {
 

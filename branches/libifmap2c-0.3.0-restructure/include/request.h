@@ -52,60 +52,14 @@ public:
 	virtual bool canHandle(Request *const req) const = 0;
 };
 
-// Some macros to safe some typing for the RequestHandler thing
-// FIXME: how to unify with IdentifierHandler? Templates?
-#define IFMAP2C_RH_NAME(type)	type##Handler
-
-#define IFMAP2C_RH_TOXML_DEF(type, parname)			\
-ifmap2c::XmlMarshalable *IFMAP2C_RH_NAME(type)::toXml(		\
-		ifmap2c::Request *const parname)
-
-#define IFMAP2C_RH_FROMXML_DEF(type, parname)			\
-Result *IFMAP2C_RH_NAME(type)::fromXml(				\
-		ifmap2c::XmlMarshalable *const parname)
-
-#define IFMAP2C_RH_TOXML_DECL(type, parname)			\
-ifmap2c::XmlMarshalable *toXml(					\
-		ifmap2c::Request *const parname)
-
-#define IFMAP2C_RH_FROMXML_DECL(type, parname)			\
-Result *fromXml(ifmap2c::XmlMarshalable *const parname)
-
-#define IFMAP2C_RH_CANHANDLE_DEF(type, parname)			\
-bool canHandle(Request * const parname) const {		\
-	return typeid(*(parname)) == typeid(type);		\
-}
-
-#define IFMAP2C_RH_HEADER(type)					\
-class IFMAP2C_RH_NAME(type) : public ifmap2c::RequestHandler {	\
-public:								\
-	IFMAP2C_RH_TOXML_DECL(type, param);			\
-	IFMAP2C_RH_FROMXML_DECL(type, param);			\
-	IFMAP2C_RH_CANHANDLE_DEF(type, param);			\
-};
-
 
 class RequestHandlerDispatch {
 
 public:
 	/**
-	 * Register a new RequestHandler
-	 */
-	static void
-	registerRequestHandler(RequestHandler *const handler);
-
-	/**
 	 * Get the appropiate RequestHandler for the given Request
 	 */
-	RequestHandler *dispatch(Request *const req) const;
-
-	static RequestHandlerDispatch*
-	createRequestHandlerDispatch(void);
-
-private:
-	static std::list<RequestHandler*> handlers;
-
-	RequestHandlerDispatch() { }
+	virtual RequestHandler *dispatch(Request *const req) const = 0;
 };
 
 } // namespace

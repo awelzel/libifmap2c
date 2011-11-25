@@ -22,7 +22,9 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "request.h"
+#include "ifmap/ifmapbaserequesthandler.h"
+#include "ifmaprequest.h"
+#include "requests.h"
 
 /*
  * TODO: Somebody has to tell me something better than dispatching
@@ -32,22 +34,31 @@ using namespace std;
 
 namespace ifmap2c {
 
+static list<RequestHandler *> baseHandlers(void)
+{
+	list<RequestHandler *> ret;
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(NewSessionRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(EndSessionRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(RenewSessionRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(PurgePublisherRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(PublishRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(SearchRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(SubscribeRequest));
+	ret.push_back(IFMAP2C_RH_CREATE_CALL(PollRequest));
+	return ret;
+}
+
+std::list<RequestHandler*> IfmapRequestHandlerDispatch::handlers(baseHandlers());
 
 void
-RequestHandlerDispatch::registerRequestHandler(
+IfmapRequestHandlerDispatch::registerRequestHandler(
 		RequestHandler *const handler)
 {
 	handlers.push_back(handler);
 }
 
-RequestHandlerDispatch*
-RequestHandlerDispatch::createRequestHandlerDispatch(void)
-{
-	return new RequestHandlerDispatch();
-}
-
 RequestHandler *
-RequestHandlerDispatch::dispatch(Request *const req) const
+IfmapRequestHandlerDispatch::dispatch(Request *const req) const
 {
 	list<RequestHandler *>::const_iterator it, end;
 	it = handlers.begin();
@@ -56,7 +67,8 @@ RequestHandlerDispatch::dispatch(Request *const req) const
 	for (/* */; it != end; it++)
 		if ((*it)->canHandle(req))
 			return *it;
-	
+
+	// FIXME
 	throw "NO REQUEST HANDLER FOUND";
 }
 

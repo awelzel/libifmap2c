@@ -30,12 +30,10 @@
 #include "communicationerror.h"
 #include "ifmaperror.h"
 #include "lowlevelcommunication.h"
-#include "responseparseerror.h"
-#include "responseparser.h"
-#include "result.h"
+//#include "responseparseerror.h"
+//#include "responseparser.h"
 #include "request.h"
-#include "responses.h"
-#include "tcgifmapbase.h"
+#include "result.h"
 #include "xmlbinding.h"
 
 namespace ifmap2c {

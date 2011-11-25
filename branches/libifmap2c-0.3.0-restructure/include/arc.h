@@ -25,7 +25,10 @@
 #ifndef ARC_H_
 #define ARC_H_
 
+#include "ifmapchannel.h"
 #include "ssrc.h"
+#include "requests.h"
+#include "responses.h"
 
 #include <string>
 

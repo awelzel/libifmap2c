@@ -24,11 +24,11 @@
 
 #ifndef RENEWSESSIONREQUEST_H_
 #define RENEWSESSIONREQUEST_H_
-#include "request.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class RenewSessionRequest : public Request {
+class RenewSessionRequest : public IfmapRequest {
 
 public:
 	static RenewSessionRequest*

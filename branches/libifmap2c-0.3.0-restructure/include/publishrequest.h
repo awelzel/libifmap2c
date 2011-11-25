@@ -25,14 +25,14 @@
 #ifndef PUBLISHREQUEST_H_
 #define PUBLISHREQUEST_H_
 
-#include "request.h"
+#include "ifmaprequest.h"
 #include "publishelement.h"
 
 #include <list>
 
 namespace ifmap2c {
 
-class PublishRequest : public Request {
+class PublishRequest : public IfmapRequest {
 
 public:
 	const std::list<PublishElement *> getPublishElements(void) const;

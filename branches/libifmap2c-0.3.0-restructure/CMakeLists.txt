@@ -35,10 +35,14 @@ INCLUDE_DIRECTORIES(
 	"${CURL_INCLUDE_DIRS}")
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
+	ifmap/ifmapidentifierhandlerdispatch.cpp
+	ifmap/ifmaprequesthandlerdispatch.cpp
+	ifmap/ifmapbaseidentifierhandler.cpp
+	ifmap/ifmapbaserequesthandler.cpp
+	ifmap/ifmapchannel.cpp
+	ifmap/ssrc.cpp
+	ifmap/arc.cpp
 	communication/ifmapcommunication.cpp
-	communication/ifmapchannel.cpp
-	communication/ssrc.cpp
-	communication/arc.cpp
 	communication/lowlevelcurlcommunication.cpp
 	identifier/accessrequest.cpp
 	identifier/device.cpp
@@ -47,10 +51,6 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	identifier/identity.cpp
 	identifier/ipaddress.cpp
 	identifier/macaddress.cpp
-	identifier/identifierhandlerdispatch.cpp
-	request/requesthandlerdispatch.cpp
-	identifier/baseidentifierhandler.cpp
-	request/baserequesthandler.cpp
 	metadata/metadata.cpp
 	request/publishdelete.cpp
 	request/publishnotify.cpp

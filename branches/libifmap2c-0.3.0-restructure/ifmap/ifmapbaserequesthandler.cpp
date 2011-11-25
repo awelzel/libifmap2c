@@ -22,14 +22,18 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "request/baserequesthandler.h"
+#include "ifmap/ifmapbaserequesthandler.h"
+#include "identifier.h"
 #include "basicxmlmarshalable.h"
 #include "typedefs.h"
 #include <string>
 
 
 using namespace std;
+
 namespace ifmap2c {
+
+//static IdentifierHandlerDispatch identDispatch;
 
 /*	
 XmlMarshalable *

@@ -24,11 +24,11 @@
 
 #ifndef POLLREQUEST_H_
 #define POLLREQUEST_H_
-#include "request.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class PollRequest : public Request {
+class PollRequest : public IfmapRequest {
 public:
 	static PollRequest *createPollRequest(void) {
 		return new PollRequest();

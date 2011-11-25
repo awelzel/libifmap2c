@@ -24,13 +24,13 @@
 
 #ifndef SEARCHREQUEST_H_
 #define SEARCHREQUEST_H_
-#include "request.h"
+#include "ifmaprequest.h"
 #include "searchparam.h"
 #include "identifier.h"
 
 namespace ifmap2c {
 
-class SearchRequest : public Request, public SearchParam {
+class SearchRequest : public IfmapRequest, public SearchParam {
 
 public:
 	/*

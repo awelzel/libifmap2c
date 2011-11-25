@@ -23,7 +23,7 @@
  */
 
 #include "identifier.h"
-#include "identifier/baseidentifierhandler.h"
+#include "ifmap/ifmapbaseidentifierhandler.h"
 
 /*
  * TODO: Somebody has to give me a good idea how to do better
@@ -45,19 +45,19 @@ static list<IdentifierHandler *> baseHandlers(void)
 	return ret;
 }
 
-list<IdentifierHandler *> IdentifierHandlerDispatch::handlers(baseHandlers());
+list<IdentifierHandler *> IfmapIdentifierHandlerDispatch::handlers(baseHandlers());
 
 
 
 void
-IdentifierHandlerDispatch::registerIdentifierHandler(
+IfmapIdentifierHandlerDispatch::registerIdentifierHandler(
 		IdentifierHandler *const handler)
 {
 	handlers.push_back(handler);
 }
 
 XmlMarshalable *
-IdentifierHandlerDispatch::toXml(Identifier *const i) const
+IfmapIdentifierHandlerDispatch::toXml(Identifier *const i) const
 {
 	list<IdentifierHandler *>::const_iterator it, end;
 	it = handlers.begin();
@@ -71,7 +71,7 @@ IdentifierHandlerDispatch::toXml(Identifier *const i) const
 }
 
 Identifier *
-IdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
+IfmapIdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
 {
 	/*
 	 * Go through all registered handlers and try to use

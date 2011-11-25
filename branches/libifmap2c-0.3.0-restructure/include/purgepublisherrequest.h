@@ -25,11 +25,11 @@
 #ifndef PURGEPUBLISHERREQUEST_H_
 #define PURGEPUBLISHERREQUEST_H_
 
-#include "request.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class PurgePublisherRequest : public Request {
+class PurgePublisherRequest : public IfmapRequest {
 public:
 	static PurgePublisherRequest*
 	createPurgePublisherRequests(const std::string& publisherId)

@@ -25,12 +25,12 @@
 #ifndef SUBSCRIBEREQUEST_H_
 #define SUBSCRIBEREQUEST_H_
 #include "subscribeelement.h"
-#include "request.h"
+#include "ifmaprequest.h"
 #include <list>
 
 namespace ifmap2c {
 
-class SubscribeRequest : public Request {
+class SubscribeRequest : public IfmapRequest {
 
 public:
 	const std::list<SubscribeElement *>

@@ -111,59 +111,8 @@ public:
 	virtual bool canHandle(Identifier * const parname) const = 0;
 };
 
-// Some macros to safe some typing for the IdentifierHandler thing
-#define IFMAP2C_IH_NAME(type)	type ## Handler
 
-#define IFMAP2C_IH_TOXML_DEF(type, parname)			\
-ifmap2c::XmlMarshalable *IFMAP2C_IH_NAME(type)::toXml(		\
-		ifmap2c::Identifier *const parname)
-
-#define IFMAP2C_IH_FROMXML_DEF(type, parname)			\
-type *IFMAP2C_IH_NAME(type)::fromXml(				\
-		ifmap2c::XmlMarshalable *const parname)
-
-#define IFMAP2C_IH_TOXML_DECL(type, parname)			\
-ifmap2c::XmlMarshalable *toXml(					\
-		ifmap2c::Identifier *const parname)
-
-#define IFMAP2C_IH_FROMXML_DECL(type, parname)			\
-type *fromXml(ifmap2c::XmlMarshalable *const parname)
-
-#define IFMAP2C_IH_CANHANDLE_DEF(type, parname)			\
-bool canHandle(Identifier * const parname) const {		\
-	return typeid(*(parname)) == typeid(type);		\
-}
-
-#define IFMAP2C_IH_CREATE_F(type)				\
-	create ## type ## Handler
-
-#define IFMAP2C_IH_CREATE_CALL(type)				\
-	IFMAP2C_IH_NAME(type)::IFMAP2C_IH_CREATE_F(type)()
-
-#define IFMAP2C_IH_CREATE_DEF(type)				\
-static IFMAP2C_IH_NAME(type) *					\
-IFMAP2C_IH_CREATE_F(type)(void)					\
-{								\
-	return new IFMAP2C_IH_NAME(type)();			\
-}
-
-#define IFMAP2C_IH_CREATE(type) new AccessRequestHandler()
-	//IFMAP2C_IH_NAME(type)::IFMAP2C_IH_CREATE_F(type)()
-
-#define IFMAP2C_IH_HEADER(type)					\
-class IFMAP2C_IH_NAME(type) : public ifmap2c::IdentifierHandler {\
-public:								\
-	IFMAP2C_IH_TOXML_DECL(type, param);			\
-	IFMAP2C_IH_FROMXML_DECL(type, param);			\
-	IFMAP2C_IH_CANHANDLE_DEF(type, param);			\
-	IFMAP2C_IH_CREATE_DEF(type);				\
-								\
-private:							\
-	IFMAP2C_IH_NAME(type)() { };				\
-};
-
-
-class IdentifierHandlerDispatch {
+class IfmapIdentifierHandlerDispatch {
 
 public:
 	/**

@@ -25,11 +25,11 @@
 #ifndef NEWSESSIONREQUEST_H_
 #define NEWSESSIONREQUEST_H_
 
-#include "request.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class NewSessionRequest : public Request {
+class NewSessionRequest : public IfmapRequest {
 
 public:
 	static NewSessionRequest *createNewSessionRequest(

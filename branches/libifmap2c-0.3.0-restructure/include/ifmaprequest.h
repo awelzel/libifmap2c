@@ -22,23 +22,49 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef BASEIDENTIFIERHANDLER_H_
-#define BASEIDENTIFIERHANDLER_H_
-#include "identifier.h"
-#include "identifiers.h"
+#ifndef IFMAPREQUEST_H_
+#define IFMAPREQUEST_H_
+
+#include "request.h"
+
+#include <list>
+#include <string>
+#include <typeinfo>
 
 namespace ifmap2c {
 
-	IFMAP2C_IH_HEADER(AccessRequest);
+class IfmapRequest : public Request {
 
-	IFMAP2C_IH_HEADER(Device);
+public:
+	virtual ~IfmapRequest() { };
+	IfmapRequest(const std::string& sId = "") : _sessionId(sId) { }
 
-	IFMAP2C_IH_HEADER(Identity);
+	const std::string& getSessionId(void) const {
+		return _sessionId;
+	}
 
-	IFMAP2C_IH_HEADER(IpAddress);
+private:
+	const std::string _sessionId;
+};
 
-	IFMAP2C_IH_HEADER(MacAddress);
+class IfmapRequestHandlerDispatch : public RequestHandlerDispatch {
+
+public:
+	/**
+	 * Register a new RequestHandler
+	 */
+	static void
+	registerRequestHandler(RequestHandler *const handler);
+
+	/**
+	 * Get the appropiate RequestHandler for the given Request
+	 */
+	RequestHandler *dispatch(Request *const req) const;
+
+private:
+	static std::list<RequestHandler*> handlers;
+};
 
 } // namespace
 
-#endif /* BASEIDENTIFIERHANDLER_H_ */
+#endif /* IFMAPREQUEST_H_*/

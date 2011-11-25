@@ -24,11 +24,11 @@
 
 #ifndef ENDSESSIONREQUEST_H_
 #define ENDSESSIONREQUEST_H_
-#include "request.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class EndSessionRequest : public Request {
+class EndSessionRequest : public IfmapRequest {
 
 public:
 	static EndSessionRequest* createEndSessionRequest(void)
