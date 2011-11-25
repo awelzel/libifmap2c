@@ -22,50 +22,47 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ifmapchannel.h"
-#include "xml/libxml2binding.h"
-#include "communication/lowlevelcurlcommunication.h"
+#ifndef IFMAPCOMMUNICATION_H_
+#define IFMAPCOMMUNICATION_H_
+#include <string>
 
-using namespace std;
+//FIXME: Get rid of ifmap dependencies if possible
+#include "communicationerror.h"
+#include "ifmaperror.h"
+#include "lowlevelcommunication.h"
+//#include "responseparseerror.h"
+//#include "responseparser.h"
+#include "request.h"
+#include "result.h"
+#include "xmlbinding.h"
 
 namespace ifmap2c {
 
-IfmapChannel::~IfmapChannel()
-{
-	delete _xmlCommunication;
-}
 
-IfmapChannel::IfmapChannel(const string& url,
-		const string& user,
-		const string& pass,
-		const string& capath)
-{ 
-	LowLevelCommunication *llc = 
-		LowLevelCurlCommunication::create(url, user, pass, capath);
+class XmlCommunication {
 
-	XmlMarshaller *xmlMarsh = new LibXml2Marshaller();
-	XmlUnmarshaller *xmlUnmarsh = new LibXml2Unmarshaller();
-	RequestHandlerDispatch *reqDisp = NULL; // FIXME
-	_xmlCommunication = new IfmapCommunication(llc, xmlMarsh,
-			xmlUnmarsh, reqDisp);
-}
+public:
+	virtual ~XmlCommunication();
 
-IfmapChannel::IfmapChannel(const string& url,
-		const string& mykey,
-		const string& mykeypw,
-		const string& mycert,
-		const string& capath)
-{
-	LowLevelCommunication *llc = 
-		LowLevelCurlCommunication::create(url, mykey, mykeypw,
-				mycert, capath);
+	Result *genericRequest(Request *const req);
 
-	XmlMarshaller *xmlMarsh = new LibXml2Marshaller();
-	XmlUnmarshaller *xmlUnmarsh = new LibXml2Unmarshaller();
-	RequestHandlerDispatch *reqDisp = NULL; // FIXME
+	XmlCommunication(LowLevelCommunication *const lowLevelCom,
+			XmlMarshaller *const xmlMarsh,
+			XmlUnmarshaller *const xmlUnmarsh,
+			RequestHandlerDispatch *const handlerDispatch);
 
-	_xmlCommunication = new IfmapCommunication(llc, xmlMarsh,
-			xmlUnmarsh, reqDisp);
-}
+private:
+	LowLevelCommunication *const _lowLevelCommunication;
+	XmlMarshaller *const _xmlMarshaller;
+	XmlUnmarshaller *const _xmlUnmarshaller;
+	RequestHandlerDispatch *const _requestHandlerDispatch;
+
+	/**
+	 *
+	 */
+	XmlMarshalable *xmlRequest(XmlMarshalable *const xmlMsg);
+};
 
 } // namespace
+
+#endif /* IFMAPCOMMUNICATION_H_ */

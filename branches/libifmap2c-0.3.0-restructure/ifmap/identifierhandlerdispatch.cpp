@@ -23,7 +23,7 @@
  */
 
 #include "identifier.h"
-#include "ifmap/ifmapbaseidentifierhandler.h"
+#include "ifmap/baseidentifierhandler.h"
 
 /*
  * TODO: Somebody has to give me a good idea how to do better

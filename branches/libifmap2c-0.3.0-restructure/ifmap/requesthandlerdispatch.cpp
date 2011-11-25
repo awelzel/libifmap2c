@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ifmap/ifmapbaserequesthandler.h"
+#include "ifmap/baserequesthandler.h"
 #include "ifmaprequest.h"
 #include "requests.h"
 

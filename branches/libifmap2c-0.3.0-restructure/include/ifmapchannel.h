@@ -25,7 +25,7 @@
 #ifndef IFMAPCHANNEL_H_
 #define IFMAPCHANNEL_H_
 
-#include "ifmapcommunication.h"
+#include "xmlcommunication.h"
 
 #include <string>
 
@@ -56,7 +56,7 @@ protected:
 		const std::string& mycert,
 		const std::string& capath);
 
-	IfmapCommunication *_xmlCommunication;
+	XmlCommunication *_xmlCommunication;
 
 	bool _basicAuth;
 	std::string _url;

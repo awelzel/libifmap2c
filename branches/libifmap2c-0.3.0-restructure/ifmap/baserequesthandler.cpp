@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ifmap/ifmapbaserequesthandler.h"
+#include "ifmap/baserequesthandler.h"
 #include "identifier.h"
 #include "basicxmlmarshalable.h"
 #include "typedefs.h"
@@ -37,7 +37,7 @@ namespace ifmap2c {
 
 /*	
 XmlMarshalable *
-IfmapCommunication::buildEnvelope()
+XmlCommunication::buildEnvelope()
 {
 
 	XmlMarshalable *envelope = new BasicXmlMarshalable(
@@ -72,7 +72,7 @@ IfmapCommunication::buildEnvelope()
 
 /*
 bool
-IfmapCommunication::containsSessionId(XmlMarshalable *req)
+XmlCommunication::containsSessionId(XmlMarshalable *req)
 {
 	// if this is a newSession, then return true in any case...
 	if (ResponseParser::compNameNs(req, NEWSESSION_ELEMENT_NAME,

@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ifmap/ifmapbaseidentifierhandler.h"
+#include "ifmap/baseidentifierhandler.h"
 #include "basicxmlmarshalable.h"
 #include "typedefs.h"
 

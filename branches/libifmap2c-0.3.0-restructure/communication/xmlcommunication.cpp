@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "ifmapcommunication.h"
+#include "xmlcommunication.h"
 #include "request.h"
 #include "communication/lowlevelcurlcommunication.h"
 #include "typedefs.h"
@@ -39,7 +39,7 @@ using namespace std;
 
 namespace ifmap2c {
 
-IfmapCommunication::IfmapCommunication(
+XmlCommunication::XmlCommunication(
 		LowLevelCommunication *const lowLevelCom,
 		XmlMarshaller *const xmlMarsh,
 		XmlUnmarshaller *const xmlUnmarsh,
@@ -50,7 +50,7 @@ IfmapCommunication::IfmapCommunication(
 		_requestHandlerDispatch(handlerDispatch)
 { }
 
-IfmapCommunication::~IfmapCommunication()
+XmlCommunication::~XmlCommunication()
 {
 	if (_lowLevelCommunication)
 		delete _lowLevelCommunication;
@@ -66,7 +66,7 @@ IfmapCommunication::~IfmapCommunication()
 }
 
 Result *
-IfmapCommunication::genericRequest(Request *req)
+XmlCommunication::genericRequest(Request *req)
 {
 	RequestHandler *handler = NULL;
 	XmlMarshalable *xmlReq = NULL;
@@ -102,7 +102,7 @@ IfmapCommunication::genericRequest(Request *req)
 
 
 XmlMarshalable *
-IfmapCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
+XmlCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
 {
 	Payload replyBuffer(NULL, 0), msgBuffer(NULL, 0);
 	XmlMarshalable *xmlResp = NULL;
@@ -137,7 +137,7 @@ IfmapCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
 /*
 // get rid of this...
 void
-IfmapCommunication::setSessionId(XmlMarshalable *const req,
+XmlCommunication::setSessionId(XmlMarshalable *const req,
 		const string& sessionId)
 {
 	CSTRPLISTIT it = req->getXmlAttributes().begin();

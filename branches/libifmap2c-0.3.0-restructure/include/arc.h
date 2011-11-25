@@ -28,7 +28,7 @@
 #include "ifmapchannel.h"
 #include "ssrc.h"
 #include "requests.h"
-#include "responses.h"
+#include "results.h"
 
 #include <string>
 

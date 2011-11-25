@@ -26,7 +26,7 @@
 #define RESPONSECONVERTER_H_
 
 #include "xmlmarshalable.h"
-#include "responses.h"
+#include "results.h"
 #include "errorresult.h"
 #include "responseparseerror.h"
 

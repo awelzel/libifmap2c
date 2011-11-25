@@ -35,14 +35,14 @@ INCLUDE_DIRECTORIES(
 	"${CURL_INCLUDE_DIRS}")
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
-	ifmap/ifmapidentifierhandlerdispatch.cpp
-	ifmap/ifmaprequesthandlerdispatch.cpp
-	ifmap/ifmapbaseidentifierhandler.cpp
-	ifmap/ifmapbaserequesthandler.cpp
-	ifmap/ifmapchannel.cpp
+	ifmap/identifierhandlerdispatch.cpp
+	ifmap/requesthandlerdispatch.cpp
+	ifmap/baseidentifierhandler.cpp
+	ifmap/baserequesthandler.cpp
+	ifmap/channel.cpp
 	ifmap/ssrc.cpp
 	ifmap/arc.cpp
-	communication/ifmapcommunication.cpp
+	communication/xmlcommunication.cpp
 	communication/lowlevelcurlcommunication.cpp
 	identifier/accessrequest.cpp
 	identifier/device.cpp
