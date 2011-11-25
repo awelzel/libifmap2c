@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT AND PERMISSION NOTICE
  * 
- * Copyright (c) 2011, Arne Welzel, <arne.welzel@googlemail.com>
+ * Copyright (c) 2010-2011, Arne Welzel, <arne.welzel@googlemail.com>
  * 		 
  * All rights reserved.
  * 		 
@@ -22,26 +22,50 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef XMLERRORS_H_
-#define XMLERRORS_H_
+#ifndef IFMAPCHANNEL_H_
+#define IFMAPCHANNEL_H_
+
+#include "ifmapcommunication.h"
+
 #include <string>
-#include "ifmaperror.h"
 
 namespace ifmap2c {
 
-class XmlMarshalError : public IfmapError {
-public:
-	XmlMarshalError(const std::string& msg = "") : 
-		IfmapError("XmlMarshalError", msg)
-	{ }
-};
+class IfmapChannel {
 
-class XmlUnmarshalError : public IfmapError {
 public:
-	XmlUnmarshalError(const std::string& msg = "") : 
-		IfmapError("XmlUnmarshalError", msg)
-	{ }
+
+	virtual const std::string& getSessionId(void) const;
+
+	virtual const std::string& getPublisherId(void) const;
+
+	virtual int getMaxPollResultSize(void) const;
+	
+	virtual ~IfmapChannel();
+
+protected:
+
+	IfmapChannel(const std::string& url,
+		const std::string& user,
+		const std::string& pass,
+		const std::string& capath);
+
+	IfmapChannel(const std::string& url,
+		const std::string& mykey,
+		const std::string& mykeypw,
+		const std::string& mycert,
+		const std::string& capath);
+
+	IfmapCommunication *_xmlCommunication;
+
+	bool _basicAuth;
+	std::string _url;
+	std::string _userName;
+	std::string _keyFile;
+	std::string _certFile;
+	std::string _password;
+	std::string _caPath;
 };
 
 } // namespace
-#endif /* XMLERRORS_H_ */
+#endif /* IFMAPCHANNEL_H_ */

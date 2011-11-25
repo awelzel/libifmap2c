@@ -22,32 +22,44 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef XMLMARSHALLER_H_
-#define XMLMARSHALLER_H_
-#include <string>
+#ifndef LIBXML2MARSHALLER_H_
+#define LIBXML2MARSHALLER_H_
 
-#include "payload.h"
-#include "xmlerrors.h"
-#include "xmlmarshalable.h"
+#include "xmlbinding.h"
 
+extern "C" {
+	#include <libxml/parser.h>
+	#include <libxml/tree.h>
+}
+
+#include <list>
 
 namespace ifmap2c {
 
-class XmlMarshaller {
+class LibXml2Marshaller : public XmlMarshaller {
 
-	public:
-		virtual ~XmlMarshaller() { }
+public:
+	Payload marshal(XmlMarshalable *root);
 
-		/**
-		 * Mashal a Marshalable object to memory.
-		 *
-		 * @param root the XmlMarshalable to be marshalled
-		 * @return Payload object containing a pointer and
-		 * 	   the length of the memory area. The caller
-		 * 	   is responsible for freeing this memory.
-		 */
-		virtual Payload marshal(XmlMarshalable *const root) = 0;
+	LibXml2Marshaller() { };
+
+private:
+	xmlNodePtr marshalToXmlNode(XmlMarshalable *node);
+
+	std::list<std::pair<std::string, xmlNsPtr> > _nsDeclarationList;
+
+};
+
+class LibXml2Unmarshaller : public XmlUnmarshaller {
+
+public:
+	XmlMarshalable *unmarshal(const Payload& p);
+
+	LibXml2Unmarshaller() { };
+
+private:
+	XmlMarshalable *unmarshalXmlNode(xmlNodePtr const node);
 };
 
 } // namespace
-#endif /* XMLMARSHALLER_H_ */
+#endif /* LIBXML2UNMARSHALLER_H_ */

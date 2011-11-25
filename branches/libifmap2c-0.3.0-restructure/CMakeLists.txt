@@ -29,16 +29,17 @@ FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(CURL)
 
 INCLUDE_DIRECTORIES(
-	.
-	include
+	${ifmap2c_SOURCE_DIR}
+	${ifmap2c_SOURCE_DIR}/include
 	"${LIBXML2_INCLUDE_DIR}"
 	"${CURL_INCLUDE_DIRS}")
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
-	communication/arc.cpp
 	communication/ifmapcommunication.cpp
-	communication/lowlevelcurlcommunication.cpp
+	communication/ifmapchannel.cpp
 	communication/ssrc.cpp
+	communication/arc.cpp
+	communication/lowlevelcurlcommunication.cpp
 	identifier/accessrequest.cpp
 	identifier/device.cpp
 	identifier/identifier.cpp

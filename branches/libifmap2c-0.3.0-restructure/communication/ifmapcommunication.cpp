@@ -24,9 +24,6 @@
 
 #include "ifmapcommunication.h"
 #include "request.h"
-#include "xmlmarshalable.h"
-#include "xml/libxml2marshaller.h"
-#include "xml/libxml2unmarshaller.h"
 #include "communication/lowlevelcurlcommunication.h"
 #include "typedefs.h"
 #include "result.h"
@@ -42,41 +39,16 @@ using namespace std;
 
 namespace ifmap2c {
 
-IfmapCommunication::IfmapCommunication(const string& url,
-		const string& user,
-		const string& pass,
-		const string& capath) :
-		_basicAuth(true),
-		_url(url),
-		_userName(user),
-		_password(pass),
-		_caPath(capath)
-{
-	_lowLevelCommunication = LowLevelCurlCommunication::create(url, user, pass, capath);
-	_xmlMarshaller = LibXml2Marshaller::createMarshaller();
-	_xmlUnmarshaller = LibXml2Unmarshaller::createUnmarshaller();
-	_requestHandlerDispatch = 
-		RequestHandlerDispatch::createRequestHandlerDispatch();
-}
-
-IfmapCommunication::IfmapCommunication(const string& url,
-		const string& mykey,
-		const string& mykeypw,
-		const string& mycert,
-		const string& capath) :
-		_basicAuth(false),
-		_url(url),
-		_keyFile(mykey),
-		_certFile(mycert),
-		_password(mykeypw),
-		_caPath(capath)
-{
-	_lowLevelCommunication = LowLevelCurlCommunication::create(url,
-			mykey, mykeypw, mycert, capath);
-	_xmlMarshaller = LibXml2Marshaller::createMarshaller();
-	_xmlUnmarshaller = LibXml2Unmarshaller::createUnmarshaller();
-}
-
+IfmapCommunication::IfmapCommunication(
+		LowLevelCommunication *const lowLevelCom,
+		XmlMarshaller *const xmlMarsh,
+		XmlUnmarshaller *const xmlUnmarsh,
+		RequestHandlerDispatch *const handlerDispatch) :
+		_lowLevelCommunication(lowLevelCom),
+		_xmlMarshaller(xmlMarsh),
+		_xmlUnmarshaller(xmlUnmarsh),
+		_requestHandlerDispatch(handlerDispatch)
+{ }
 
 IfmapCommunication::~IfmapCommunication()
 {
@@ -91,81 +63,20 @@ IfmapCommunication::~IfmapCommunication()
 
 	if (_requestHandlerDispatch)
 		delete _requestHandlerDispatch;
-
-	_lowLevelCommunication = NULL;
-	_xmlUnmarshaller = NULL;
-	_xmlMarshaller = NULL;
-	_requestHandlerDispatch = NULL;
-}
-
-
-bool
-IfmapCommunication::containsSessionId(XmlMarshalable *req)
-{
-	// if this is a newSession, then return true in any case...
-	if (ResponseParser::compNameNs(req, NEWSESSION_ELEMENT_NAME,
-				NEWSESSION_ELEMENT_HREF)) {
-		return true;
-	}
-
-	CSTRPLISTIT it = req->getXmlAttributes().begin();
-	CSTRPLISTIT end = req->getXmlAttributes().end();
-
-	for (/* */; it != end; it++) {
-		if (ResponseParser::isAttrWithName(*it,
-					SESSIONID_ATTR_NAME)) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-XmlMarshalable *
-IfmapCommunication::buildEnvelope()
-{
-
-	XmlMarshalable *envelope = new BasicXmlMarshalable(
-			ENVELOPE_ELEMENT_NAME,
-			EMPTY_VALUE,
-			SOAP_NSPAIR);
-
-	envelope->addXmlNamespaceDefinition(STRP(SOAP_PREFIX, SOAP_HREF));
-	envelope->addXmlNamespaceDefinition(STRP(IFMAP_PREFIX, IFMAP_HREF));
-
-	XmlMarshalable *body = new BasicXmlMarshalable(
-			BODY_ELEMENT_NAME,
-			EMPTY_VALUE,
-			SOAP_NSPAIR);
-
-	envelope->addXmlChild(body);
-
-	return envelope;
 }
 
 Result *
-IfmapCommunication::genericRequest(Request *req, const string& sId)
+IfmapCommunication::genericRequest(Request *req)
 {
 	RequestHandler *handler = NULL;
-	XmlMarshalable *xmlContent = NULL;
 	XmlMarshalable *xmlReq = NULL;
 	XmlMarshalable *xmlResp = NULL;
 	Result *ret = NULL;
 
 	try {
 		handler = _requestHandlerDispatch->dispatch(req);
-		xmlContent = handler->toXml(req);
-		
-		if (sId.length() > 0)
-			setSessionId(xmlContent, sId);
-
-		xmlReq = buildEnvelope();
-		(*(xmlReq->getXmlChildren().begin()))->addXmlChild(xmlContent);
-		xmlContent = NULL;
-
+		xmlReq = handler->toXml(req);
 		xmlResp = xmlRequest(xmlReq);
-
 		ret = handler->fromXml(xmlResp);
 
 	} catch (...) {
@@ -173,9 +84,6 @@ IfmapCommunication::genericRequest(Request *req, const string& sId)
 		if (xmlReq)
 			delete xmlReq;
 		
-		if (xmlContent)
-			delete xmlContent;
-
 		if (xmlResp)
 			delete xmlResp;
 
@@ -226,6 +134,8 @@ IfmapCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
 	return xmlResp;
 }
 
+/*
+// get rid of this...
 void
 IfmapCommunication::setSessionId(XmlMarshalable *const req,
 		const string& sessionId)
@@ -235,7 +145,7 @@ IfmapCommunication::setSessionId(XmlMarshalable *const req,
 	STRP strp;
 	// if we find a session-id attribute we need to copy the whole list :-(
 
-	for (/* see above */; it != end; it++) {
+	for (// ; it != end; it++) {
 		strp = *it;
 		if (!strp.first.compare(SESSIONID_ATTR_NAME)) {
 			STRPLIST attrList = req->getXmlAttributes();
@@ -254,5 +164,6 @@ IfmapCommunication::setSessionId(XmlMarshalable *const req,
 	}
 	req->addXmlAttribute(STRP(SESSIONID_ATTR_NAME, sessionId));
 }
+*/
 
 } // namespace

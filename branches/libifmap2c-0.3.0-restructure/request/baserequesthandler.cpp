@@ -30,6 +30,66 @@
 
 using namespace std;
 namespace ifmap2c {
+
+/*	
+XmlMarshalable *
+IfmapCommunication::buildEnvelope()
+{
+
+	XmlMarshalable *envelope = new BasicXmlMarshalable(
+			ENVELOPE_ELEMENT_NAME,
+			EMPTY_VALUE,
+			SOAP_NSPAIR);
+
+	envelope->addXmlNamespaceDefinition(STRP(SOAP_PREFIX, SOAP_HREF));
+	envelope->addXmlNamespaceDefinition(STRP(IFMAP_PREFIX, IFMAP_HREF));
+
+	XmlMarshalable *body = new BasicXmlMarshalable(
+			BODY_ELEMENT_NAME,
+			EMPTY_VALUE,
+			SOAP_NSPAIR);
+
+	envelope->addXmlChild(body);
+
+	return envelope;
+}
+*/
+
+	/*	TODO: To this in the appropiate handlers
+		if (sId.length() > 0)
+			setSessionId(xmlContent, sId);
+
+		xmlReq = buildEnvelope();
+		(*(xmlReq->getXmlChildren().begin()))->addXmlChild(xmlContent);
+		xmlContent = NULL;
+
+
+	*/
+
+/*
+bool
+IfmapCommunication::containsSessionId(XmlMarshalable *req)
+{
+	// if this is a newSession, then return true in any case...
+	if (ResponseParser::compNameNs(req, NEWSESSION_ELEMENT_NAME,
+				NEWSESSION_ELEMENT_HREF)) {
+		return true;
+	}
+
+	CSTRPLISTIT it = req->getXmlAttributes().begin();
+	CSTRPLISTIT end = req->getXmlAttributes().end();
+
+	for (/ /; it != end; it++) {
+		if (ResponseParser::isAttrWithName(*it,
+					SESSIONID_ATTR_NAME)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+*/
+
 IFMAP2C_RH_TOXML_DEF(NewSessionRequest, req)
 {
 	return (XmlMarshalable *)req;

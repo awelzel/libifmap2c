@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "libxml2marshaller.h"
+#include "xml/libxml2binding.h"
 #include "typedefs.h"
 #include <string>
 #include <cstring>
@@ -168,12 +168,6 @@ LibXml2Marshaller::marshalToXmlNode(XmlMarshalable *node)
 		_nsDeclarationList.pop_back();
 	}
 	return xmlNode;
-}
-
-XmlMarshaller *
-LibXml2Marshaller::createMarshaller()
-{
-	return new LibXml2Marshaller();
 }
 
 } // namespace

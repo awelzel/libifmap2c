@@ -35,7 +35,7 @@ SSRC::SSRC(const string& url,
 		const string& user,
 		const string& pass,
 		const string& capath) :
-		IfmapCommunication(url, user, pass, capath)
+		IfmapChannel(url, user, pass, capath)
 { }
 
 SSRC::SSRC(const string& url,
@@ -43,7 +43,7 @@ SSRC::SSRC(const string& url,
 		const string& mykeypw,
 		const string& mycert,
 		const string& capath) :
-		IfmapCommunication(url, mykey, mykeypw, mycert, capath)
+		IfmapChannel(url, mykey, mykeypw, mycert, capath)
 {  }
 
 
@@ -98,7 +98,7 @@ SSRC::newSession(const int maxPollResSize)
 	int maxPollResSizeRecv = NO_MAX_POLL_RES_SIZE;
 	
 	try {
-		res = genericRequest(nsreq, "");
+		res = _xmlCommunication->genericRequest(nsreq);
 
 
 /*
@@ -155,7 +155,7 @@ SSRC::endSession(const string& sId)
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 
 	try {
-		genericRequest(esreq, sessionId);
+		_xmlCommunication->genericRequest(esreq);
 	} catch (...) {
 		delete esreq;
 		throw;
@@ -254,7 +254,7 @@ SSRC::renewSession(const string& sId)
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 
 	try {
-		genericRequest(rnsreq, sessionId);
+		_xmlCommunication->genericRequest(rnsreq);
 	} catch (...) {
 		delete rnsreq;
 	}
@@ -279,7 +279,7 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 	PurgePublisherRequest *ppr = 
 		Requests::createPurgePublisherReq(pubId);
 	try {
-		genericRequest(ppr, sessionId);
+		_xmlCommunication->genericRequest(ppr);
 	} catch (...) {
 		delete ppr;
 	}

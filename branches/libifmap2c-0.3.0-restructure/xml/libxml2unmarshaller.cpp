@@ -22,7 +22,9 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "libxml2unmarshaller.h"
+#include "xml/libxml2binding.h"
+#include "basicxmlmarshalable.h"
+
 #include "typedefs.h"
 #include <iostream>
 
@@ -87,14 +89,6 @@ LibXml2Unmarshaller::unmarshalXmlNode(xmlNodePtr node)
 	}
 
 	return ret;
-}
-
-
-
-XmlUnmarshaller *
-LibXml2Unmarshaller::createUnmarshaller()
-{
-	return new LibXml2Unmarshaller();
 }
 
 } // namespace

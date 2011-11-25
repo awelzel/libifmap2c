@@ -25,15 +25,15 @@
 #ifndef ARC_H_
 #define ARC_H_
 
-#include "ifmapcommunication.h"
 #include "ssrc.h"
+
+#include <string>
 
 namespace ifmap2c {
 
-class ARC : public IfmapCommunication {
+class ARC : public IfmapChannel {
 
 public:
-
 
 	/**
 	 * Start a poll request. This method may throw a EndSessionResult
@@ -57,8 +57,11 @@ public:
 	int getMaxPollResultSize(void) const;
 
 	virtual ~ARC();
+
 private:
+
 	friend class SSRC;
+
 	SSRC *_ssrc;
 
 	ARC(const std::string& url,
@@ -74,5 +77,6 @@ private:
 			const std::string& capath,
 			SSRC *const ssrc);
 };
-}
+
+} // namespace
 #endif /* ARC_H_ */

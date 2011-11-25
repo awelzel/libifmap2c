@@ -34,7 +34,7 @@ ARC::ARC(const std::string& url,
 		const string& pass,
 		const string& capath,
 		SSRC *const ssrc) :
-		IfmapCommunication(url, user, pass, capath), _ssrc(ssrc)
+		IfmapChannel(url, user, pass, capath), _ssrc(ssrc)
 { }
 
 ARC::ARC(const std::string& url,
@@ -43,7 +43,8 @@ ARC::ARC(const std::string& url,
 		const string& mycert,
 		const string& capath,
 		SSRC *const ssrc) :
-		IfmapCommunication(url, mykey, mykeypw, mycert, capath), _ssrc(ssrc)
+		IfmapChannel(url, mykey, mykeypw, mycert, capath),
+		_ssrc(ssrc)
 { }
 
 
@@ -57,7 +58,7 @@ ARC::poll(const string& sId)
 {
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 	PollRequest *pollReq = Requests::createPollReq();
-	Result *res = genericRequest(pollReq, sessionId);
+	Result *res = _xmlCommunication->genericRequest(pollReq);
 	PollResult *ret = dynamic_cast<PollResult *>(res);
 
 	if (!ret)

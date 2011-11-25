@@ -22,21 +22,50 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef XMLUNMARSHALLER_H_
-#define XMLUNMARSHALLER_H_
-#include <string>
+#include "ifmapchannel.h"
+#include "xml/libxml2binding.h"
+#include "communication/lowlevelcurlcommunication.h"
 
-#include "payload.h"
-#include "xmlerrors.h"
-#include "xmlmarshalable.h"
+using namespace std;
 
 namespace ifmap2c {
 
-class XmlUnmarshaller {
+IfmapChannel::~IfmapChannel()
+{
+	delete _xmlCommunication;
+}
 
-public:
-	virtual XmlMarshalable *unmarshal(const Payload& p) = 0;
-};
+IfmapChannel::IfmapChannel(const string& url,
+		const string& user,
+		const string& pass,
+		const string& capath)
+{ 
+	LowLevelCommunication *llc = 
+		LowLevelCurlCommunication::create(url, user, pass, capath);
+
+	XmlMarshaller *xmlMarsh = new LibXml2Marshaller();
+	XmlUnmarshaller *xmlUnmarsh = new LibXml2Unmarshaller();
+	RequestHandlerDispatch *reqDisp = NULL; // FIXME
+	_xmlCommunication = new IfmapCommunication(llc, xmlMarsh,
+			xmlUnmarsh, reqDisp);
+}
+
+IfmapChannel::IfmapChannel(const string& url,
+		const string& mykey,
+		const string& mykeypw,
+		const string& mycert,
+		const string& capath)
+{
+	LowLevelCommunication *llc = 
+		LowLevelCurlCommunication::create(url, mykey, mykeypw,
+				mycert, capath);
+
+	XmlMarshaller *xmlMarsh = new LibXml2Marshaller();
+	XmlUnmarshaller *xmlUnmarsh = new LibXml2Unmarshaller();
+	RequestHandlerDispatch *reqDisp = NULL; // FIXME
+
+	_xmlCommunication = new IfmapCommunication(llc, xmlMarsh,
+			xmlUnmarsh, reqDisp);
+}
 
 } // namespace
-#endif /* XMLUNMARSHALLER_H_ */

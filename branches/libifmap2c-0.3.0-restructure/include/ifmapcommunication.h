@@ -26,6 +26,7 @@
 #define IFMAPCOMMUNICATION_H_
 #include <string>
 
+//FIXME: Get rid of ifmap dependencies if possible
 #include "communicationerror.h"
 #include "ifmaperror.h"
 #include "lowlevelcommunication.h"
@@ -35,8 +36,7 @@
 #include "request.h"
 #include "responses.h"
 #include "tcgifmapbase.h"
-#include "xmlmarshaller.h"
-#include "xmlunmarshaller.h"
+#include "xmlbinding.h"
 
 namespace ifmap2c {
 
@@ -44,74 +44,21 @@ namespace ifmap2c {
 class IfmapCommunication {
 
 public:
-	/**
-	 * @return the current session-id or an empty string
-	 * if none is set.
-	 */
-	virtual const std::string& getSessionId(void) const = 0;
-
-	/**
-	 * @return the current publisher-id or an empty string
-	 * if none is set.
-	 */
-	virtual const std::string& getPublisherId(void) const = 0;
-
-	/**
-	 * @eturn the current max-poll-result-size, or
-	 * NO_MAX_POLL_RES_SIZE if no max-poll-result size was
-	 * specified.
-	 */
-	virtual int getMaxPollResultSize(void) const = 0;
-
 	virtual ~IfmapCommunication();
 
-	// TODO: get rid of the session-id here!
-	Result *genericRequest(Request *const req,
-			const std::string& sId);
-protected:
-	IfmapCommunication(const std::string& url,
-			const std::string& user,
-			const std::string& pass,
-			const std::string& capath);
+	Result *genericRequest(Request *const req);
 
-
-	IfmapCommunication(const std::string& url,
-			const std::string& mykey,
-			const std::string& mykeypw,
-			const std::string& mycert,
-			const std::string& capath);
-
-
-	/**
-	 * Set the a session-id attribute to the request.
-	 *
-	 * If the is already a session-id attribute set, the old value is
-	 * removed and replaced by the new one.
-	 *
-	 * @param req the request for which the session-id attribute is to be set
-	 * @param sessionId this value will be set as session-id attribute
-	 */
-	void setSessionId(XmlMarshalable *const req,
-			const std::string& sessionId);
-
-	bool _basicAuth;
-	std::string _url;
-	std::string _userName;
-	std::string _keyFile;
-	std::string _certFile;
-	std::string _password;
-	std::string _caPath;
+	IfmapCommunication(LowLevelCommunication *const lowLevelCom,
+			XmlMarshaller *const xmlMarsh,
+			XmlUnmarshaller *const xmlUnmarsh,
+			RequestHandlerDispatch *const handlerDispatch);
 
 private:
-	LowLevelCommunication *_lowLevelCommunication;
-	XmlMarshaller *_xmlMarshaller;
-	XmlUnmarshaller *_xmlUnmarshaller;
-	RequestHandlerDispatch *_requestHandlerDispatch;
+	LowLevelCommunication *const _lowLevelCommunication;
+	XmlMarshaller *const _xmlMarshaller;
+	XmlUnmarshaller *const _xmlUnmarshaller;
+	RequestHandlerDispatch *const _requestHandlerDispatch;
 
-	bool containsSessionId(XmlMarshalable *req);
-
-	XmlMarshalable *buildEnvelope();
-	
 	/**
 	 *
 	 */
