@@ -29,6 +29,7 @@ using namespace std;
 namespace ifmap2c {
 
 Identifier::Identifier() { }
+Identifier::~Identifier() { }
 
 IdentifierAdmin::IdentifierAdmin(const string& ad) :
 	_administrativeDomain(ad) { }

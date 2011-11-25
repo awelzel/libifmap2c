@@ -49,7 +49,7 @@ public:
 		const char *const resultFilter,
 		const int maxResultSize,
 		const char *const terminalIdent,
-		Identifier *const i1);
+		Identifier *const start);
 
 	virtual ~SearchParam() { }
 

@@ -37,12 +37,13 @@ public:
 	}
 
 protected:
-	SubscribeElement(const std::string& name) :_name(name) { }
-	//addXmlAttribute(STRP(SUBSCRIBE_UPDATE_NAME_ATTR_NAME, subName));
 
-	virtual ~SubscribeElement();
+	SubscribeElement(const std::string& name) :_name(name) { }
+
+	virtual ~SubscribeElement() { }
 
 private:
+
 	const std::string _name;
 
 };

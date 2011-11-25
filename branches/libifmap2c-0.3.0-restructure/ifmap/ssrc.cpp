@@ -100,27 +100,8 @@ SSRC::newSession(const int maxPollResSize)
 	try {
 		res = _xmlCommunication->genericRequest(nsreq);
 
-
-/*
-NewSessionRequest::NewSessionRequest(const int maxPollResSize)
-	: BasicXmlMarshalable(
-			NEWSESSION_ELEMENT_NAME,
-			EMPTY_VALUE,
-			IFMAP_NSPAIR)
-
-
-{
-	if (maxPollResSize != NO_MAX_POLL_RES_SIZE
-			&& maxPollResSize >= 0) {
-		stringstream ss;
-		ss << maxPollResSize;
-		STRP attr = STRP(MAX_POLL_RES_SIZE_ATTR_NAME, ss.str());
-		addXmlAttribute(attr);
-	}
-}
-*/
 		nsres = dynamic_cast<NewSessionResult *>(res);
-
+		
 		if (!nsres)
 			throw "UHM :( bad result"; //FIXME
 
@@ -153,6 +134,7 @@ SSRC::endSession(const string& sId)
 {
 	EndSessionRequest *esreq = Requests::createEndSessionReq();
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+	esreq->setSessionId(sessionId);
 
 	try {
 		_xmlCommunication->genericRequest(esreq);
@@ -175,24 +157,9 @@ EndSessionRequest::EndSessionRequest() : BasicXmlMarshalable(
 void
 SSRC::publish(PublishRequest *const pr, const string& sId)
 {
-	cerr << "TOOD TODO" << sId;
-	throw pr;
-	/*
-	XmlMarshalable *reply = NULL;
-
-	if (sId.length() > 0)
-		setSessionId(pr, sId);
-
-	try {
-		reply = processMessage(pr);
-		ResponseParser::checkPublishReceived(reply);
-	} catch (...) {
-		if (reply)
-			delete reply;
-		throw;
-	}
-	delete reply;
-	*/
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+	pr->setSessionId(sessionId);
+	_xmlCommunication->genericRequest(pr);
 }
 
 

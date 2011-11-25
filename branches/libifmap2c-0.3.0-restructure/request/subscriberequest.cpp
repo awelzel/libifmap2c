@@ -56,7 +56,7 @@ SubscribeRequest::createSubscribeRequest(SubscribeElement *const subreq)
 	subList.push_back(subreq);
 	return createSubscribeRequest(subList);
 }
-const std::list<SubscribeElement *>
+const std::list<SubscribeElement *>&
 SubscribeRequest::getSubscribeElements(void) const
 {
 	return _subscribeElements;

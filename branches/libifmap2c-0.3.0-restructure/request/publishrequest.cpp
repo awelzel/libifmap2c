@@ -60,7 +60,7 @@ PublishRequest::PublishRequest(const list<PublishElement *>& rList) :
 
 PublishRequest::~PublishRequest() { }
 
-const list<PublishElement *>
+const list<PublishElement *>&
 PublishRequest::getPublishElements(void) const
 {
 	return _publishElement;

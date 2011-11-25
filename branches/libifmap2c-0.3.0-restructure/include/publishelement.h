@@ -31,7 +31,7 @@ namespace ifmap2c {
 class PublishElement {
 
 	public:
-		virtual ~PublishElement();
+		virtual ~PublishElement() { }
 
 	protected:
 		PublishElement() { }

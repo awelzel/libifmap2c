@@ -87,7 +87,9 @@ class IdentifierMetadataHolder : public IdentifierHolder {
 public:
 	virtual ~IdentifierMetadataHolder() { };
 
-	const std::list<XmlMarshalable *> getMetadata(void) const;
+	const std::list<XmlMarshalable *>& getMetadata(void) const {
+		return _metadata;
+	}
 
 protected:
 	IdentifierMetadataHolder(Identifier *const i1,

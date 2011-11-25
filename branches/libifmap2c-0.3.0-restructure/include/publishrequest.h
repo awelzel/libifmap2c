@@ -35,7 +35,7 @@ namespace ifmap2c {
 class PublishRequest : public IfmapRequest {
 
 public:
-	const std::list<PublishElement *> getPublishElements(void) const;
+	const std::list<PublishElement *>& getPublishElements(void) const;
 
 	static PublishRequest *
 	createPublishRequest(const std::list<PublishElement *>& rList);

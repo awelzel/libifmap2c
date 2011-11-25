@@ -109,7 +109,7 @@ XmlCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
 
 #ifdef IN_OUT_DEBUG
 	cout << "======== OUTGOING =========" << endl;
-	XmlMarshalable::putXmlMarshalable(env);
+	XmlMarshalable::putXmlMarshalable(xmlMsg);
 	cout << "======== OUTGOING =========" << endl;
 #endif /* IN_OUT_DEBUG */
 

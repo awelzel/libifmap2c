@@ -97,11 +97,11 @@ INSTALL(FILES
 	include/endsessionresult.h
 	include/errorresult.h
 	include/identifier.h
-	include/identifierholder.h
 	include/identifiers.h
 	include/identity.h
+	include/ifmapchannel.h
 	include/ifmaperror.h
-	include/ifmapcommunication.h
+	include/ifmaprequest.h
 	include/ipaddress.h
 	include/lowlevelcommunication.h
 	include/macaddress.h
@@ -118,11 +118,12 @@ INSTALL(FILES
 	include/publishupdate.h
 	include/purgepublisherrequest.h
 	include/renewsessionrequest.h
-	include/requests.h
-	include/responses.h
-	include/resultitem.h
 	include/request.h
+	include/requests.h
+	include/responseparseerror.h
 	include/result.h
+	include/resultitem.h
+	include/results.h
 	include/searchparam.h
 	include/searchrequest.h
 	include/searchresult.h
@@ -134,10 +135,9 @@ INSTALL(FILES
 	include/subscribeupdate.h
 	include/tcgifmapbase.h
 	include/tcgifmapmeta.h
-	include/xmlable.h
-	include/xmlerrors.h
+	include/typedefs.h
+	include/xmlbinding.h
+	include/xmlcommunication.h
 	include/xmlmarshalable.h
-	include/xmlmarshaller.h
-	include/xmlunmarshaller.h
 	DESTINATION include/lib${PROJECT_NAME}
 )

@@ -35,11 +35,11 @@ class IfmapChannel {
 
 public:
 
-	virtual const std::string& getSessionId(void) const;
+	virtual const std::string& getSessionId(void) const = 0;
 
-	virtual const std::string& getPublisherId(void) const;
+	virtual const std::string& getPublisherId(void) const = 0;
 
-	virtual int getMaxPollResultSize(void) const;
+	virtual int getMaxPollResultSize(void) const = 0;
 	
 	virtual ~IfmapChannel();
 

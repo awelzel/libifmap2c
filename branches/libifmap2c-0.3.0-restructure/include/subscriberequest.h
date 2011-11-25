@@ -33,7 +33,7 @@ namespace ifmap2c {
 class SubscribeRequest : public IfmapRequest {
 
 public:
-	const std::list<SubscribeElement *>
+	const std::list<SubscribeElement *>&
 	getSubscribeElements(void) const;
 
 	static SubscribeRequest *createSubscribeRequest(

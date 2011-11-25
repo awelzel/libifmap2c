@@ -25,11 +25,13 @@
 #ifndef NEWSESSIONRESULT_H_
 #define NEWSESSIONRESULT_H_
 
+#include "result.h"
+
 #include <string>
 
 namespace ifmap2c {
 
-class NewSessionResult {
+class NewSessionResult : public Result {
 
 public:
 	NewSessionResult(const std::string& sId,

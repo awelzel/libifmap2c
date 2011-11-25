@@ -30,6 +30,7 @@
 #include "typedefs.h"
 #include "errorresult.h"
 
+#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -186,7 +187,7 @@ findIfmapResultChecked(const string& el, XmlMarshalable *const xml)
 	
 	throwIfError(response);
 
-	return findChildChecked(response, STRP(el, IFMAP_HREF));
+	return findChildChecked(response, STRP(el, NO_HREF));
 }
 
 static XmlMarshalable *
@@ -290,7 +291,8 @@ IFMAP2C_RH_FROMXML_DEF(NewSessionRequest, xml)
 
 	if(!sIdFound)
 		throw RequestHandlerError("SessionId not found");
-	return (Result*)xml;
+	
+	return new NewSessionResult(sId, pId, maxPollResSize);
 }
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */	
 // END NEWSESSION REQUEST
@@ -426,8 +428,9 @@ addXmlMetadata(XmlMarshalable *const to,
 	it = from->getMetadata().begin();
 	end = from->getMetadata().end();
 
-	for (/* */; it != end; it++)
+	for (/* */; it != end; it++) {
 		meta->addXmlChild((*it)->clone());
+	}
 }
 
 
@@ -456,7 +459,7 @@ peToXml(PublishElement *const pe)
 		xPe = getXmlPeFor(PUBLISH_UPDATE_ELEMENT_NAME);
 		pu = checked_cast<PublishUpdate>(pe);
 	} else {
-		throw new RequestHandlerError("Unknown Publish Element");
+		throw RequestHandlerError("Unknown Publish Element");
 	}
 
 	addXmlIdentifiers(xPe, checked_cast<IdentifierHolder>(pe));
@@ -794,7 +797,7 @@ IFMAP2C_RH_FROMXML_DEF(PollRequest, xml)
 	pollResult = findChild(response, STRP(POLLRESULT_ELEMENT_NAME,
 				NO_HREF));
 
-	// No poll result, there might be an endSessionResult here
+	// No poll result, there might be an endSessionResult ;
 	if (!pollResult) {
 		if (findChild(response, 
 			STRP(ENDSESSIONRESULT_ELEMENT_NAME, NO_HREF))) {

@@ -26,6 +26,21 @@
 
 namespace ifmap2c {
 
+SearchParam::SearchParam(const char *const matchLinksFilter,
+		const int maxDepth,
+		const char *const resultFilter,
+		const int maxResultSize,
+		const char *const terminalIdent,
+		Identifier *const start) :
+	_matchLinksFilter(matchLinksFilter),
+	_maxDepth(maxDepth),
+	_resultFilter(resultFilter),
+	_maxResultSize(maxResultSize),
+	_terminalIdentifiers(terminalIdent),
+	_startIdentifier(start)
+{ }
+
+
 const char *SearchParam::getMatchLinksFilter(void) const
 {
 	return _matchLinksFilter;
