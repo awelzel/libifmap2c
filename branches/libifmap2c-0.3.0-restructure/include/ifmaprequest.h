@@ -42,9 +42,13 @@ public:
 	const std::string& getSessionId(void) const {
 		return _sessionId;
 	}
+	
+	void setSessionId(const std::string& sId) {
+		_sessionId = sId;
+	}
 
 private:
-	const std::string _sessionId;
+	std::string _sessionId;
 };
 
 class IfmapRequestHandlerDispatch : public RequestHandlerDispatch {

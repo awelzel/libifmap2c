@@ -28,15 +28,13 @@
 
 namespace ifmap2c {
 
-class PublishElement : public IdentifierHolder {
+class PublishElement {
 
 	public:
 		virtual ~PublishElement();
 
 	protected:
-		PublishElement(Identifier *const i1,
-				Identifier *const i2 = NULL) :
-			IdentifierHolder(i1, i2){ }
+		PublishElement() { }
 };
 
 } // namespace

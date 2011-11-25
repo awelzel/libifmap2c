@@ -26,6 +26,7 @@
 #define UPDATEREQUEST_H_
 
 #include "publishelement.h"
+#include "identifier.h"
 #include <list>
 
 namespace ifmap2c {
@@ -35,11 +36,8 @@ enum LifeTimeType {
 	forever
 };
 
-class PublishUpdate : public PublishElement
-{
+class PublishUpdate : public PublishElement, public IdentifierMetadataHolder {
 public:
-	const std::list<XmlMarshalable *> getMetadata(void) const;
-
 	LifeTimeType getLifeTime(void) const;
 	
 	const std::string getLifeTimeString(void) const;
@@ -66,8 +64,6 @@ private:
 		Identifier *const i2);
 
 	LifeTimeType _lifeTime;
-
-	std::list<XmlMarshalable *> _metadata;
 
 	static std::string lifeTimeNames[];
 };

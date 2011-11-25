@@ -65,27 +65,6 @@ ARC::poll(const string& sId)
 		throw "UHM :( bad poll result"; //FIXME
 
 	return ret;
-
-/*
-	XmlMarshalable *reply = NULL;
-	PollResult *pollRes = NULL;
-	try {
-		reply = processMessage(pollReq);
-		pollRes = ResponseParser::createPollResult(reply);
-	} catch (...) {
-		if (pollReq)
-			delete pollReq;
-
-		if (reply)
-			delete reply;
-
-		throw;
-	}
-
-	delete pollReq;
-	delete reply;
-	return pollRes;
-	*/
 }
 
 const string&

@@ -285,15 +285,6 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 	}
 	delete ppr;
 
-	/*
-PurgePublisherRequest::PurgePublisherRequest(const string& publisherId) :
-
-	BasicXmlMarshalable(PURGEPUBLISHER_ELEMENT_NAME,
-	EMPTY_VALUE, IFMAP_OPERATION_NSPAIR)
-{
-	addXmlAttribute(STRP(PUBLISHERID_ATTR_NAME, publisherId));
-}
-*/
 }
 
 

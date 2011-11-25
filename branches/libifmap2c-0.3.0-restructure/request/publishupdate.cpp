@@ -67,9 +67,8 @@ PublishUpdate::PublishUpdate(const XMLMLIST& mlist,
 	Identifier *const i1,
 	LifeTimeType lTime,
 	Identifier *const i2) :
-	PublishElement(i1, i2),
-	_lifeTime(lTime),
-	_metadata(mlist) 
+	IdentifierMetadataHolder(i1, i2, mlist),
+	_lifeTime(lTime)
 { }
 /*
 	  PublishElement(PUBLISH_UPDATE_ELEMENT_NAME, i1, i2)
@@ -89,11 +88,6 @@ PublishUpdate::PublishUpdate(const XMLMLIST& mlist,
 	addXmlChild(metadatachild);
 }
 */
-
-const list<XmlMarshalable *> PublishUpdate::getMetadata(void) const
-{
-	return _metadata;
-}
 
 LifeTimeType PublishUpdate::getLifeTime(void) const
 {

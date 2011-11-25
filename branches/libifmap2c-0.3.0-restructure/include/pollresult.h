@@ -26,12 +26,13 @@
 #define POLLRESULT_H_
 #include "errorresult.h"
 #include "searchresult.h"
+#include "result.h"
 
 #include <list>
 
 namespace ifmap2c {
 
-class PollResult {
+class PollResult : public Result {
 public:
 	PollResult();
 	virtual ~PollResult();

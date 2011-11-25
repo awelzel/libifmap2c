@@ -25,14 +25,13 @@
 #ifndef PUBLISHNOTIFY_H_
 #define PUBLISHNOTIFY_H_
 #include "publishelement.h"
+#include "identifier.h"
 #include <list>
 
 namespace ifmap2c {
 
-class PublishNotify : public PublishElement {
+class PublishNotify : public PublishElement, public IdentifierMetadataHolder {
 public:
-	const std::list<XmlMarshalable *> getMetadata(void) const;
-
 	static PublishNotify *
 	createPublishNotify(
 			const std::list<XmlMarshalable *>& metadataList,
@@ -48,8 +47,6 @@ private:
 	PublishNotify(const std::list<XmlMarshalable *>& metadataList,
 			Identifier *const i1,
 			Identifier *const i2 = NULL);
-
-	std::list<XmlMarshalable *> _metadata;
 };
 
 } // namespace

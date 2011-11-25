@@ -27,6 +27,7 @@
 
 #include "result.h"
 #include "xmlmarshalable.h"
+#include "ifmaperror.h"
 
 #include <list>
 #include <string>
@@ -50,6 +51,13 @@ public:
 	virtual XmlMarshalable *toXml(Request *const req) const = 0;
 	virtual Result *fromXml(XmlMarshalable *const xml) const = 0;
 	virtual bool canHandle(Request *const req) const = 0;
+};
+
+class RequestHandlerError : public IfmapError {
+public:
+	RequestHandlerError(const std::string& msg) 
+		: IfmapError("RequestHandlerError", msg)
+	{ };
 };
 
 

@@ -66,8 +66,6 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	response/ifmaperror.cpp
 	response/newsessionresult.cpp
 	response/pollresult.cpp
-	response/responseparser.cpp
-	response/resultitem.cpp
 	response/searchresult.cpp
 	xml/basicxmlmarshalable.cpp
 	xml/libxml2marshaller.cpp
@@ -121,8 +119,6 @@ INSTALL(FILES
 	include/purgepublisherrequest.h
 	include/renewsessionrequest.h
 	include/requests.h
-	include/responseparseerror.h
-	include/responseparser.h
 	include/responses.h
 	include/resultitem.h
 	include/request.h

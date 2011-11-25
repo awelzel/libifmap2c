@@ -91,8 +91,8 @@ public:
 
 protected:
 	IdentifierMetadataHolder(Identifier *const i1,
-			std::list<XmlMarshalable *> mList,
-			Identifier *const i2 = NULL) :
+			Identifier *const i2,
+			std::list<XmlMarshalable *> mList) :
 		IdentifierHolder(i1, i2), _metadata(mList) { };
 
 private:

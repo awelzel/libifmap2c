@@ -26,10 +26,11 @@
 #define DELETEREQUEST_H_
 
 #include "publishelement.h"
+#include "identifier.h"
 
 namespace ifmap2c {
 
-class PublishDelete : public PublishElement {
+class PublishDelete : public PublishElement, public IdentifierHolder {
 
 public:
 

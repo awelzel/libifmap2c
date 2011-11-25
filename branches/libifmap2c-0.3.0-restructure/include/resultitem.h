@@ -31,52 +31,14 @@
 
 namespace ifmap2c {
 
-class ResultItemError {
-public:
-	ResultItemError(const std::string& msg) : message(msg) { };
-
-	const std::string& getMessage() { return message; }
-
-private:
-	std::string message;
-};
-
-class ResultItem {
+class ResultItem : public IdentifierMetadataHolder {
 
 public:
-	ResultItem();
+	ResultItem(Identifier *const i1, Identifier *const i2,
+			const std::list<XmlMarshalable *>& mlist) :
+		IdentifierMetadataHolder(i1, i2, mlist) { }
 
-	virtual ~ResultItem();
-
-	void setIpAddress(IpAddress *const ip);
-	void setMacAddress(MacAddress *const mac);
-	void setDevice(Device *const dev);
-	void setAccessRequest(AccessRequest *const ar);
-	void setIdentity(Identity *const id);
-
-	IpAddress *getIpAddress(void) const;
-	MacAddress *getMacAddress(void) const;
-	Device *getDevice(void) const;
-	AccessRequest *getAccessRequest(void) const;
-	Identity *getIdentity(void) const;
-
-	Identifier *getIdentifier1(void) const;
-	Identifier *getIdentifier2(void) const;
-
-
-	void addMetadata(XmlMarshalable *const md);
-
-	const std::list<XmlMarshalable *>& getMetadata(void) const;
-
-
-private:
-	std::list<XmlMarshalable *> _metadataList;
-	int numberIdentifiers;
-
-	Identifier *_i1;
-	Identifier *_i2;
-
-	void checkAndIncIdentifierNumber(void);
+	virtual ~ResultItem() { }
 };
 
 } // namespace
