@@ -24,6 +24,7 @@
 
 #include "metadata.h"
 #include "basicxmlmarshalable.h"
+#include "tcgifmapbase.h"
 #include "typedefs.h"
 
 using namespace std;

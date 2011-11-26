@@ -25,6 +25,7 @@
 #ifndef REQUESTS_H_
 #define REQUESTS_H_
 
+#include "tcgifmapbase.h"
 #include "endsessionrequest.h"
 #include "identifier.h"
 #include "newsessionrequest.h"

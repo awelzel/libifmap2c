@@ -22,12 +22,12 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef RESPONSES_H_
-#define RESPONSES_H_
+#ifndef RESULTS_H_
+#define RESULTS_H_
 
 #include "newsessionresult.h"
 #include "searchresult.h"
 #include "pollresult.h"
 #include "endsessionresult.h"
 
-#endif /* RESPONSES_H_ */
+#endif /* RESULTS_H_ */

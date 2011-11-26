@@ -51,11 +51,11 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	ifmap/searchrequest.cpp
 	ifmap/subscriberequest.cpp
 	ifmap/metadata.cpp
-	response/errorresult.cpp
+	ifmap/errorresult.cpp
+	ifmap/newsessionresult.cpp
+	ifmap/pollresult.cpp
+	ifmap/searchresult.cpp
 	response/ifmaperror.cpp
-	response/newsessionresult.cpp
-	response/pollresult.cpp
-	response/searchresult.cpp
 	xml/basicxmlmarshalable.cpp
 	xml/libxml2marshaller.cpp
 	xml/libxml2unmarshaller.cpp
@@ -105,7 +105,6 @@ INSTALL(FILES
 	include/renewsessionrequest.h
 	include/request.h
 	include/requests.h
-	include/responseparseerror.h
 	include/result.h
 	include/resultitem.h
 	include/results.h

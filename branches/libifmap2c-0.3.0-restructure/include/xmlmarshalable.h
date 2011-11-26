@@ -25,8 +25,6 @@
 #ifndef XMLMARSHALABLE_H_
 #define XMLMARSHALABLE_H_
 
-#include "tcgifmapbase.h"
-
 #include <string>
 #include <list>
 
