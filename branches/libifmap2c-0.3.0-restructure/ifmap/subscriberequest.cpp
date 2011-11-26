@@ -68,14 +68,14 @@ SubscribeUpdate::SubscribeUpdate(const string& name,
 
 SubscribeUpdate::~SubscribeUpdate() { }
 
-SubscribeDelete::SubscribeDelete(const std::string& name) :
+SubscribeDelete::SubscribeDelete(const string& name) :
 	SubscribeElement(name)
 { }
 
 SubscribeDelete::~SubscribeDelete() { }
 
 SubscribeDelete *
-SubscribeDelete::createSubscribeDelete(const std::string& name)
+SubscribeDelete::createSubscribeDelete(const string& name)
 {
 	return new SubscribeDelete(name);
 }
@@ -94,7 +94,7 @@ SubscribeRequest::~SubscribeRequest()
 }
 
 SubscribeRequest *
-SubscribeRequest::createSubscribeRequest(const std::list<SubscribeElement *>& subList)
+SubscribeRequest::createSubscribeRequest(const list<SubscribeElement *>& subList)
 {
 	return new SubscribeRequest(subList);
 
@@ -107,7 +107,7 @@ SubscribeRequest::createSubscribeRequest(SubscribeElement *const subreq)
 	subList.push_back(subreq);
 	return createSubscribeRequest(subList);
 }
-const std::list<SubscribeElement *>&
+const list<SubscribeElement *>&
 SubscribeRequest::getSubscribeElements(void) const
 {
 	return _subscribeElements;

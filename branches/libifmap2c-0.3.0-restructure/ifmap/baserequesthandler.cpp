@@ -656,7 +656,7 @@ static SearchResult*
 makeSearchResult(XmlMarshalable *const sr)
 {
 	SearchResult *ret = NULL;
-	std::string name = findSearchResultName(sr);
+	string name = findSearchResultName(sr);
 	CXMLMLISTIT it = sr->getXmlChildren().begin();
 	CXMLMLISTIT end = sr->getXmlChildren().end();
 	

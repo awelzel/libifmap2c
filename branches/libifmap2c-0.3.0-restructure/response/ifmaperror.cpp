@@ -23,28 +23,31 @@
  */
 #include "ifmaperror.h"
 
+using namespace std;
+
 namespace ifmap2c {
 
-IfmapError::IfmapError(const std::string& type, const std::string& msg) : _type(type), _message(msg)
+IfmapError::IfmapError(const string& type, const string& msg) : _type(type), _message(msg)
 { }
 
 IfmapError::~IfmapError()
 { }
 
-const std::string& IfmapError::getMessage() const
+const string& IfmapError::getMessage() const
 {
 	return _message;
 }
 
-const std::string& IfmapError::getErrorType() const
+const string& IfmapError::getErrorType() const
 {
 	return _type;
 }
 
-std::ostream& operator<<(std::ostream& output, const IfmapError& err)
+ostream& operator<<(ostream& output, const IfmapError& err)
 {
 	output << err.getErrorType() << ": ";
 	output << err.getMessage();
 	return output;
 }
+
 } // namespace

@@ -77,7 +77,7 @@ private:
 // force initialization of handlers
 static InitIfmapBaseRequestHandlers initIfmapBaseRequestHandlers;
 
-std::list<RequestHandler*> *IfmapRequestHandlerDispatch::handlers;
+list<RequestHandler*> *IfmapRequestHandlerDispatch::handlers;
 
 void
 IfmapRequestHandlerDispatch::registerHandler(RequestHandler

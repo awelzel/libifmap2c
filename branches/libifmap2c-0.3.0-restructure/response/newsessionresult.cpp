@@ -35,12 +35,12 @@ NewSessionResult::NewSessionResult(const string& sId, const string& pId,
 	// nothing to see here
 }
 
-const std::string& NewSessionResult::getSessionId() const
+const string& NewSessionResult::getSessionId() const
 {
 	return _sessionId;
 
 }
-const std::string& NewSessionResult::getPublisherId() const
+const string& NewSessionResult::getPublisherId() const
 {
 	return _publisherId;
 }

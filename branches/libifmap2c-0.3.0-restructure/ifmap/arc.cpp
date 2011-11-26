@@ -29,7 +29,7 @@ using namespace std;
 namespace ifmap2c {
 
 
-ARC::ARC(const std::string& url,
+ARC::ARC(const string& url,
 		const string& user,
 		const string& pass,
 		const string& capath,
@@ -37,7 +37,7 @@ ARC::ARC(const std::string& url,
 		IfmapChannel(url, user, pass, capath), _ssrc(ssrc)
 { }
 
-ARC::ARC(const std::string& url,
+ARC::ARC(const string& url,
 		const string& mykey,
 		const string& mykeypw,
 		const string& mycert,

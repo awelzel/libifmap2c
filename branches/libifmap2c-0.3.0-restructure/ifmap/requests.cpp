@@ -50,7 +50,7 @@ Requests::createRenewSessionReq(void)
 }
 
 PublishRequest*
-Requests::createPublishReq(const std::list<PublishElement *>& reqs)
+Requests::createPublishReq(const list<PublishElement *>& reqs)
 {
 	return PublishRequest::createPublishRequest(reqs);
 }
@@ -153,7 +153,7 @@ Requests::createSearchReq(const char *const matchLinksFilter,
 
 
 SubscribeRequest *
-Requests::createSubscribeReq(const std::list<SubscribeElement *> srList)
+Requests::createSubscribeReq(const list<SubscribeElement *> srList)
 {
 	return SubscribeRequest::createSubscribeRequest(srList);
 }
@@ -165,7 +165,7 @@ Requests::createSubscribeReq(SubscribeElement *const sr)
 }
 
 SubscribeUpdate *
-Requests::createSubscribeUpdate(std::string const& name,
+Requests::createSubscribeUpdate(string const& name,
 		const char *const matchLinksFilter,
 		const int maxDepth,
 		const char *const resultFilter,
@@ -179,7 +179,7 @@ Requests::createSubscribeUpdate(std::string const& name,
 
 SubscribeUpdate *
 Requests::createSubscribeUpdate(
-		std::string const& name,
+		string const& name,
 		const char *const matchLinksFilter,
 		const int maxDepth,
 		const char *const resultFilter,

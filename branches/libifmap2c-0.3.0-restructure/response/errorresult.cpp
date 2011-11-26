@@ -49,8 +49,8 @@ ErrorResult::ErrorResult() :
 { }
 
 ErrorResult::ErrorResult(ErrorCode errCode,
-		const std::string& errStr,
-		const std::string& name) :
+		const string& errStr,
+		const string& name) :
 	_errorCode(errCode), _errorString(errStr), _name(name)
 { }
 
@@ -65,18 +65,18 @@ ErrorResult::getErrorCode() const
 	return _errorCode;
 }
 
-const std::string&
+const string&
 ErrorResult::getErrorCodeString() const
 {
 	return errorCodeStrings[_errorCode];
 }
 
-const std::string&
+const string&
 ErrorResult::getErrorString() const
 {
 	return _errorString;
 }
-const std::string&
+const string&
 ErrorResult::getName() const
 {
 	return _name;

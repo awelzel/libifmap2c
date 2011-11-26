@@ -38,7 +38,7 @@ IdentifierAdmin::IdentifierAdmin(const string& ad) :
 
 IdentifierAdmin::~IdentifierAdmin() { }
 
-const std::string&
+const string&
 IdentifierAdmin::getAdministrativeDomain(void) const
 {
 	return _administrativeDomain;
@@ -69,14 +69,14 @@ IdentifierHolder::getIdentifier2(void) const {
 }
 
 IdentifierMetadataHolder::IdentifierMetadataHolder(Identifier *const i1,
-		Identifier *const i2, std::list<XmlMarshalable *> mList)
+		Identifier *const i2, list<XmlMarshalable *> mList)
 	: IdentifierHolder(i1, i2),
 	_metadata(mList)
 { }
 
 IdentifierMetadataHolder::~IdentifierMetadataHolder()
 {
-	std::list<XmlMarshalable *>::const_iterator it, end;
+	list<XmlMarshalable *>::const_iterator it, end;
 	it = _metadata.begin();
 	end = _metadata.end();
 
@@ -84,7 +84,7 @@ IdentifierMetadataHolder::~IdentifierMetadataHolder()
 		delete *it;
 }
 
-const std::list<XmlMarshalable *>&
+const list<XmlMarshalable *>&
 IdentifierMetadataHolder::getMetadata(void) const {
 	return _metadata;
 }
@@ -98,7 +98,7 @@ AccessRequest::createAccessRequest(const string& name, const string& ad)
 	return new AccessRequest(name, ad);
 }
 
-const std::string&
+const string&
 AccessRequest::getName() const
 {
 	return _name;
@@ -176,19 +176,19 @@ Identity::getIdentityType() const
 	return _identityType;
 }
 
-const std::string&
+const string&
 Identity::getTypeString() const
 {
 	return identityTypeNames[_identityType];
 }
 
-const std::string&
+const string&
 Identity::getName() const
 {
 	return _name;
 }
 
-const std::string&
+const string&
 Identity::getOtherTypeDef() const
 {
 	return _otherDef;

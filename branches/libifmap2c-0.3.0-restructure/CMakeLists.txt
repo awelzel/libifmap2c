@@ -35,6 +35,8 @@ INCLUDE_DIRECTORIES(
 	"${CURL_INCLUDE_DIRS}")
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
+	communication/xmlcommunication.cpp
+	communication/lowlevelcurlcommunication.cpp
 	ifmap/identifierhandlerdispatch.cpp
 	ifmap/requesthandlerdispatch.cpp
 	ifmap/baseidentifierhandler.cpp
@@ -43,14 +45,12 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	ifmap/ssrc.cpp
 	ifmap/arc.cpp
 	ifmap/identifier.cpp
-	communication/xmlcommunication.cpp
-	communication/lowlevelcurlcommunication.cpp
-	metadata/metadata.cpp
-	request/publishrequest.cpp
-	request/requests.cpp
-	request/searchparam.cpp
-	request/searchrequest.cpp
-	request/subscriberequest.cpp
+	ifmap/publishrequest.cpp
+	ifmap/requests.cpp
+	ifmap/searchparam.cpp
+	ifmap/searchrequest.cpp
+	ifmap/subscriberequest.cpp
+	ifmap/metadata.cpp
 	response/errorresult.cpp
 	response/ifmaperror.cpp
 	response/newsessionresult.cpp
