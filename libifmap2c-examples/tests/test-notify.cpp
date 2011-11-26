@@ -212,7 +212,5 @@ clean:
 	delete pr1; delete pr2; delete sr;
 	delete arc;
 	delete ssrc;
-	IdentifierHandlerDispatch::clearHandlers();
-	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

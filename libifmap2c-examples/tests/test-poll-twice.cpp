@@ -138,7 +138,5 @@ clean:
 	delete arc1;
 	delete arc2;
 	delete ssrc;
-	IdentifierHandlerDispatch::clearHandlers();
-	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }
