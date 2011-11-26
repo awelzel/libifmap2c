@@ -208,8 +208,11 @@ main(int argc, char *argv[])
 	if (tRet)
 		cerr << "Bad metadata count received" << endl;
 clean:
+	pthread_join(pollThread, NULL);
 	delete pr1; delete pr2; delete sr;
 	delete arc;
 	delete ssrc;
-	exit(0);
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
+	return 0;
 }

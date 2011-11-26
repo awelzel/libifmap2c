@@ -211,5 +211,7 @@ main(int argc, char *argv[])
 	delete pr2;
 	delete arc;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

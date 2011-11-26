@@ -107,7 +107,7 @@ main(int argc, char *argv[])
 	
 	pr1 = Requests::createPublishReq(pulist);
 	pr2 = Requests::createPublishReq(pd);
-	pr3 = Requests::createPublishReq(Requests::createPublishUpdate(ipmac->clone(),
+	pr3 = Requests::createPublishReq(Requests::createPublishUpdate(ipmac,
 				ars[2]->clone(), ars[4]->clone()));
 
 	pr1->addXmlNamespaceDefinition(TCG_META_NSPAIR);
@@ -187,11 +187,16 @@ main(int argc, char *argv[])
 		cerr << e << endl;
 	}
 
+	for (i = 0; i < 6; i++)
+		delete ars[i];
+
 	delete sr;
 	delete pr1;
 	delete pr2;
 	delete pr3;
 	delete arc;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

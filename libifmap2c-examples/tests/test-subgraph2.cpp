@@ -98,7 +98,7 @@ main(int argc, char *argv[])
 			ars[0]->clone(), ars[2]->clone());
 	
 	pr1 = Requests::createPublishReq(pulist);
-	pr2 = Requests::createPublishReq(Requests::createPublishUpdate(ipmac->clone(),
+	pr2 = Requests::createPublishReq(Requests::createPublishUpdate(ipmac,
 				ars[0]->clone(), ars[2]->clone()));
 	pr3 = Requests::createPublishReq(pd);
 
@@ -144,7 +144,6 @@ main(int argc, char *argv[])
 		checkContainsOnly(pres, UPDATE, "second poll", -1);
 
 		checkRiCnt(pres, UPDATE, "second poll", 2);
-		return 1;
 		
 		if (cntRi(pres, ars[0], ars[2], UPDATE, 1) != 1)
 			cerr << "LINK 0 2 not there?" << endl;
@@ -174,6 +173,9 @@ main(int argc, char *argv[])
 	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
+	
+	for (i = 0; i < 4; i++)
+		delete ars[i];
 
 	delete sr;
 	delete pr1;
@@ -181,5 +183,7 @@ main(int argc, char *argv[])
 	delete pr3;
 	delete arc;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

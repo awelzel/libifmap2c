@@ -119,5 +119,7 @@ main(int argc, char *argv[])
 
 	delete pr1; delete pr2; delete pr3; delete pr4;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

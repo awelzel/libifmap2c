@@ -37,7 +37,7 @@ ADD_LIBRARY(common STATIC common/common.cpp)
 ADD_LIBRARY(testcommon STATIC common/testcommon.cpp)
 
 
-ADD_EXECUTABLE(subTest subTest.cpp)
+#ADD_EXECUTABLE(subTest subTest.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example pdp-dhcp-example.cpp)
 ADD_EXECUTABLE(metadata-examples metadata-examples.cpp)
 ADD_EXECUTABLE(test-close-conn test-close-conn.cpp)
@@ -46,7 +46,7 @@ ADD_EXECUTABLE(example-mapc2 wiki/example-mapc2.cpp)
 ADD_EXECUTABLE(test-update-twice test-update-twice.cpp)
 ADD_EXECUTABLE(test-notify-event-twice test-notify-event-twice.cpp)
 
-TARGET_LINK_LIBRARIES(subTest ${LIBIFMAP2C_LIBRARIES})
+#TARGET_LINK_LIBRARIES(subTest ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(pdp-dhcp-example ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(metadata-examples ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(test-close-conn ${LIBIFMAP2C_LIBRARIES})

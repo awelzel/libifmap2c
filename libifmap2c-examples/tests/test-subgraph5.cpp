@@ -77,7 +77,7 @@ main(int argc, char *argv[])
 	ssrc = SSRC::createSSRC(url, user, pass, capath);
 	arc = ssrc->getARC();
 
-	for (i = 0; i < 5; i++) {
+	for (i = 0; i < 4; i++) {
 		stringstream ss;
 		ss << "AR" << i;
 		ars[i] = Identifiers::createAr(ss.str(), user);
@@ -94,7 +94,7 @@ main(int argc, char *argv[])
 			ars[0]->clone(), ars[1]->clone()));
 	pdlist.push_back(Requests::createPublishUpdate(ipmac->clone(),
 				ars[0]->clone(), ars[3]->clone()));
-	pdlist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+	pdlist.push_back(Requests::createPublishUpdate(ipmac,
 				ars[3]->clone(), ars[1]->clone()));
 	
 	pr1 = Requests::createPublishReq(pulist);
@@ -156,11 +156,16 @@ main(int argc, char *argv[])
 	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
+	
+	for (i = 0; i < 4; i++)
+		delete ars[i];
 
 	delete sr;
 	delete pr1;
 	delete pr2;
 	delete arc;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

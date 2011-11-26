@@ -99,7 +99,7 @@ main(int argc, char *argv[])
 			ars[2]->clone(), ars[3]->clone()));
 	pdlist.push_back(Requests::createPublishUpdate(ipmac->clone(),
 				ars[0]->clone(), ars[3]->clone()));
-	pdlist.push_back(Requests::createPublishUpdate(ipmac->clone(),
+	pdlist.push_back(Requests::createPublishUpdate(ipmac,
 				ars[3]->clone(), ars[1]->clone()));
 	
 	pr1 = Requests::createPublishReq(pulist);
@@ -167,10 +167,15 @@ main(int argc, char *argv[])
 		cerr << e << endl;
 	}
 
+	for (i = 0; i < 4; i++)
+		delete ars[i];
+
 	delete sr;
 	delete pr1;
 	delete pr2;
 	delete arc;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }
