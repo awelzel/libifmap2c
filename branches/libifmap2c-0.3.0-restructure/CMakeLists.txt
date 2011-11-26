@@ -46,15 +46,10 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	communication/xmlcommunication.cpp
 	communication/lowlevelcurlcommunication.cpp
 	metadata/metadata.cpp
-	request/publishdelete.cpp
-	request/publishnotify.cpp
 	request/publishrequest.cpp
-	request/publishupdate.cpp
 	request/requests.cpp
 	request/searchparam.cpp
 	request/searchrequest.cpp
-	request/subscribeupdate.cpp
-	request/subscribedelete.cpp
 	request/subscriberequest.cpp
 	response/errorresult.cpp
 	response/ifmaperror.cpp
@@ -105,11 +100,7 @@ INSTALL(FILES
 	include/payload.h
 	include/pollrequest.h
 	include/pollresult.h
-	include/publishdelete.h
-	include/publishelement.h
-	include/publishnotify.h
 	include/publishrequest.h
-	include/publishupdate.h
 	include/purgepublisherrequest.h
 	include/renewsessionrequest.h
 	include/request.h
@@ -123,10 +114,7 @@ INSTALL(FILES
 	include/searchresult.h
 	include/soap.h
 	include/ssrc.h
-	include/subscribedelete.h
-	include/subscribeelement.h
 	include/subscriberequest.h
-	include/subscribeupdate.h
 	include/tcgifmapbase.h
 	include/tcgifmapmeta.h
 	include/typedefs.h

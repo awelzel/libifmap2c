@@ -29,6 +29,57 @@ using namespace std;
 
 namespace ifmap2c {
 
+SubscribeElement::SubscribeElement(const string& name) :
+	_name(name)
+{ }
+
+SubscribeElement::~SubscribeElement() { }
+
+const string
+SubscribeElement::getName(void) const
+{
+	return _name;
+}
+
+SubscribeUpdate*
+SubscribeUpdate::createSubscribeUpdate(const string& name,
+			const char *const matchLinksFilter,
+			const int maxDepth,
+			const char *const resultFilter,
+			const int maxResultSize,
+			const char *const terminalIdent,
+			Identifier *const i1)
+{
+	return new SubscribeUpdate(name, matchLinksFilter, maxDepth,
+			resultFilter, maxResultSize, terminalIdent, i1);
+}
+
+SubscribeUpdate::SubscribeUpdate(const string& name,
+	const char *const matchLinksFilter,
+	const int maxDepth,
+	const char *const resultFilter,
+	const int maxResultSize,
+	const char *const terminalIdent,
+	Identifier *const i1) :
+	SubscribeElement(name),
+	SearchParam(matchLinksFilter, maxDepth, resultFilter,
+		maxResultSize, terminalIdent, i1)
+{ }
+
+SubscribeUpdate::~SubscribeUpdate() { }
+
+SubscribeDelete::SubscribeDelete(const std::string& name) :
+	SubscribeElement(name)
+{ }
+
+SubscribeDelete::~SubscribeDelete() { }
+
+SubscribeDelete *
+SubscribeDelete::createSubscribeDelete(const std::string& name)
+{
+	return new SubscribeDelete(name);
+}
+
 SubscribeRequest::SubscribeRequest(const list<SubscribeElement *>& list) :
 	_subscribeElements(list)
 { }

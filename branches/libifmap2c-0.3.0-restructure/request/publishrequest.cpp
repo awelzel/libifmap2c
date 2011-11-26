@@ -62,4 +62,89 @@ PublishRequest::getPublishElements(void) const
 	return _publishElements;
 }
 
+string PublishUpdate::lifeTimeNames[] = {
+	"session",
+	"forever"
+};
+
+PublishUpdate *
+PublishUpdate::createPublishUpdate(const XMLMLIST& mlist,
+		Identifier *const i1,
+		LifeTimeType lTime,
+		Identifier *const i2)
+{
+	return new PublishUpdate(mlist, i1, lTime, i2);
+}
+
+PublishUpdate *
+PublishUpdate::createPublishUpdate(XmlMarshalable *const metadata,
+		Identifier *const i1,
+		LifeTimeType lTime,
+		Identifier *const i2)
+{
+	XMLMLIST metadataList;
+	metadataList.push_back(metadata);
+	return new PublishUpdate(metadataList, i1, lTime, i2);
+}
+
+PublishUpdate::~PublishUpdate()	{ }
+
+PublishUpdate::PublishUpdate(const XMLMLIST& mlist,
+	Identifier *const i1,
+	LifeTimeType lTime,
+	Identifier *const i2) :
+	IdentifierMetadataHolder(i1, i2, mlist),
+	_lifeTime(lTime)
+{ }
+
+LifeTimeType PublishUpdate::getLifeTime(void) const
+{
+	return _lifeTime;
+}
+
+const string PublishUpdate::getLifeTimeString(void) const
+{
+	return lifeTimeNames[getLifeTime()];
+}
+
+PublishDelete::PublishDelete(const char *const filter,
+		Identifier *const i1, Identifier *const i2) :
+		PublishElement(), IdentifierHolder(i1, i2),
+		_filter(filter)
+{ }
+
+const char *PublishDelete::getFilter(void) const
+{
+	return _filter;
+}
+
+PublishDelete *
+PublishDelete::createPublishDelete(const char *const filter,
+		Identifier *const i1, Identifier *const i2)
+{
+	return new PublishDelete(filter, i1, i2);
+}
+
+PublishNotify::PublishNotify(const XMLMLIST& mlist,
+		Identifier *const i1, Identifier *const i2) :
+		IdentifierMetadataHolder(i1, i2, mlist)
+{ }
+
+PublishNotify *
+PublishNotify::createPublishNotify(const XMLMLIST& metadataList,
+		Identifier *const i1, Identifier *const i2)
+{
+	return new PublishNotify(metadataList, i1, i2);
+}
+
+PublishNotify *
+PublishNotify::createPublishNotify(XmlMarshalable *const metadata,
+		Identifier *const i1, Identifier *const i2)
+{
+	XMLMLIST list;
+	list.push_back(metadata);
+	return new PublishNotify(list, i1, i2);
+
+}
+
 } // namespace
