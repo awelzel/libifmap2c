@@ -22,7 +22,7 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#include "xml/libxml2binding.h"
+#include "xmlcomm/libxml2binding.h"
 #include "basicxmlmarshalable.h"
 
 #include "typedefs.h"

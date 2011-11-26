@@ -23,8 +23,8 @@
  */
 
 #include "ifmapchannel.h"
-#include "xml/libxml2binding.h"
-#include "communication/lowlevelcurlcommunication.h"
+#include "xmlcomm/libxml2binding.h"
+#include "xmlcomm/lowlevelcurlcommunication.h"
 #include "ifmaprequest.h"
 
 using namespace std;

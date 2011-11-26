@@ -24,7 +24,7 @@
 
 #include "xmlcommunication.h"
 #include "request.h"
-#include "communication/lowlevelcurlcommunication.h"
+#include "xmlcomm/lowlevelcurlcommunication.h"
 #include "typedefs.h"
 #include "result.h"
 

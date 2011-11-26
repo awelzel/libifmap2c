@@ -35,8 +35,6 @@ INCLUDE_DIRECTORIES(
 	"${CURL_INCLUDE_DIRS}")
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
-	communication/xmlcommunication.cpp
-	communication/lowlevelcurlcommunication.cpp
 	ifmap/identifierhandlerdispatch.cpp
 	ifmap/requesthandlerdispatch.cpp
 	ifmap/baseidentifierhandler.cpp
@@ -55,11 +53,13 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	ifmap/newsessionresult.cpp
 	ifmap/pollresult.cpp
 	ifmap/searchresult.cpp
-	response/ifmaperror.cpp
-	xml/basicxmlmarshalable.cpp
-	xml/libxml2marshaller.cpp
-	xml/libxml2unmarshaller.cpp
-	xml/xmlmarshalable.cpp
+	xmlcomm/xmlcommunication.cpp
+	xmlcomm/lowlevelcurlcommunication.cpp
+	xmlcomm/ifmaperror.cpp
+	xmlcomm/basicxmlmarshalable.cpp
+	xmlcomm/libxml2marshaller.cpp
+	xmlcomm/libxml2unmarshaller.cpp
+	xmlcomm/xmlmarshalable.cpp
 )
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}
