@@ -234,9 +234,10 @@ getFor(const string& elname, XmlMarshalable **root)
 }
 
 static void
-addSessionId(XmlMarshalable *el, const string& sId)
+addXmlSessionId(XmlMarshalable *el, IfmapRequest *const req)
 {
-	el->addXmlAttribute(STRP(SESSIONID_ATTR_NAME, sId));
+	el->addXmlAttribute(STRP(SESSIONID_ATTR_NAME,
+				req->getSessionId()));
 }
 
 template<class T>
@@ -319,7 +320,7 @@ IFMAP2C_RH_TOXML_DEF(EndSessionRequest, req)
 	XmlMarshalable *root;
 	XmlMarshalable* xEsr = getFor(ENDSESSION_ELEMENT_NAME, &root);
 
-	addSessionId(xEsr, esr->getSessionId());
+	addXmlSessionId(xEsr, esr);
 
 	return root;
 }
@@ -343,7 +344,7 @@ IFMAP2C_RH_TOXML_DEF(RenewSessionRequest, req)
 	XmlMarshalable *root;
 	XmlMarshalable* xRnsr = getFor(RENEWSESSION_ELEMENT_NAME, &root);
 
-	addSessionId(xRnsr, rnsr->getSessionId());
+	addXmlSessionId(xRnsr, rnsr);
 
 	return root;
 }
@@ -367,7 +368,7 @@ IFMAP2C_RH_TOXML_DEF(PurgePublisherRequest, req)
 	XmlMarshalable *root;
 	XmlMarshalable* xPpr = getFor(PURGEPUBLISHER_ELEMENT_NAME, &root);
 
-	addSessionId(xPpr, ppr->getSessionId());
+	addXmlSessionId(xPpr, ppr);
 	xPpr->addXmlAttribute(STRP(STRP(PUBLISHERID_ATTR_NAME,
 					ppr->getPublisherId())));
 
@@ -455,6 +456,13 @@ addXmlFilterString(XmlMarshalable *const to, PublishDelete *const from)
 				from->getFilter()));
 }
 
+static void
+addXmlLifeTime(XmlMarshalable *to, PublishUpdate *const from)
+{
+	to->addXmlAttribute(STRP(PUBLISH_UPDATE_LIFET_ATTR_NAME,
+				from->getLifeTimeString()));
+}
+
 static XmlMarshalable *
 peToXml(PublishElement *const pe)
 {
@@ -479,7 +487,10 @@ peToXml(PublishElement *const pe)
 	addXmlIdentifiers(xPe, checked_cast<IdentifierHolder>(pe));
 	
 	if (pd) addXmlFilterString(xPe, pd);
-	if (pu) addXmlMetadata(xPe, pu);
+	if (pu) {
+		addXmlMetadata(xPe, pu);
+		addXmlLifeTime(xPe, pu);
+	}
 	if (pn) addXmlMetadata(xPe, pn);
 
 	return xPe;
@@ -496,7 +507,7 @@ IFMAP2C_RH_TOXML_DEF(PublishRequest, req)
 	CPELISTIT it, end;
 	XmlMarshalable *xPr = getFor(PUBLISH_ELEMENT_NAME, &root);
 
-	addSessionId(xPr, pr->getSessionId());
+	addXmlSessionId(xPr, pr);
 	
 	addXmlNamespaceDefs(xPr, pr);
 
@@ -568,7 +579,7 @@ IFMAP2C_RH_TOXML_DEF(SearchRequest, req)
 	XmlMarshalable *root;
 	XmlMarshalable *xSr = getFor(SEARCH_ELEMENT_NAME, &root);
 
-	addSessionId(xSr, sr->getSessionId());
+	addXmlSessionId(xSr, sr);
 	addXmlNamespaceDefs(xSr, sr);
 
 	addSearchParameters(xSr, sr);
@@ -727,7 +738,7 @@ IFMAP2C_RH_TOXML_DEF(SubscribeRequest, req)
 	XmlMarshalable *root;
 	XmlMarshalable *xSr = getFor(SUBSCRIBE_ELEMENT_NAME, &root);
 
-	addSessionId(xSr, sr->getSessionId());
+	addXmlSessionId(xSr, sr);
 	addXmlNamespaceDefs(xSr, sr);
 	
 	CSELISTIT it, end;
@@ -758,7 +769,7 @@ IFMAP2C_RH_TOXML_DEF(PollRequest, req)
 	XmlMarshalable *root;
 	XmlMarshalable* xPr = getFor(POLLREQUEST_ELEMENT_NAME, &root);
 
-	addSessionId(xPr, pr->getSessionId());
+	addXmlSessionId(xPr, pr);
 
 	return root;
 }

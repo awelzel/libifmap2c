@@ -83,7 +83,7 @@ public:
 
 	virtual ~IdentifierMetadataHolder();
 
-	const std::list<XmlMarshalable *>& getMetadata(void) const;
+	virtual const std::list<XmlMarshalable *>& getMetadata(void) const;
 
 protected:
 
