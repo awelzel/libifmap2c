@@ -22,31 +22,12 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef RESULTS_H_
+#define RESULTS_H_
 
-#include "ifmaprequest.h"
+#include "newsessionresult.h"
+#include "searchresult.h"
+#include "pollresult.h"
+#include "endsessionresult.h"
 
-namespace ifmap2c {
-
-class NewSessionRequest : public IfmapRequest {
-
-public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
-
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
-
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
-
-	const int _maxPollResSize;
-};
-
-} // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+#endif /* RESULTS_H_ */

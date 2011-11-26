@@ -22,31 +22,44 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef LIBXML2MARSHALLER_H_
+#define LIBXML2MARSHALLER_H_
 
-#include "ifmaprequest.h"
+#include "xmlbinding.h"
+
+extern "C" {
+	#include <libxml/parser.h>
+	#include <libxml/tree.h>
+}
+
+#include <list>
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+class LibXml2Marshaller : public XmlMarshaller {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
+	Payload marshal(XmlMarshalable *root);
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
+	LibXml2Marshaller() { };
 
 private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+	xmlNodePtr marshalToXmlNode(XmlMarshalable *node);
 
-	const int _maxPollResSize;
+	std::list<std::pair<std::string, xmlNsPtr> > _nsDeclarationList;
+
+};
+
+class LibXml2Unmarshaller : public XmlUnmarshaller {
+
+public:
+	XmlMarshalable *unmarshal(const Payload& p);
+
+	LibXml2Unmarshaller() { };
+
+private:
+	XmlMarshalable *unmarshalXmlNode(xmlNodePtr const node);
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+#endif /* LIBXML2UNMARSHALLER_H_ */

@@ -25,12 +25,12 @@
 #ifndef ACCESSREQUEST_H_
 #define ACCESSREQUEST_H_
 
-#include "identifierwithad.h"
+#include "identifier.h"
 #include "tcgifmapbase.h"
 
 namespace ifmap2c {
 
-class AccessRequest : public IdentifierWithAD {
+class AccessRequest : public IdentifierAdmin {
 
 private:
 

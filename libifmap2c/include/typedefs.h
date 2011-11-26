@@ -27,6 +27,11 @@
 #include <string>
 #include <list>
 
+extern "C" {
+	#include <libxml/tree.h>
+}
+namespace ifmap2c {
+
 /* 
  * Forward declarations for the typedef'ed classes.
  *
@@ -37,12 +42,8 @@ class ErrorResult;
 class ResultItem;
 class SearchResult;
 class XmlMarshalable;
-
-extern "C" {
-	#include <libxml/tree.h>
-}
-
-namespace ifmap2c {
+class PublishElement;
+class SubscribeElement;
 
 // STRP = string pair
 typedef std::pair<std::string, std::string> STRP;
@@ -73,6 +74,18 @@ typedef std::list<ResultItem *> RILIST;
 typedef const RILIST CRILIST;
 typedef RILIST::iterator RILISTIT;
 typedef RILIST::const_iterator CRILISTIT;
+
+// PE = PublishElement
+typedef std::list<PublishElement *> PELIST;
+typedef const PELIST CPELIST;
+typedef PELIST::iterator PELISTIT;
+typedef PELIST::const_iterator CPELISTIT;
+
+// SE = SubscribeElement
+typedef std::list<SubscribeElement *> SELIST;
+typedef const SELIST CSELIST;
+typedef SELIST::iterator SELISTIT;
+typedef SELIST::const_iterator CSELISTIT;
 
 typedef std::pair<std::string, xmlNsPtr> NSDECL;
 typedef std::list<NSDECL> NSDECLLIST;

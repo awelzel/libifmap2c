@@ -22,31 +22,36 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#include "searchrequest.h"
+#include "typedefs.h"
+#include "tcgifmapbase.h"
 
-#include "ifmaprequest.h"
+#include <sstream>
+
+using namespace std;
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+SearchRequest *
+SearchRequest::createSearchRequest(const char *const matchLinksFilter,
+		const int maxDepth,
+		const char *const resultFilter,
+		const int maxResultSize,
+		const char *const terminalIdent,
+		Identifier *const start)
+{
+	return new SearchRequest(matchLinksFilter, maxDepth, resultFilter,
+			maxResultSize, terminalIdent, start);
+}
 
-public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
-
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
-
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
-
-	const int _maxPollResSize;
-};
+SearchRequest::SearchRequest(const char *const matchLinksFilter,
+	const int maxDepth,
+	const char *const resultFilter,
+	const int maxResultSize,
+	const char *const terminalIdent,
+	Identifier *const start) :
+	SearchParam(matchLinksFilter, maxDepth, resultFilter,
+		maxResultSize, terminalIdent, start)
+{ }
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */

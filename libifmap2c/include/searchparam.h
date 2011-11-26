@@ -22,31 +22,51 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef SEARCHPARAM_H_
+#define SEARCHPARAM_H_
 
-#include "ifmaprequest.h"
+#include "identifier.h"
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+class SearchParam {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
+	const char *getMatchLinksFilter(void) const;
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
+	int getMaxDepth(void) const;
+
+	const char *getResultFilter(void) const;
+
+	int getMaxResultSize(void) const;
+
+	const char *getTerminalIdentifiers(void) const;
+
+	Identifier *getStartIdentifier(void) const;
+
+	SearchParam(const char *const matchLinksFilter,
+		const int maxDepth,
+		const char *const resultFilter,
+		const int maxResultSize,
+		const char *const terminalIdent,
+		Identifier *const start);
+
+	virtual ~SearchParam();
 
 private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+	const char *const _matchLinksFilter;
 
-	const int _maxPollResSize;
+	const int _maxDepth;
+
+	const char *const _resultFilter;
+
+	const int _maxResultSize;
+
+	const char *const _terminalIdentifiers;
+
+	Identifier *const _startIdentifier;
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+
+#endif /* SEARCHPARAM_H_ */

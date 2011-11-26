@@ -25,22 +25,16 @@
 #ifndef REQUESTS_H_
 #define REQUESTS_H_
 
+#include "tcgifmapbase.h"
 #include "endsessionrequest.h"
 #include "identifier.h"
 #include "newsessionrequest.h"
 #include "pollrequest.h"
-#include "publishdelete.h"
-#include "publishnotify.h"
 #include "publishrequest.h"
-#include "publishupdate.h"
 #include "purgepublisherrequest.h"
 #include "renewsessionrequest.h"
 #include "searchrequest.h"
-#include "publishelement.h"
-#include "subscribedelete.h"
 #include "subscriberequest.h"
-#include "subscribeupdate.h"
-#include "subscribeelement.h"
 #include "xmlmarshalable.h"
 
 namespace ifmap2c {

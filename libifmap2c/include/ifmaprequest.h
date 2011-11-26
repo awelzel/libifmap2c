@@ -22,31 +22,74 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef IFMAPREQUEST_H_
+#define IFMAPREQUEST_H_
 
-#include "ifmaprequest.h"
+#include "request.h"
+
+#include <list>
+#include <string>
+#include <typeinfo>
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+class IfmapRequest : public Request {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
+	virtual ~IfmapRequest() { };
+	IfmapRequest(const std::string& sId = "") : _sessionId(sId) { }
+
+	const std::string& getSessionId(void) const {
+		return _sessionId;
+	}
+	
+	void setSessionId(const std::string& sId) {
+		_sessionId = sId;
 	}
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
+	void
+	addXmlNamespaceDefinition(
+			const std::pair<std::string, std::string>& nsDef)
+	{
+		_nsDefs.push_back(nsDef);
+
 	}
+
+	const std::list<std::pair<std::string, std::string> >& 
+	getXmlNamespaceDefinitions(void)
+	{
+		return _nsDefs;
+	}
+
 
 private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+	std::string _sessionId;
+	std::list<std::pair<std::string, std::string> > _nsDefs;
+};
 
-	const int _maxPollResSize;
+
+class InitIfmapBaseRequestHandlers;
+
+class IfmapRequestHandlerDispatch : public RequestHandlerDispatch {
+
+public:
+	/**
+	 * Register a new RequestHandler
+	 */
+	static void
+	registerHandler(RequestHandler *const handler);
+	
+	/**
+	 * Get the appropiate RequestHandler for the given Request
+	 */
+	RequestHandler *dispatch(Request *const req) const;
+
+	friend class InitIfmapBaseRequestHandlers;
+
+private:
+	static std::list<RequestHandler*> *handlers;
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+
+#endif /* IFMAPREQUEST_H_*/

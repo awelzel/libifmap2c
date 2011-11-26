@@ -22,31 +22,50 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef IFMAPCHANNEL_H_
+#define IFMAPCHANNEL_H_
 
-#include "ifmaprequest.h"
+#include "xmlcommunication.h"
+
+#include <string>
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+class IfmapChannel {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
+	virtual const std::string& getSessionId(void) const = 0;
 
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+	virtual const std::string& getPublisherId(void) const = 0;
 
-	const int _maxPollResSize;
+	virtual int getMaxPollResultSize(void) const = 0;
+	
+	virtual ~IfmapChannel();
+
+protected:
+
+	IfmapChannel(const std::string& url,
+		const std::string& user,
+		const std::string& pass,
+		const std::string& capath);
+
+	IfmapChannel(const std::string& url,
+		const std::string& mykey,
+		const std::string& mykeypw,
+		const std::string& mycert,
+		const std::string& capath);
+
+	XmlCommunication *_xmlCommunication;
+
+	bool _basicAuth;
+	std::string _url;
+	std::string _userName;
+	std::string _keyFile;
+	std::string _certFile;
+	std::string _password;
+	std::string _caPath;
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+#endif /* IFMAPCHANNEL_H_ */

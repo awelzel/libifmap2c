@@ -22,31 +22,55 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef REQUEST_H_
+#define REQUEST_H_
 
-#include "ifmaprequest.h"
+#include "result.h"
+#include "xmlmarshalable.h"
+#include "ifmaperror.h"
+
+#include <list>
+#include <string>
+#include <typeinfo>
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+/**
+ * Just a simple marker interface for requests...
+ */
+class Request {
+
+protected:
+	Request() { };
+	virtual ~Request() { };
+};
+
+class RequestHandler {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
+	virtual XmlMarshalable *toXml(Request *const req) const = 0;
+	virtual Result *fromXml(XmlMarshalable *const xml) const = 0;
+	virtual bool canHandle(Request *const req) const = 0;
+};
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
+class RequestHandlerError : public IfmapError {
 
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+public:
+	RequestHandlerError(const std::string& msg) 
+		: IfmapError("RequestHandlerError", msg)
+	{ };
 
-	const int _maxPollResSize;
+};
+
+class RequestHandlerDispatch {
+
+public:
+	/**
+	 * Get the appropiate RequestHandler for the given Request
+	 */
+	virtual RequestHandler *dispatch(Request *const req) const = 0;
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+
+#endif /* REQUEST_H_*/

@@ -25,13 +25,13 @@
 #ifndef IPADDRESS_H_
 #define IPADDRESS_H_
 
-#include "identifierwithad.h"
+#include "identifier.h"
 
 namespace ifmap2c {
 
 enum IpAddressType { ipv4, ipv6 };
 
-class IpAddress : public IdentifierWithAD {
+class IpAddress : public IdentifierAdmin {
 
 public:
 

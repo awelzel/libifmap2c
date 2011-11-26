@@ -24,7 +24,8 @@
 
 #ifndef IDENTITY_H_
 #define IDENTITY_H_
-#include "identifierwithad.h"
+#include "identifier.h"
+#include <map>
 
 namespace ifmap2c {
 
@@ -42,7 +43,7 @@ enum IdentityType {
 };
 
 
-class Identity : public IdentifierWithAD {
+class Identity : public IdentifierAdmin {
 
 public:
 	static Identity * createIdentity(IdentityType type,
@@ -65,12 +66,14 @@ public:
 
 	static const std::string identityTypeNames[];
 
+	static const std::map<std::string, IdentityType> identityTypes;
+
 private:
 
 	Identity(IdentityType type,
 			const std::string& val,
-			const std::string&
-			ad="", const std::string& other="");
+			const std::string& ad="",
+			const std::string& other="");
 
 	std::string _name;
 	std::string _otherDef;

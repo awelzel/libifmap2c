@@ -24,15 +24,15 @@
 
 #ifndef SEARCHREQUEST_H_
 #define SEARCHREQUEST_H_
-#include "basicxmlmarshalable.h"
+#include "ifmaprequest.h"
+#include "searchparam.h"
 #include "identifier.h"
 
 namespace ifmap2c {
 
-class SearchRequest : public BasicXmlMarshalable {
+class SearchRequest : public IfmapRequest, public SearchParam {
 
 public:
-
 	/*
 	 * Use char* instead of std::string, in order to give the user
 	 * to not specify any filter.
@@ -51,9 +51,9 @@ public:
 			const char *const resultFilter,
 			const int maxResultSize,
 			const char *const terminalIdent,
-			Identifier *const i1);
+			Identifier *const start);
 
-	virtual ~SearchRequest();
+	virtual ~SearchRequest() { }
 
 private:
 
