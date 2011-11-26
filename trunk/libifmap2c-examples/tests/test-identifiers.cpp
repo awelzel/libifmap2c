@@ -477,5 +477,7 @@ main(int argc, char *argv[])
 	}
 
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

@@ -114,11 +114,6 @@ main(int argc, char *argv[])
 		delete arc;
 		arc = ssrc->getARC();
 
-		// kind of cheating to reuse the requests after
-		// the session-id changed...
-		sr->clearXmlAttributes();
-		pr->clearXmlAttributes();
-
 		// make sure we have a big enough max-poll-result-size
 		ssrc->newSession(1000);
 		ssrc->subscribe(sr);
@@ -140,5 +135,7 @@ main(int argc, char *argv[])
 	delete pr;
 	delete arc;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }

@@ -111,5 +111,7 @@ main(int argc, char *argv[])
 	delete sr;
 	delete pr;
 	delete ssrc;
+	IdentifierHandlerDispatch::clearHandlers();
+	IfmapRequestHandlerDispatch::clearHandlers();
 	return 0;
 }
