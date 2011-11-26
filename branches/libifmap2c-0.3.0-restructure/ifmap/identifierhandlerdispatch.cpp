@@ -25,6 +25,8 @@
 #include "identifier.h"
 #include "ifmap/baseidentifierhandler.h"
 
+#include <iostream>
+
 /*
  * TODO: Somebody has to give me a good idea how to do better
  *       dispatching :-/
@@ -33,46 +35,62 @@ using namespace std;
 
 namespace ifmap2c {
 
-static list<IdentifierHandler *> baseHandlers(void)
-{
-	list<IdentifierHandler *> ret;
-	ret.push_back(IFMAP2C_IH_CREATE_CALL(AccessRequest));
-	ret.push_back(IFMAP2C_IH_CREATE_CALL(Device));
-	ret.push_back(IFMAP2C_IH_CREATE_CALL(Identity));
-	ret.push_back(IFMAP2C_IH_CREATE_CALL(IpAddress));
-	ret.push_back(IFMAP2C_IH_CREATE_CALL(MacAddress));
+class InitBaseIdentifierHandlers {
 
-	return ret;
-}
+public:
 
-list<IdentifierHandler *> IdentifierHandlerDispatch::handlers(baseHandlers());
+	InitBaseIdentifierHandlers() {
+		IdentifierHandlerDispatch::handlers = 
+			new list<IdentifierHandler *>(baseHandlers());
 
+	}
+	
+	~InitBaseIdentifierHandlers() {
 
+		list<IdentifierHandler *>::const_iterator it, end;
+		it = IdentifierHandlerDispatch::handlers->begin();
+		end = IdentifierHandlerDispatch::handlers->end();
+		
+		for (/* */; it != end; it++)
+			delete *it;
+
+		IdentifierHandlerDispatch::handlers->clear();
+		delete IdentifierHandlerDispatch::handlers;
+	}
+
+private:
+
+	list<IdentifierHandler *> baseHandlers(void) {
+		list<IdentifierHandler *> ret;
+		ret.push_back(IFMAP2C_IH_CREATE_CALL(AccessRequest));
+		ret.push_back(IFMAP2C_IH_CREATE_CALL(Device));
+		ret.push_back(IFMAP2C_IH_CREATE_CALL(Identity));
+		ret.push_back(IFMAP2C_IH_CREATE_CALL(IpAddress));
+		ret.push_back(IFMAP2C_IH_CREATE_CALL(MacAddress));
+	
+		return ret;
+	}
+
+};
+
+// force initialization of handlers
+static InitBaseIdentifierHandlers initBaseIdentifierHandlers;
+
+list<IdentifierHandler *> *IdentifierHandlerDispatch::handlers;
 
 void
 IdentifierHandlerDispatch::registerHandler(
 		IdentifierHandler *const handler)
 {
-	handlers.push_back(handler);
-}
-void
-IdentifierHandlerDispatch::clearHandlers(void)
-{
-	list<IdentifierHandler *>::const_iterator it, end;
-	it = handlers.begin();
-	end = handlers.end();
-	for (/* */; it != end; it++)
-		delete *it;
-
-	handlers.clear();
+	handlers->push_back(handler);
 }
 
 XmlMarshalable *
 IdentifierHandlerDispatch::toXml(Identifier *const i) const
 {
 	list<IdentifierHandler *>::const_iterator it, end;
-	it = handlers.begin();
-	end = handlers.end();
+	it = handlers->begin();
+	end = handlers->end();
 
 	for (/* */; it != end; it++)
 		if ((*it)->canHandle(i))
@@ -93,8 +111,8 @@ IdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
 	Identifier *ret = NULL;
 	list<IdentifierHandler *>::const_iterator it, end;
 
-	it = handlers.begin();
-	end = handlers.end();
+	it = handlers->begin();
+	end = handlers->end();
 
 	for (/* */; it != end; it++) {
 		ret = (*it)->fromXml(xml);

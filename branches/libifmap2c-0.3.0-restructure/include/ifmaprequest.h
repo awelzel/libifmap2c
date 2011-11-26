@@ -67,6 +67,9 @@ private:
 	std::list<std::pair<std::string, std::string> > _nsDefs;
 };
 
+
+class InitIfmapBaseRequestHandlers;
+
 class IfmapRequestHandlerDispatch : public RequestHandlerDispatch {
 
 public:
@@ -76,16 +79,15 @@ public:
 	static void
 	registerHandler(RequestHandler *const handler);
 	
-	static void
-	clearHandlers(void);
-
 	/**
 	 * Get the appropiate RequestHandler for the given Request
 	 */
 	RequestHandler *dispatch(Request *const req) const;
 
+	friend class InitIfmapBaseRequestHandlers;
+
 private:
-	static std::list<RequestHandler*> handlers;
+	static std::list<RequestHandler*> *handlers;
 };
 
 } // namespace

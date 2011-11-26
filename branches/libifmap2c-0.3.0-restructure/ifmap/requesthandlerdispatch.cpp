@@ -26,6 +26,8 @@
 #include "ifmaprequest.h"
 #include "requests.h"
 
+#include <iostream>
+
 /*
  * TODO: Somebody has to tell me something better than dispatching
  *       on the name value of the type_info, please.
@@ -34,48 +36,62 @@ using namespace std;
 
 namespace ifmap2c {
 
-static list<RequestHandler *> baseHandlers(void)
-{
-	list<RequestHandler *> ret;
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(NewSessionRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(EndSessionRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(RenewSessionRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(PurgePublisherRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(PublishRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(SearchRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(SubscribeRequest));
-	ret.push_back(IFMAP2C_RH_CREATE_CALL(PollRequest));
-	return ret;
-}
+class InitIfmapBaseRequestHandlers {
 
-std::list<RequestHandler*> IfmapRequestHandlerDispatch::handlers(baseHandlers());
+public:
+
+	InitIfmapBaseRequestHandlers() {
+		IfmapRequestHandlerDispatch::handlers = 
+			new list<RequestHandler *>(baseHandlers());
+
+	}
+	
+	~InitIfmapBaseRequestHandlers() {
+		list<RequestHandler *>::const_iterator it, end;
+		it = IfmapRequestHandlerDispatch::handlers->begin();
+		end = IfmapRequestHandlerDispatch::handlers->end();
+		
+		for (/* */; it != end; it++)
+			delete *it;
+
+		IfmapRequestHandlerDispatch::handlers->clear();
+		delete IfmapRequestHandlerDispatch::handlers;
+	}
+
+private:
+	list<RequestHandler *> baseHandlers(void)
+	{
+		list<RequestHandler *> ret;
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(NewSessionRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(EndSessionRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(RenewSessionRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(PurgePublisherRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(PublishRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(SearchRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(SubscribeRequest));
+		ret.push_back(IFMAP2C_RH_CREATE_CALL(PollRequest));
+		return ret;
+	}
+};
+
+// force initialization of handlers
+static InitIfmapBaseRequestHandlers initIfmapBaseRequestHandlers;
+
+std::list<RequestHandler*> *IfmapRequestHandlerDispatch::handlers;
 
 void
 IfmapRequestHandlerDispatch::registerHandler(RequestHandler
 		*const handler)
 {
-	handlers.push_back(handler);
-}
-
-void
-IfmapRequestHandlerDispatch::clearHandlers(void)
-{
-	list<RequestHandler *>::const_iterator it, end;
-	it = handlers.begin();
-	end = handlers.end();
-
-	for (/* */; it != end; it++)
-		delete *it;
-
-	handlers.clear();
+	handlers->push_back(handler);
 }
 
 RequestHandler *
 IfmapRequestHandlerDispatch::dispatch(Request *const req) const
 {
 	list<RequestHandler *>::const_iterator it, end;
-	it = handlers.begin();
-	end = handlers.end();
+	it = handlers->begin();
+	end = handlers->end();
 
 	for (/* */; it != end; it++)
 		if ((*it)->canHandle(req))

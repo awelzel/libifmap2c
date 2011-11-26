@@ -107,6 +107,7 @@ public:
 	virtual bool canHandle(Identifier * const parname) const = 0;
 };
 
+class InitBaseIdentifierHandlers;
 
 class IdentifierHandlerDispatch {
 
@@ -117,13 +118,6 @@ public:
 	static void
 	registerHandler(IdentifierHandler *const handler);
 	
-	/**
-	 * Deregister and free all registered handlers to keep
-	 * valgrind happy
-	 */
-	static void
-	clearHandlers(void);
-
 	/**
 	 * Dispatch XML generation to an appropiate IdentifierHandler.
 	 *
@@ -139,8 +133,10 @@ public:
 	 */
 	Identifier *fromXml(XmlMarshalable *const xml) const;
 
+	friend class InitBaseIdentifierHandlers;
+
 private:
-	static std::list<IdentifierHandler *> handlers;
+	static std::list<IdentifierHandler *> *handlers;
 };
 
 } // namespace
