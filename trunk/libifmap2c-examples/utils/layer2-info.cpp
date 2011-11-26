@@ -93,8 +93,6 @@ int main(int argc, char* argv[])
 
 	delete pubReq;
 	delete ssrc;
-	IdentifierHandlerDispatch::clearHandlers();
-	IfmapRequestHandlerDispatch::clearHandlers();
 
 	return 0;
 }

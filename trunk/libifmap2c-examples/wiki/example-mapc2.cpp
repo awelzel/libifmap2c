@@ -257,8 +257,5 @@ int main(int argc, char *argv[])
 	// deleting the SSRC, this will close the TCP connection
 	delete ssrc;
 	
-	IdentifierHandlerDispatch::clearHandlers();
-	IfmapRequestHandlerDispatch::clearHandlers();
-
 	return 0;
 }
