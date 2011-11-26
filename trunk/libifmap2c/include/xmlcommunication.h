@@ -22,31 +22,47 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
+#ifndef IFMAPCOMMUNICATION_H_
+#define IFMAPCOMMUNICATION_H_
+#include <string>
 
-#include "ifmaprequest.h"
+//FIXME: Get rid of ifmap dependencies if possible
+#include "communicationerror.h"
+#include "ifmaperror.h"
+#include "lowlevelcommunication.h"
+//#include "responseparseerror.h"
+//#include "responseparser.h"
+#include "request.h"
+#include "result.h"
+#include "xmlbinding.h"
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+
+class XmlCommunication {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
+	virtual ~XmlCommunication();
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
+	Result *genericRequest(Request *const req);
+
+	XmlCommunication(LowLevelCommunication *const lowLevelCom,
+			XmlMarshaller *const xmlMarsh,
+			XmlUnmarshaller *const xmlUnmarsh,
+			RequestHandlerDispatch *const handlerDispatch);
 
 private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+	LowLevelCommunication *const _lowLevelCommunication;
+	XmlMarshaller *const _xmlMarshaller;
+	XmlUnmarshaller *const _xmlUnmarshaller;
+	RequestHandlerDispatch *const _requestHandlerDispatch;
 
-	const int _maxPollResSize;
+	/**
+	 *
+	 */
+	XmlMarshalable *xmlRequest(XmlMarshalable *const xmlMsg);
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+
+#endif /* IFMAPCOMMUNICATION_H_ */

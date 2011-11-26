@@ -24,16 +24,18 @@
 
 #ifndef POLLREQUEST_H_
 #define POLLREQUEST_H_
-#include "basicxmlmarshalable.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class PollRequest : public BasicXmlMarshalable {
+class PollRequest : public IfmapRequest {
 public:
-	static PollRequest *createPollRequest(void);
+	static PollRequest *createPollRequest(void) {
+		return new PollRequest();
+	}
 
 private:
-	PollRequest();
+	PollRequest() { };
 };
 
 } // namespace

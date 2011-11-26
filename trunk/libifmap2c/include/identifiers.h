@@ -68,7 +68,7 @@ public:
 
 private:
 
-	static bool sameAd(IdentifierWithAD *const i1, IdentifierWithAD *const i2);
+	static bool sameAd(IdentifierAdmin *const i1, IdentifierAdmin *const i2);
 
 	static bool sameIp(IpAddress *const ip1, IpAddress *const ip2);
 

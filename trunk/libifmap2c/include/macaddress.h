@@ -24,11 +24,11 @@
 
 #ifndef MACADDRESS_H_
 #define MACADDRESS_H_
-#include "identifierwithad.h"
+#include "identifier.h"
 
 namespace ifmap2c {
 
-class MacAddress : public IdentifierWithAD {
+class MacAddress : public IdentifierAdmin {
 
 public:
 	static MacAddress *createMacAddress(const std::string& val,

@@ -29,51 +29,37 @@ FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(CURL)
 
 INCLUDE_DIRECTORIES(
-	include
+	${ifmap2c_SOURCE_DIR}
+	${ifmap2c_SOURCE_DIR}/include
 	"${LIBXML2_INCLUDE_DIR}"
 	"${CURL_INCLUDE_DIRS}")
 
 ADD_LIBRARY(${PROJECT_NAME} SHARED
-	communication/arc.cpp
-	communication/ifmapcommunication.cpp
-	communication/lowlevelcurlcommunication.cpp
-	communication/ssrc.cpp
-	identifier/accessrequest.cpp
-	identifier/device.cpp
-	identifier/identifier.cpp
-	identifier/identifiers.cpp
-	identifier/identifierwithad.cpp
-	identifier/identity.cpp
-	identifier/ipaddress.cpp
-	identifier/macaddress.cpp
-	metadata/metadata.cpp
-	request/endsessionrequest.cpp
-	request/newsessionrequest.cpp
-	request/pollrequest.cpp
-	request/publishdelete.cpp
-	request/publishelement.cpp
-	request/publishnotify.cpp
-	request/publishrequest.cpp
-	request/publishupdate.cpp
-	request/purgepublisherrequest.cpp
-	request/renewsessionrequest.cpp
-	request/requests.cpp
-	request/searchrequest.cpp
-	request/subscribedelete.cpp
-	request/subscribeelement.cpp
-	request/subscriberequest.cpp
-	request/subscribeupdate.cpp
-	response/errorresult.cpp
-	response/ifmaperror.cpp
-	response/newsessionresult.cpp
-	response/pollresult.cpp
-	response/responseparser.cpp
-	response/resultitem.cpp
-	response/searchresult.cpp
-	xml/basicxmlmarshalable.cpp
-	xml/libxml2marshaller.cpp
-	xml/libxml2unmarshaller.cpp
-	xml/xmlmarshalable.cpp
+	ifmap/identifierhandlerdispatch.cpp
+	ifmap/requesthandlerdispatch.cpp
+	ifmap/baseidentifierhandler.cpp
+	ifmap/baserequesthandler.cpp
+	ifmap/channel.cpp
+	ifmap/ssrc.cpp
+	ifmap/arc.cpp
+	ifmap/identifier.cpp
+	ifmap/publishrequest.cpp
+	ifmap/requests.cpp
+	ifmap/searchparam.cpp
+	ifmap/searchrequest.cpp
+	ifmap/subscriberequest.cpp
+	ifmap/metadata.cpp
+	ifmap/errorresult.cpp
+	ifmap/newsessionresult.cpp
+	ifmap/pollresult.cpp
+	ifmap/searchresult.cpp
+	xmlcomm/xmlcommunication.cpp
+	xmlcomm/lowlevelcurlcommunication.cpp
+	xmlcomm/ifmaperror.cpp
+	xmlcomm/basicxmlmarshalable.cpp
+	xmlcomm/libxml2marshaller.cpp
+	xmlcomm/libxml2unmarshaller.cpp
+	xmlcomm/xmlmarshalable.cpp
 )
 
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}
@@ -101,15 +87,12 @@ INSTALL(FILES
 	include/errorresult.h
 	include/identifier.h
 	include/identifiers.h
-	include/identifierwithad.h
 	include/identity.h
+	include/ifmapchannel.h
 	include/ifmaperror.h
-	include/ifmapcommunication.h
+	include/ifmaprequest.h
 	include/ipaddress.h
-	include/libxml2marshaller.h
-	include/libxml2unmarshaller.h
 	include/lowlevelcommunication.h
-	include/lowlevelcurlcommunication.h
 	include/macaddress.h
 	include/metadata.h
 	include/newsessionrequest.h
@@ -117,31 +100,25 @@ INSTALL(FILES
 	include/payload.h
 	include/pollrequest.h
 	include/pollresult.h
-	include/publishdelete.h
-	include/publishelement.h
-	include/publishnotify.h
 	include/publishrequest.h
-	include/publishupdate.h
 	include/purgepublisherrequest.h
 	include/renewsessionrequest.h
+	include/request.h
 	include/requests.h
-	include/responseparseerror.h
-	include/responseparser.h
-	include/responses.h
+	include/result.h
 	include/resultitem.h
+	include/results.h
+	include/searchparam.h
 	include/searchrequest.h
 	include/searchresult.h
 	include/soap.h
 	include/ssrc.h
-	include/subscribedelete.h
-	include/subscribeelement.h
 	include/subscriberequest.h
-	include/subscribeupdate.h
 	include/tcgifmapbase.h
 	include/tcgifmapmeta.h
-	include/xmlerrors.h
+	include/typedefs.h
+	include/xmlbinding.h
+	include/xmlcommunication.h
 	include/xmlmarshalable.h
-	include/xmlmarshaller.h
-	include/xmlunmarshaller.h
 	DESTINATION include/lib${PROJECT_NAME}
 )

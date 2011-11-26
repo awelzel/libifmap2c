@@ -25,7 +25,11 @@
 #ifndef SSRC_H_
 #define SSRC_H_
 
-#include "ifmapcommunication.h"
+#include "ifmapchannel.h"
+#include "requests.h"
+#include "results.h"
+
+#include <string>
 
 namespace ifmap2c {
 
@@ -36,7 +40,7 @@ class ARC;
  * SSRC encapsulates the Synchronous Send Receive Channel functionality
  * of IF-MAP.
  */
-class SSRC : public IfmapCommunication {
+class SSRC : public IfmapChannel {
 
 public:
 

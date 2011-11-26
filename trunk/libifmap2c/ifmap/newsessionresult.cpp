@@ -22,31 +22,31 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
-
-#include "ifmaprequest.h"
+#include "newsessionresult.h"
+using namespace std;
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+NewSessionResult::NewSessionResult(const string& sId, const string& pId,
+		const int maxPollResSize) :
+		_sessionId(sId), _publisherId(pId),
+		_maxPollResultSize(maxPollResSize)
+{
+	// nothing to see here
+}
 
-public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
+const string& NewSessionResult::getSessionId() const
+{
+	return _sessionId;
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
-
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
-
-	const int _maxPollResSize;
-};
+}
+const string& NewSessionResult::getPublisherId() const
+{
+	return _publisherId;
+}
+int NewSessionResult::getMaxPollResultSize() const
+{
+	return _maxPollResultSize;
+}
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */

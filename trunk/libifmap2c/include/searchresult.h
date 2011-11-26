@@ -24,13 +24,15 @@
 
 #ifndef SEARCHRESULT_H_
 #define SEARCHRESULT_H_
+#include "result.h"
 #include "resultitem.h"
+
 #include <string>
 #include <list>
 
 namespace ifmap2c {
 
-class SearchResult {
+class SearchResult : public Result {
 public:
 	SearchResult(const std::string& name = "");
 	virtual ~SearchResult();

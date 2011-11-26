@@ -25,17 +25,28 @@
 #ifndef PURGEPUBLISHERREQUEST_H_
 #define PURGEPUBLISHERREQUEST_H_
 
-#include "basicxmlmarshalable.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class PurgePublisherRequest : public BasicXmlMarshalable {
+class PurgePublisherRequest : public IfmapRequest {
 public:
-	static PurgePublisherRequest* createPurgePublisherRequests(
-			const std::string& publisherId);
+	static PurgePublisherRequest*
+	createPurgePublisherRequests(const std::string& publisherId)
+	{
+		return new PurgePublisherRequest(publisherId);
+	}
+
+	std::string getPublisherId(void) const
+	{
+		return _publisherId;
+	}
 
 private:
-	PurgePublisherRequest(const std::string& publisherId);
+	PurgePublisherRequest(const std::string& publisherId) :
+		_publisherId(publisherId) { }
+
+	std::string _publisherId;
 };
 
 } // namespace

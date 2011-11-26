@@ -22,31 +22,58 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
-
-#include "ifmaprequest.h"
+#include "searchparam.h"
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+SearchParam::SearchParam(const char *const matchLinksFilter,
+		const int maxDepth,
+		const char *const resultFilter,
+		const int maxResultSize,
+		const char *const terminalIdent,
+		Identifier *const start) :
+	_matchLinksFilter(matchLinksFilter),
+	_maxDepth(maxDepth),
+	_resultFilter(resultFilter),
+	_maxResultSize(maxResultSize),
+	_terminalIdentifiers(terminalIdent),
+	_startIdentifier(start)
+{ }
 
-public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
+SearchParam::~SearchParam()
+{
+	if (_startIdentifier)
+		delete _startIdentifier;
+}
 
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
+const char *SearchParam::getMatchLinksFilter(void) const
+{
+	return _matchLinksFilter;
+}
 
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
+int SearchParam::getMaxDepth(void) const
+{
+	return _maxDepth;
+}
 
-	const int _maxPollResSize;
-};
+const char *SearchParam::getResultFilter(void) const
+{
+	return _resultFilter;
+}
+
+int SearchParam::getMaxResultSize(void) const
+{
+	return _maxResultSize;
+}
+
+const char *SearchParam::getTerminalIdentifiers(void) const
+{
+	return _terminalIdentifiers;
+}
+
+Identifier *SearchParam::getStartIdentifier(void) const
+{
+	return _startIdentifier;
+}
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */

@@ -25,16 +25,100 @@
 #ifndef PUBLISHREQUEST_H_
 #define PUBLISHREQUEST_H_
 
+#include "ifmaprequest.h"
 #include "identifier.h"
-#include "publishelement.h"
 
 #include <list>
 
 namespace ifmap2c {
 
-class PublishRequest : public BasicXmlMarshalable {
+enum LifeTimeType {
+	session,
+	forever
+};
+
+class PublishElement {
+
+	public:
+		virtual ~PublishElement() { }
+
+	protected:
+		PublishElement() { }
+};
+
+class PublishUpdate : public PublishElement, public IdentifierMetadataHolder {
 
 public:
+	LifeTimeType getLifeTime(void) const;
+	
+	const std::string getLifeTimeString(void) const;
+
+	static PublishUpdate*
+	createPublishUpdate(
+			const std::list<XmlMarshalable *>& metadataList,
+			Identifier *const i1,
+			LifeTimeType lTime = session,
+			Identifier *const i2 = NULL);
+
+	static PublishUpdate*
+	createPublishUpdate(XmlMarshalable *const metadata,
+			Identifier *const i1, LifeTimeType lTime = session,
+			Identifier *const i2 = NULL);
+
+	virtual ~PublishUpdate();
+
+private:
+	PublishUpdate(const std::list<XmlMarshalable *>& mlist,
+		Identifier *const i1, LifeTimeType lTime,
+		Identifier *const i2);
+
+	LifeTimeType _lifeTime;
+
+	static std::string lifeTimeNames[];
+};
+
+
+class PublishDelete : public PublishElement, public IdentifierHolder {
+
+
+public:
+	static PublishDelete *createPublishDelete(const char *const filter,
+			Identifier *const i1, Identifier *const i2 = NULL);
+
+	const char *getFilter(void) const;
+
+private:
+	PublishDelete(const char *const filter,
+			Identifier *const i1,
+			Identifier *const i2 = NULL);
+
+	const char *const _filter;
+};
+
+
+class PublishNotify : public PublishElement, public
+		      				IdentifierMetadataHolder {
+
+public:
+	static PublishNotify *
+	createPublishNotify(
+			const std::list<XmlMarshalable *>& metadataList,
+			Identifier *const i1, Identifier *const i2 = NULL);
+
+	static PublishNotify *
+	createPublishNotify(XmlMarshalable *const metadata,
+			Identifier *const i1, Identifier *const i2 = NULL);
+
+private:
+	PublishNotify(const std::list<XmlMarshalable *>& metadataList,
+			Identifier *const i1, Identifier *const i2 = NULL);
+};
+
+class PublishRequest : public IfmapRequest {
+
+public:
+	const std::list<PublishElement *>& getPublishElements(void) const;
+
 	static PublishRequest *
 	createPublishRequest(const std::list<PublishElement *>& rList);
 
@@ -46,7 +130,9 @@ public:
 private:
 	PublishRequest(const std::list<PublishElement *>& rList);
 
+	const std::list<PublishElement *> _publishElements;
 };
+
 
 } // namespace
 #endif /* PUBLISHREQUEST_H_ */

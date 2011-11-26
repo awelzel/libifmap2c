@@ -22,31 +22,22 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef NEWSESSIONREQUEST_H_
-#define NEWSESSIONREQUEST_H_
-
-#include "ifmaprequest.h"
+#ifndef RESULT_H_
+#define RESULT_H_
 
 namespace ifmap2c {
 
-class NewSessionRequest : public IfmapRequest {
+/**
+ * Just a simple marker interface for results
+ */
+class Result {
 
 public:
-	static NewSessionRequest *createNewSessionRequest(
-			const int maxPollResSize) {
-		return new NewSessionRequest(maxPollResSize);
-	}
-
-	int getMaxPollResultSize(void) const {
-		return _maxPollResSize;
-	}
-
-private:
-	NewSessionRequest(const int maxPollResSize) :
-		_maxPollResSize(maxPollResSize) { }
-
-	const int _maxPollResSize;
+	virtual ~Result() { };
+	Result() { };
 };
 
 } // namespace
-#endif /* NEWSESSIONREQUEST_H_ */
+
+#endif /* RESULT_H_ */
+

@@ -24,18 +24,21 @@
 
 #ifndef RENEWSESSIONREQUEST_H_
 #define RENEWSESSIONREQUEST_H_
-#include "basicxmlmarshalable.h"
+#include "ifmaprequest.h"
 
 namespace ifmap2c {
 
-class RenewSessionRequest : public BasicXmlMarshalable {
+class RenewSessionRequest : public IfmapRequest {
 
 public:
-	virtual ~RenewSessionRequest() { }
+	static RenewSessionRequest*
+	createRenewSessionRequest(void)
+	{
+		return new RenewSessionRequest();
+	}
 
-	static RenewSessionRequest* createRenewSessionRequest(void);
 private:
-	RenewSessionRequest();
+	RenewSessionRequest() { };
 };
 
 } // namespace
