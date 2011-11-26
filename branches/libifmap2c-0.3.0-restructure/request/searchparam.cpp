@@ -40,6 +40,11 @@ SearchParam::SearchParam(const char *const matchLinksFilter,
 	_startIdentifier(start)
 { }
 
+SearchParam::~SearchParam()
+{
+	if (_startIdentifier)
+		delete _startIdentifier;
+}
 
 const char *SearchParam::getMatchLinksFilter(void) const
 {

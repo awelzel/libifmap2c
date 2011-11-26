@@ -46,12 +46,8 @@ SSRC::SSRC(const string& url,
 		IfmapChannel(url, mykey, mykeypw, mycert, capath)
 {  }
 
-
-
 SSRC::~SSRC()
 { /* cleanup is done in superclass */ }
-
-
 
 SSRC *
 SSRC::createSSRC(const string& url,
@@ -62,8 +58,6 @@ SSRC::createSSRC(const string& url,
 	return new SSRC(url, user, pass, capath);
 }
 
-
-
 SSRC *
 SSRC::createSSRC(const string& url,
 		const string& mykey,
@@ -73,8 +67,6 @@ SSRC::createSSRC(const string& url,
 {
 	return new SSRC(url, mykey, mykeypw, mycert, capath);
 }
-
-
 
 ARC *
 SSRC::getARC(void) {
@@ -87,7 +79,6 @@ SSRC::getARC(void) {
 
 	return ret;
 }
-
 
 void
 SSRC::newSession(const int maxPollResSize)
@@ -103,7 +94,8 @@ SSRC::newSession(const int maxPollResSize)
 		nsres = dynamic_cast<NewSessionResult *>(res);
 		
 		if (!nsres)
-			throw "UHM :( bad result"; //FIXME
+			throw RequestHandlerError("No NewSessionResult"
+				" in response to NewSessionRequest");
 
 		maxPollResSizeRecv = nsres->getMaxPollResultSize();
 		
@@ -143,13 +135,6 @@ SSRC::endSession(const string& sId)
 		throw;
 	}
 	delete esreq;
-/*
-EndSessionRequest::EndSessionRequest() : BasicXmlMarshalable(
-			ENDSESSION_ELEMENT_NAME,
-			EMPTY_VALUE,
-			IFMAP_NSPAIR)
-{ }
-*/
 }
 
 
@@ -167,27 +152,22 @@ SSRC::publish(PublishRequest *const pr, const string& sId)
 SearchResult *
 SSRC::search(SearchRequest *const sr, const string& sId)
 {
-	cerr << "TOOD TODO" << sId;
-	throw sr;
-	/*
-	XmlMarshalable *reply  = NULL;
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+	sr->setSessionId(sessionId);
+	Result *res = NULL;
 	SearchResult *sres = NULL;
 
-	if (sId.length() > 0)
-		setSessionId(sr, sId);
-
 	try {
-		reply = processMessage(sr);
-		sres = ResponseParser::createSearchResult(reply);
+		res = _xmlCommunication->genericRequest(sr);
+		sres = dynamic_cast<SearchResult *>(res);
+		
+		if (!sres)
+			throw RequestHandlerError("No SearchResult"
+				" in response to SearchRequest");
 	} catch (...) {
-		if (reply)
-			delete reply;
 		throw;
 	}
-
-	delete reply;
 	return sres;
-	*/
 }
 
 void
@@ -219,6 +199,7 @@ SSRC::renewSession(const string& sId)
 {
 	RenewSessionRequest *rnsreq = Requests::createRenewSessionReq();
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+	rnsreq->setSessionId(sessionId);
 
 	try {
 		_xmlCommunication->genericRequest(rnsreq);
@@ -226,12 +207,6 @@ SSRC::renewSession(const string& sId)
 		delete rnsreq;
 	}
 	delete rnsreq;
-	/*
-RenewSessionRequest::RenewSessionRequest() :
-	BasicXmlMarshalable(RENEWSESSION_ELEMENT_NAME, EMPTY_VALUE,
-			IFMAP_OPERATION_NSPAIR)
-{ }
-*/
 }
 
 
@@ -245,6 +220,9 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 
 	PurgePublisherRequest *ppr = 
 		Requests::createPurgePublisherReq(pubId);
+
+	ppr->setSessionId(sessionId);
+
 	try {
 		_xmlCommunication->genericRequest(ppr);
 	} catch (...) {

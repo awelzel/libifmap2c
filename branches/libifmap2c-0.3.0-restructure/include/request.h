@@ -40,9 +40,9 @@ namespace ifmap2c {
  */
 class Request {
 
-public:
-	virtual ~Request() { };
+protected:
 	Request() { };
+	virtual ~Request() { };
 };
 
 class RequestHandler {
@@ -54,12 +54,13 @@ public:
 };
 
 class RequestHandlerError : public IfmapError {
+
 public:
 	RequestHandlerError(const std::string& msg) 
 		: IfmapError("RequestHandlerError", msg)
 	{ };
-};
 
+};
 
 class RequestHandlerDispatch {
 

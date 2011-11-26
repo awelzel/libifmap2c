@@ -51,18 +51,18 @@ public:
 		const char *const terminalIdent,
 		Identifier *const start);
 
-	virtual ~SearchParam() { }
+	virtual ~SearchParam();
 
 private:
-	const char *_matchLinksFilter;
+	const char *const _matchLinksFilter;
 
 	const int _maxDepth;
 
-	const char *_resultFilter;
+	const char *const _resultFilter;
 
 	const int _maxResultSize;
 
-	const char *_terminalIdentifiers;
+	const char *const _terminalIdentifiers;
 
 	Identifier *const _startIdentifier;
 };

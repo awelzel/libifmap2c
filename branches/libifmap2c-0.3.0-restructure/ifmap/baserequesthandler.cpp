@@ -644,8 +644,6 @@ makeSearchResult(XmlMarshalable *const sr)
 	}
 
 	return ret;
-
-
 }
 
 IFMAP2C_RH_FROMXML_DEF(SearchRequest, xml)

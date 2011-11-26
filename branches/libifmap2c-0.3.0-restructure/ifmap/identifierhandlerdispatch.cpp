@@ -50,10 +50,21 @@ list<IdentifierHandler *> IfmapIdentifierHandlerDispatch::handlers(baseHandlers(
 
 
 void
-IfmapIdentifierHandlerDispatch::registerIdentifierHandler(
+IfmapIdentifierHandlerDispatch::registerHandler(
 		IdentifierHandler *const handler)
 {
 	handlers.push_back(handler);
+}
+void
+IfmapIdentifierHandlerDispatch::clearHandlers(void)
+{
+	list<IdentifierHandler *>::const_iterator it, end;
+	it = handlers.begin();
+	end = handlers.end();
+	for (/* */; it != end; it++)
+		delete *it;
+
+	handlers.clear();
 }
 
 XmlMarshalable *

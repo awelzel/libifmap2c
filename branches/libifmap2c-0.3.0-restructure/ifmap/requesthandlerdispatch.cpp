@@ -51,10 +51,23 @@ static list<RequestHandler *> baseHandlers(void)
 std::list<RequestHandler*> IfmapRequestHandlerDispatch::handlers(baseHandlers());
 
 void
-IfmapRequestHandlerDispatch::registerRequestHandler(
-		RequestHandler *const handler)
+IfmapRequestHandlerDispatch::registerHandler(RequestHandler
+		*const handler)
 {
 	handlers.push_back(handler);
+}
+
+void
+IfmapRequestHandlerDispatch::clearHandlers(void)
+{
+	list<RequestHandler *>::const_iterator it, end;
+	it = handlers.begin();
+	end = handlers.end();
+
+	for (/* */; it != end; it++)
+		delete *it;
+
+	handlers.clear();
 }
 
 RequestHandler *

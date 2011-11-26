@@ -62,7 +62,13 @@ private:
 class IdentifierHolder {
 
 public:
-	virtual ~IdentifierHolder() { };
+	virtual ~IdentifierHolder() {
+		if (_i1)
+			delete _i1;
+
+		if (_i2)
+			delete _i2;
+	};
 
 	Identifier *getIdentifier1(void) const {
 		return _i1;
@@ -78,14 +84,21 @@ protected:
 		_i1(i1), _i2(i2) { }
 
 private:
-	Identifier *_i1;
-	Identifier *_i2;
+	Identifier *const _i1;
+	Identifier *const _i2;
 };
 
 class IdentifierMetadataHolder : public IdentifierHolder {
 
 public:
-	virtual ~IdentifierMetadataHolder() { };
+	virtual ~IdentifierMetadataHolder() {
+		std::list<XmlMarshalable *>::const_iterator it, end;
+		it = _metadata.begin();
+		end = _metadata.end();
+
+		for (/* */; it != end; it++)
+			delete *it;
+	};
 
 	const std::list<XmlMarshalable *>& getMetadata(void) const {
 		return _metadata;
@@ -98,7 +111,7 @@ protected:
 		IdentifierHolder(i1, i2), _metadata(mList) { };
 
 private:
-	std::list<XmlMarshalable *> _metadata;
+	const std::list<XmlMarshalable *> _metadata;
 };
 
 
@@ -121,7 +134,14 @@ public:
 	 * Register a new IdentifierHandler
 	 */
 	static void
-	registerIdentifierHandler(IdentifierHandler *const handler);
+	registerHandler(IdentifierHandler *const handler);
+	
+	/**
+	 * Deregister and free all registered handlers to keep
+	 * valgrind happy
+	 */
+	static void
+	clearHandlers(void);
 
 	/**
 	 * Dispatch XML generation to an appropiate IdentifierHandler.

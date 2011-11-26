@@ -48,7 +48,7 @@ public:
 private:
 	PublishRequest(const std::list<PublishElement *>& rList);
 
-	std::list<PublishElement *> _publishElement;
+	const std::list<PublishElement *> _publishElements;
 };
 
 } // namespace

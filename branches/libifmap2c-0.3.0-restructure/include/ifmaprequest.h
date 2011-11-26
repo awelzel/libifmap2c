@@ -58,7 +58,10 @@ public:
 	 * Register a new RequestHandler
 	 */
 	static void
-	registerRequestHandler(RequestHandler *const handler);
+	registerHandler(RequestHandler *const handler);
+	
+	static void
+	clearHandlers(void);
 
 	/**
 	 * Get the appropiate RequestHandler for the given Request

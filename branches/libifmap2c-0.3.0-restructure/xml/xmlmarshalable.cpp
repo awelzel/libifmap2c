@@ -102,11 +102,13 @@ XmlMarshalable::findMatchingElements(const list<XmlMarshalable *>& elements,
 	XMLMLIST ret;
 	CXMLMLISTIT it = elements.begin();
 	CXMLMLISTIT end = elements.end();
-
-	for (XmlMarshalable *el = *it; it != end; el = *(++it)) {
+	XmlMarshalable *el;
+	for (/* */; it != end; it++) {
+		el = *it;
 		if (XmlMarshalable::compNameNs(el, name, ns))
 			ret.push_back(el);
 	}
+
 	return ret;
 }
 

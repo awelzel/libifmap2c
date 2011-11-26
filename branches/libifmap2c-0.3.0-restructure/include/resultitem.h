@@ -38,7 +38,7 @@ public:
 			const std::list<XmlMarshalable *>& mlist) :
 		IdentifierMetadataHolder(i1, i2, mlist) { }
 
-	virtual ~ResultItem() { }
+	~ResultItem() { }
 };
 
 } // namespace

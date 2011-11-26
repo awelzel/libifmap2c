@@ -23,15 +23,14 @@
  */
 
 #include "publishrequest.h"
-//#include "typedefs.h"
-//#include "tcgifmapbase.h"
+#include "typedefs.h"
 
 using namespace std;
 
 namespace ifmap2c {
 
 PublishRequest *
-PublishRequest::createPublishRequest(const std::list<PublishElement *>& rList)
+PublishRequest::createPublishRequest(const PELIST& rList)
 {
 	return new PublishRequest(rList);
 }
@@ -39,31 +38,28 @@ PublishRequest::createPublishRequest(const std::list<PublishElement *>& rList)
 PublishRequest *
 PublishRequest::createPublishRequest(PublishElement *const subPublishRequest)
 {
-	list<PublishElement *> rList;
+	PELIST rList;
 	rList.push_back(subPublishRequest);
 	return new PublishRequest(rList);
 }
 
-PublishRequest::PublishRequest(const list<PublishElement *>& rList) :
-	_publishElement(rList)
-{
-	/*
-	BasicXmlMarshalable(PUBLISH_ELEMENT_NAME, EMPTY_VALUE,
-			IFMAP_OPERATION_NSPAIR)
-	list<PublishElement *>::const_iterator it = rList.begin();
-	list<PublishElement *>::const_iterator end = rList.end();
+PublishRequest::PublishRequest(const PELIST& rList) :
+	_publishElements(rList)
+{ }
 
-	for (// //; it != end; it++)
-		addXmlChild(*it);
-	*/
+PublishRequest::~PublishRequest() {
+	CPELISTIT it, end;
+	it = _publishElements.begin();
+	end = _publishElements.end();
+
+	for (/* */; it != end; it++)
+		delete *it;
 }
 
-PublishRequest::~PublishRequest() { }
-
-const list<PublishElement *>&
+const PELIST&
 PublishRequest::getPublishElements(void) const
 {
-	return _publishElement;
+	return _publishElements;
 }
 
 } // namespace
