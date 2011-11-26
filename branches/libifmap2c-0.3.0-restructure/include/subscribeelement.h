@@ -36,11 +36,11 @@ public:
 		return _name;
 	}
 
+	virtual ~SubscribeElement() { }
+
 protected:
 
 	SubscribeElement(const std::string& name) :_name(name) { }
-
-	virtual ~SubscribeElement() { }
 
 private:
 

@@ -75,7 +75,7 @@ SSRC::getARC(void) {
 	if (_basicAuth)
 		ret = new ARC(_url, _userName, _password, _caPath, this);
 	else
-		ret = new ARC(_url, _keyFile, _certFile, _password, _caPath, this);
+		ret = new ARC(_url, _keyFile, _password, _certFile,  _caPath, this);
 
 	return ret;
 }
@@ -173,25 +173,9 @@ SSRC::search(SearchRequest *const sr, const string& sId)
 void
 SSRC::subscribe(SubscribeRequest *const sr, const string& sId)
 {
-	cerr << "TOOD TODO" << sId;
-	throw sr;
-	/*
-	XmlMarshalable *reply = NULL;
-
-	if (sId.length() > 0)
-		setSessionId(sr, sId);
-
-	try {
-		reply = processMessage(sr);
-		ResponseParser::checkSubscribeReceived(reply);
-	} catch (...) {
-		if (reply)
-			delete reply;
-		throw;
-	}
-
-	delete reply;
-	*/
+	string sessionId = (sId.length() > 0) ? sId : getSessionId();
+	sr->setSessionId(sessionId);
+	_xmlCommunication->genericRequest(sr);
 }
 
 void
@@ -205,7 +189,9 @@ SSRC::renewSession(const string& sId)
 		_xmlCommunication->genericRequest(rnsreq);
 	} catch (...) {
 		delete rnsreq;
+		throw;
 	}
+
 	delete rnsreq;
 }
 
@@ -214,7 +200,8 @@ SSRC::renewSession(const string& sId)
 void
 SSRC::purgePublisher(const string& pId, const string& sId)
 {
-	// take either the given or the actual publisherId for this request.
+	// take either the given or the actual publisherId for this
+	// request.
 	string pubId = (pId.length() > 0) ? pId : getPublisherId();
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 
@@ -232,23 +219,17 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 
 }
 
-
-
 const string&
 SSRC::getSessionId(void) const
 {
 	return _currentSessionId;
 }
 
-
-
 const string&
 SSRC::getPublisherId(void) const
 {
 	return _currentPublisherId;
 }
-
-
 
 int
 SSRC::getMaxPollResultSize(void) const

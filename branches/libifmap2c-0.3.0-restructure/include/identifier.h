@@ -33,11 +33,9 @@ namespace ifmap2c {
 
 class Identifier {
 
-protected:
-	Identifier();
-
 public:
 	virtual ~Identifier();
+	virtual Identifier *clone(void) const = 0;
 };
 
 class BadIdentifier : public IfmapError {
@@ -50,6 +48,8 @@ public:
 class IdentifierAdmin : public Identifier {
 public:
 	virtual ~IdentifierAdmin();
+	virtual Identifier *clone(void) const = 0;
+	
 	const std::string& getAdministrativeDomain(void) const;
 
 protected:
@@ -62,26 +62,15 @@ private:
 class IdentifierHolder {
 
 public:
-	virtual ~IdentifierHolder() {
-		if (_i1)
-			delete _i1;
+	virtual ~IdentifierHolder();
 
-		if (_i2)
-			delete _i2;
-	};
+	Identifier *getIdentifier1(void) const;
 
-	Identifier *getIdentifier1(void) const {
-		return _i1;
-	}
-	
-	Identifier *getIdentifier2(void) const {
-		return _i2;
-	}
+	Identifier *getIdentifier2(void) const;
 
 protected:
 	IdentifierHolder(Identifier *const i1,
-			Identifier *const i2 = NULL) :
-		_i1(i1), _i2(i2) { }
+			Identifier *const i2 = NULL);
 
 private:
 	Identifier *const _i1;
@@ -91,26 +80,18 @@ private:
 class IdentifierMetadataHolder : public IdentifierHolder {
 
 public:
-	virtual ~IdentifierMetadataHolder() {
-		std::list<XmlMarshalable *>::const_iterator it, end;
-		it = _metadata.begin();
-		end = _metadata.end();
 
-		for (/* */; it != end; it++)
-			delete *it;
-	};
+	virtual ~IdentifierMetadataHolder();
 
-	const std::list<XmlMarshalable *>& getMetadata(void) const {
-		return _metadata;
-	}
+	const std::list<XmlMarshalable *>& getMetadata(void) const;
 
 protected:
+
 	IdentifierMetadataHolder(Identifier *const i1,
 			Identifier *const i2,
-			std::list<XmlMarshalable *> mList) :
-		IdentifierHolder(i1, i2), _metadata(mList) { };
-
+			std::list<XmlMarshalable *> mList);
 private:
+
 	const std::list<XmlMarshalable *> _metadata;
 };
 
@@ -127,7 +108,7 @@ public:
 };
 
 
-class IfmapIdentifierHandlerDispatch {
+class IdentifierHandlerDispatch {
 
 public:
 	/**

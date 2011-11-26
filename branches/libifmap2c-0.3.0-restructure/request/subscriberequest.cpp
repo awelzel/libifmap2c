@@ -23,6 +23,7 @@
  */
 
 #include "subscriberequest.h"
+#include "typedefs.h"
 
 using namespace std;
 
@@ -31,16 +32,15 @@ namespace ifmap2c {
 SubscribeRequest::SubscribeRequest(const list<SubscribeElement *>& list) :
 	_subscribeElements(list)
 { }
-/*
-		BasicXmlMarshalable(SUBSCRIBE_ELEMENT_NAME, EMPTY_VALUE,
-				IFMAP_OPERATION_NSPAIR)
+SubscribeRequest::~SubscribeRequest()
 {
-	list<SubscribeElement *>::const_iterator it = subList.begin();
-	list<SubscribeElement *>::const_iterator end = subList.end();
+	CSELISTIT it, end;
+	it = _subscribeElements.begin();
+	end = _subscribeElements.end();
 
-	for (// //; it != end; it++)
-		addXmlChild(*it);
-*/
+	for (/* */; it != end; it++)
+		delete *it;
+}
 
 SubscribeRequest *
 SubscribeRequest::createSubscribeRequest(const std::list<SubscribeElement *>& subList)

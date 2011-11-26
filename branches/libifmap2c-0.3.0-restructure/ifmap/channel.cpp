@@ -39,7 +39,13 @@ IfmapChannel::~IfmapChannel()
 IfmapChannel::IfmapChannel(const string& url,
 		const string& user,
 		const string& pass,
-		const string& capath)
+		const string& capath) :
+		_basicAuth(true),
+		_url(url),
+		_userName(user),
+		_password(pass),
+		_caPath(capath)
+
 { 
 	LowLevelCommunication *llc = 
 		LowLevelCurlCommunication::create(url, user, pass, capath);
@@ -56,7 +62,13 @@ IfmapChannel::IfmapChannel(const string& url,
 		const string& mykey,
 		const string& mykeypw,
 		const string& mycert,
-		const string& capath)
+		const string& capath) :
+		_basicAuth(false),
+		_url(url),
+		_keyFile(mykey),
+		_certFile(mycert),
+		_password(mykeypw),
+		_caPath(capath)
 {
 	LowLevelCommunication *llc = 
 		LowLevelCurlCommunication::create(url, mykey, mykeypw,

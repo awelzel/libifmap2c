@@ -58,11 +58,28 @@ ARC::poll(const string& sId)
 {
 	string sessionId = (sId.length() > 0) ? sId : getSessionId();
 	PollRequest *pollReq = Requests::createPollReq();
-	Result *res = _xmlCommunication->genericRequest(pollReq);
-	PollResult *ret = dynamic_cast<PollResult *>(res);
+	Result *res = NULL;
+	PollResult *ret = NULL;
+	pollReq->setSessionId(sessionId);
+	
+	try {
+		Result *res = _xmlCommunication->genericRequest(pollReq);
+		ret = dynamic_cast<PollResult *>(res);
+		if (!ret)
+			throw RequestHandlerError("No PollResult"
+				" in response to a poll");
 
-	if (!ret)
-		throw "UHM :( bad poll result"; //FIXME
+	} catch (...) {
+		if (res)
+			delete res;
+
+		if (pollReq)
+			delete pollReq;
+
+		throw;
+	}
+
+	delete pollReq;
 
 	return ret;
 }

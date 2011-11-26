@@ -45,18 +45,18 @@ static list<IdentifierHandler *> baseHandlers(void)
 	return ret;
 }
 
-list<IdentifierHandler *> IfmapIdentifierHandlerDispatch::handlers(baseHandlers());
+list<IdentifierHandler *> IdentifierHandlerDispatch::handlers(baseHandlers());
 
 
 
 void
-IfmapIdentifierHandlerDispatch::registerHandler(
+IdentifierHandlerDispatch::registerHandler(
 		IdentifierHandler *const handler)
 {
 	handlers.push_back(handler);
 }
 void
-IfmapIdentifierHandlerDispatch::clearHandlers(void)
+IdentifierHandlerDispatch::clearHandlers(void)
 {
 	list<IdentifierHandler *>::const_iterator it, end;
 	it = handlers.begin();
@@ -68,7 +68,7 @@ IfmapIdentifierHandlerDispatch::clearHandlers(void)
 }
 
 XmlMarshalable *
-IfmapIdentifierHandlerDispatch::toXml(Identifier *const i) const
+IdentifierHandlerDispatch::toXml(Identifier *const i) const
 {
 	list<IdentifierHandler *>::const_iterator it, end;
 	it = handlers.begin();
@@ -82,7 +82,7 @@ IfmapIdentifierHandlerDispatch::toXml(Identifier *const i) const
 }
 
 Identifier *
-IfmapIdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
+IdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
 {
 	/*
 	 * Go through all registered handlers and try to use

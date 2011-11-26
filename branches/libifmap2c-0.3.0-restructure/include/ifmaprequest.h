@@ -47,8 +47,24 @@ public:
 		_sessionId = sId;
 	}
 
+	void
+	addXmlNamespaceDefinition(
+			const std::pair<std::string, std::string>& nsDef)
+	{
+		_nsDefs.push_back(nsDef);
+
+	}
+
+	const std::list<std::pair<std::string, std::string> >& 
+	getXmlNamespaceDefinitions(void)
+	{
+		return _nsDefs;
+	}
+
+
 private:
 	std::string _sessionId;
+	std::list<std::pair<std::string, std::string> > _nsDefs;
 };
 
 class IfmapRequestHandlerDispatch : public RequestHandlerDispatch {

@@ -30,6 +30,253 @@ using namespace std;
 
 namespace ifmap2c {
 
+Identifier::~Identifier() { }
+
+IdentifierAdmin::IdentifierAdmin(const string& ad) :
+	_administrativeDomain(ad) { }
+
+
+IdentifierAdmin::~IdentifierAdmin() { }
+
+const std::string&
+IdentifierAdmin::getAdministrativeDomain(void) const
+{
+	return _administrativeDomain;
+}
+
+IdentifierHolder::~IdentifierHolder()
+{
+	if (_i1)
+		delete _i1;
+
+	if (_i2)
+		delete _i2;
+}
+
+IdentifierHolder::IdentifierHolder(Identifier *const i1, 
+	Identifier *const i2) :
+		_i1(i1), _i2(i2)
+{ }
+
+Identifier *
+IdentifierHolder::getIdentifier1(void) const {
+	return _i1;
+}
+	
+Identifier *
+IdentifierHolder::getIdentifier2(void) const {
+	return _i2;
+}
+
+IdentifierMetadataHolder::IdentifierMetadataHolder(Identifier *const i1,
+		Identifier *const i2, std::list<XmlMarshalable *> mList)
+	: IdentifierHolder(i1, i2),
+	_metadata(mList)
+{ }
+
+IdentifierMetadataHolder::~IdentifierMetadataHolder()
+{
+	std::list<XmlMarshalable *>::const_iterator it, end;
+	it = _metadata.begin();
+	end = _metadata.end();
+
+	for (/* */; it != end; it++)
+		delete *it;
+}
+
+const std::list<XmlMarshalable *>&
+IdentifierMetadataHolder::getMetadata(void) const {
+	return _metadata;
+}
+
+AccessRequest::AccessRequest(const string& name, const string& ad) :
+	IdentifierAdmin(ad), _name(name) { }
+
+AccessRequest *
+AccessRequest::createAccessRequest(const string& name, const string& ad)
+{
+	return new AccessRequest(name, ad);
+}
+
+const std::string&
+AccessRequest::getName() const
+{
+	return _name;
+}
+
+AccessRequest *AccessRequest::clone(void) const
+{
+	return new AccessRequest(getName(), getAdministrativeDomain());
+}
+
+Device::Device(const string& val) : _value(val) { }
+
+Device *
+Device::createDevice(const string& val)
+{
+	return new Device(val);
+}
+
+const string&
+Device::getValue() const
+{
+	return _value;
+}
+
+Device *
+Device::clone(void) const
+{
+	return new Device(_value);
+}
+
+const string Identity::identityTypeNames[] = {
+	"aik-name",
+	"distinguished-name",
+	"dns-name",
+	"email-address",
+	"hip-hit",
+	"kerberos-principal",
+	"username",
+	"sip-uri",
+	"tel-uri",
+	"other"
+};
+
+static const map<string, IdentityType> loadTypes(void)
+{
+	map<string, IdentityType> ret;
+	ret[Identity::identityTypeNames[aik_name]] = aik_name;
+	ret[Identity::identityTypeNames[distinguished_name]] 
+		= distinguished_name;
+	ret[Identity::identityTypeNames[dns_name]] = dns_name;
+	ret[Identity::identityTypeNames[email_address]] = email_address;
+	ret[Identity::identityTypeNames[hip_hit]] = hip_hit;
+	ret[Identity::identityTypeNames[kerberos_principal]] 
+		= kerberos_principal;
+	ret[Identity::identityTypeNames[username]] = username;
+	ret[Identity::identityTypeNames[sip_uri]] = sip_uri;
+	ret[Identity::identityTypeNames[tel_uri]] = tel_uri;
+	ret[Identity::identityTypeNames[other]] = other;
+	return ret;
+}
+
+const map<string, IdentityType> Identity::identityTypes(loadTypes());
+
+Identity::Identity(IdentityType type, const string& name, const string& ad,
+	const string& ot) : 
+	IdentifierAdmin(ad),
+	_name(name),
+	_otherDef(ot),
+	_identityType(type)
+{ }
+
+IdentityType
+Identity::getIdentityType() const
+{
+	return _identityType;
+}
+
+const std::string&
+Identity::getTypeString() const
+{
+	return identityTypeNames[_identityType];
+}
+
+const std::string&
+Identity::getName() const
+{
+	return _name;
+}
+
+const std::string&
+Identity::getOtherTypeDef() const
+{
+	return _otherDef;
+}
+
+Identity *
+Identity::createIdentity(IdentityType type, const string &name, const string& ad)
+{
+	return new Identity(type, name, ad);
+}
+
+Identity *
+Identity::createOtherIdentity(const string& otherDef, const string& name,
+	const string& ad)
+{
+	return new Identity(other, name, ad, otherDef);
+}
+
+Identity *
+Identity::clone(void) const
+{
+	return new Identity(getIdentityType(), getName(),
+			getAdministrativeDomain(),
+			getOtherTypeDef());
+}
+
+IpAddress::IpAddress(IpAddressType type, const string& val, const string& ad) :
+	IdentifierAdmin(ad),
+	_value(val),
+	_ipAddrType(type)
+{ }
+
+const string&
+IpAddress::getValue() const
+{
+	return _value;
+}
+
+IpAddressType
+IpAddress::getIpAddressType() const
+{
+	return _ipAddrType;
+}
+
+IpAddress *
+IpAddress::createIpv4Address(const string& val, const string& ad)
+{
+	return new IpAddress(ipv4, val, ad);
+}
+	
+IpAddress *
+IpAddress::createIpv6Address(const string& val, const string& ad)
+{
+	return new IpAddress(ipv6, val, ad);
+}
+
+IpAddress *
+IpAddress::clone(void) const
+{
+	return new IpAddress(getIpAddressType(), getValue(),
+			getAdministrativeDomain());
+}
+
+MacAddress::MacAddress(const string& val, const string& ad) :
+	IdentifierAdmin(ad), _value(val)
+{ }
+
+MacAddress *MacAddress::createMacAddress(const string& val, const string& ad)
+{
+	return new MacAddress(val, ad);
+}
+
+const string&
+MacAddress::getValue() const
+{
+	return _value;
+}
+
+MacAddress *
+MacAddress::clone(void) const
+{
+	return new MacAddress(getValue(), getAdministrativeDomain());
+}
+
+/* * * ** * * */
+/* * * ** * * */
+/* * * ** * * */
+/* * * ** * * */
 AccessRequest *
 Identifiers::createAr(const string& name, const string ad)
 {

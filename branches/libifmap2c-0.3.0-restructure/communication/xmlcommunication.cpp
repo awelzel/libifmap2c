@@ -72,15 +72,17 @@ XmlCommunication::genericRequest(Request *req)
 	XmlMarshalable *xmlReq = NULL;
 	XmlMarshalable *xmlResp = NULL;
 	Result *ret = NULL;
-
+	
 	try {
 		handler = _requestHandlerDispatch->dispatch(req);
+
 		xmlReq = handler->toXml(req);
+
 		xmlResp = xmlRequest(xmlReq);
+
 		ret = handler->fromXml(xmlResp);
 
 	} catch (...) {
-
 		if (xmlReq)
 			delete xmlReq;
 		
@@ -89,6 +91,7 @@ XmlCommunication::genericRequest(Request *req)
 
 		if (ret)
 			delete ret;
+
 
 		throw;
 	}
@@ -107,63 +110,22 @@ XmlCommunication::xmlRequest(XmlMarshalable *const xmlMsg)
 	Payload replyBuffer(NULL, 0), msgBuffer(NULL, 0);
 	XmlMarshalable *xmlResp = NULL;
 
-#ifdef IN_OUT_DEBUG
-	cout << "======== OUTGOING =========" << endl;
-	XmlMarshalable::putXmlMarshalable(xmlMsg);
-	cout << "======== OUTGOING =========" << endl;
-#endif /* IN_OUT_DEBUG */
-
 	try {
 		msgBuffer = _xmlMarshaller->marshal(xmlMsg);
+
 		replyBuffer = _lowLevelCommunication->doRequest(msgBuffer);
+
 		xmlResp = _xmlUnmarshaller->unmarshal(replyBuffer);
+
 	} catch (...) {
 		msgBuffer.free();
 		replyBuffer.free();
 		throw;
 	}
 
-#ifdef IN_OUT_DEBUG
-	cout << "======== INCOMING =========" << endl;
-	XmlMarshalable::putXmlMarshalable(xmlResp);
-	cout << "======== INCOMING =========" << endl;
-#endif /* IN_OUT_DEBUG */
-
 	msgBuffer.free();
 	replyBuffer.free();
 	return xmlResp;
 }
-
-/*
-// get rid of this...
-void
-XmlCommunication::setSessionId(XmlMarshalable *const req,
-		const string& sessionId)
-{
-	CSTRPLISTIT it = req->getXmlAttributes().begin();
-	CSTRPLISTIT end = req->getXmlAttributes().end();
-	STRP strp;
-	// if we find a session-id attribute we need to copy the whole list :-(
-
-	for (// ; it != end; it++) {
-		strp = *it;
-		if (!strp.first.compare(SESSIONID_ATTR_NAME)) {
-			STRPLIST attrList = req->getXmlAttributes();
-			req->clearXmlAttributes();
-
-			it = attrList.begin();
-			end = attrList.end();
-
-			for (STRP strp = *it; it != end; *(++it)) {
-				if (strp.first.compare(SESSIONID_ATTR_NAME)) {
-					req->addXmlAttribute(strp);
-				}
-			}
-			break;
-		}
-	}
-	req->addXmlAttribute(STRP(SESSIONID_ATTR_NAME, sessionId));
-}
-*/
 
 } // namespace

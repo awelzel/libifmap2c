@@ -42,7 +42,7 @@ public:
 	static SubscribeRequest *createSubscribeRequest(
 			SubscribeElement *const subreq);
 	
-	virtual ~SubscribeRequest() { }
+	virtual ~SubscribeRequest();
 
 private:
 	SubscribeRequest(const std::list<SubscribeElement *>& subList);

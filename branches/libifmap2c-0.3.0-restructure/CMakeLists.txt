@@ -23,7 +23,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(ifmap2c)
 
-add_definitions(-Wall -Wextra -Werror -O2)
+add_definitions(-g -Wall -Wextra -Werror -O2)
 
 FIND_PACKAGE(LibXml2)
 FIND_PACKAGE(CURL)
@@ -42,15 +42,9 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	ifmap/channel.cpp
 	ifmap/ssrc.cpp
 	ifmap/arc.cpp
+	ifmap/identifier.cpp
 	communication/xmlcommunication.cpp
 	communication/lowlevelcurlcommunication.cpp
-	identifier/accessrequest.cpp
-	identifier/device.cpp
-	identifier/identifier.cpp
-	identifier/identifiers.cpp
-	identifier/identity.cpp
-	identifier/ipaddress.cpp
-	identifier/macaddress.cpp
 	metadata/metadata.cpp
 	request/publishdelete.cpp
 	request/publishnotify.cpp
