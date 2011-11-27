@@ -96,7 +96,9 @@ IdentifierHandlerDispatch::toXml(Identifier *const i) const
 		if ((*it)->canHandle(i))
 			return (*it)->toXml(i);
 	
-	throw "NO IDENTIFIER HANDLER FOUND";
+	throw IdentifierHandlerError("No IdentifierHandler"
+			" could marshal the Identifier."
+			" Have fun debugging :)");
 }
 
 Identifier *
@@ -121,6 +123,8 @@ IdentifierHandlerDispatch::fromXml(XmlMarshalable *const xml) const
 			return ret;
 	}
 
-	throw "NO APPROPIATE IDENTIFIERHANDLER";
+	throw IdentifierHandlerError("No IdentifierHandler"
+			" could parse the received Identifier."
+			" Have fun debugging :)");
 }
 } // namespace

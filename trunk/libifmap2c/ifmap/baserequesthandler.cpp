@@ -243,12 +243,11 @@ addXmlSessionId(XmlMarshalable *el, IfmapRequest *const req)
 template<class T>
 T *checked_cast(Request *r)
 {
-	T* ret = dynamic_cast<T*>(r);
+	T *ret = dynamic_cast<T*>(r);
 
-	// FIXME: Exception?
 	if (!ret)
-		throw "Wrong type for handler";
-
+		throw RequestHandlerError("Handler got wrong "
+				"Request type");
 	return ret;
 }
 
@@ -392,9 +391,9 @@ T *checked_cast(PublishElement *pe)
 {
 	T* ret = dynamic_cast<T*>(pe);
 
-	// FIXME: Exception?
 	if (!ret)
-		throw "Wrong type for handler";
+		throw RequestHandlerError("PublishElement casted "
+				" to wrong type.");
 
 	return ret;
 }
@@ -689,9 +688,9 @@ T *checked_cast(SubscribeElement *se)
 {
 	T* ret = dynamic_cast<T*>(se);
 
-	// FIXME: Exception?
 	if (!ret)
-		throw "Wrong type for handler";
+		throw RequestHandlerError("SubscribeElement casted "
+				" to wrong type.");
 
 	return ret;
 }

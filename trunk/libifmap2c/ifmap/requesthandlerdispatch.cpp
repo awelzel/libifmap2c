@@ -97,8 +97,8 @@ IfmapRequestHandlerDispatch::dispatch(Request *const req) const
 		if ((*it)->canHandle(req))
 			return *it;
 
-	// FIXME
-	throw "NO REQUEST HANDLER FOUND";
+	throw RequestHandlerError("No RequestHandler"
+			" found");
 }
 
 } // namespace

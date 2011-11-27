@@ -107,6 +107,14 @@ public:
 	virtual bool canHandle(Identifier * const parname) const = 0;
 };
 
+class IdentifierHandlerError : public IfmapError {
+
+public:
+	IdentifierHandlerError(const std::string& msg) 
+		: IfmapError("IdentifierHandlerError", msg)
+	{ };
+};
+
 class InitBaseIdentifierHandlers;
 
 class IdentifierHandlerDispatch {
