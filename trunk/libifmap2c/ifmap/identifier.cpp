@@ -89,6 +89,8 @@ IdentifierMetadataHolder::getMetadata(void) const {
 	return _metadata;
 }
 
+IdentifierHandler::~IdentifierHandler() { }
+
 AccessRequest::AccessRequest(const string& name, const string& ad) :
 	IdentifierAdmin(ad), _name(name) { }
 
@@ -107,6 +109,24 @@ AccessRequest::getName() const
 AccessRequest *AccessRequest::clone(void) const
 {
 	return new AccessRequest(getName(), getAdministrativeDomain());
+}
+
+static string
+adString(const IdentifierAdmin *const ia)
+{
+	if (ia->getAdministrativeDomain().length() > 0)
+		return ia->getAdministrativeDomain();
+	return "";
+}
+
+string
+AccessRequest::str(void) const
+{
+	string ret("ar{");
+	ret.append(this->getName());
+	ret.append(adString(this));
+	ret.append("}");
+	return ret;
 }
 
 Device::Device(const string& val) : _value(val) { }
@@ -128,6 +148,16 @@ Device::clone(void) const
 {
 	return new Device(_value);
 }
+
+string
+Device::str(void) const
+{
+	string ret("dev{");
+	ret.append(this->getValue());
+	ret.append("}");
+	return ret;
+}
+
 
 const string Identity::identityTypeNames[] = {
 	"aik-name",
@@ -171,7 +201,7 @@ Identity::Identity(IdentityType type, const string& name, const string& ad,
 { }
 
 IdentityType
-Identity::getIdentityType() const
+Identity::getType() const
 {
 	return _identityType;
 }
@@ -210,9 +240,27 @@ Identity::createOtherIdentity(const string& otherDef, const string& name,
 Identity *
 Identity::clone(void) const
 {
-	return new Identity(getIdentityType(), getName(),
+	return new Identity(getType(), getName(),
 			getAdministrativeDomain(),
 			getOtherTypeDef());
+}
+
+string
+Identity::str(void) const
+{
+	string ret("id{");
+	ret.append(this->getName());
+	ret.append(", ");
+	ret.append(this->getTypeString());
+	
+	if (this->getOtherTypeDef().length() > 0) {
+		ret.append(", ");
+		ret.append(this->getOtherTypeDef());
+	}
+
+	ret.append(adString(this));
+	ret.append("}");
+	return ret;
 }
 
 IpAddress::IpAddress(IpAddressType type, const string& val, const string& ad) :
@@ -228,7 +276,7 @@ IpAddress::getValue() const
 }
 
 IpAddressType
-IpAddress::getIpAddressType() const
+IpAddress::getType() const
 {
 	return _ipAddrType;
 }
@@ -248,8 +296,25 @@ IpAddress::createIpv6Address(const string& val, const string& ad)
 IpAddress *
 IpAddress::clone(void) const
 {
-	return new IpAddress(getIpAddressType(), getValue(),
+	return new IpAddress(getType(), getValue(),
 			getAdministrativeDomain());
+}
+
+string
+IpAddress::str(void) const
+{
+	string ret("ip{");
+	ret.append(this->getValue());
+	ret.append(", ");
+
+	if (this->getType() == ipv4)
+		ret.append("IPv4");
+	else
+		ret.append("IPv6");
+
+	ret.append(adString(this));
+	ret.append("}");
+	return ret;
 }
 
 MacAddress::MacAddress(const string& val, const string& ad) :
@@ -273,6 +338,17 @@ MacAddress::clone(void) const
 	return new MacAddress(getValue(), getAdministrativeDomain());
 }
 
+
+string
+MacAddress::str(void) const
+{
+	string ret("mac{");
+	ret.append(this->getValue());
+	ret.append(adString(this));
+	ret.append("}");
+	return ret;
+}
+
 /* * * ** * * */
 /* * * ** * * */
 /* * * ** * * */
@@ -281,7 +357,6 @@ AccessRequest *
 Identifiers::createAr(const string& name, const string ad)
 {
 	return AccessRequest::createAccessRequest(name, ad);
-
 }
 
 IpAddress *
@@ -380,8 +455,8 @@ Identifiers::sameIp(IpAddress *const ip1, IpAddress *const ip2)
 	const string &val1 = ip1->getValue();
 	const string &val2 = ip2->getValue();
 		return sameAd(ip1, ip2)
-				&& (ip1->getIpAddressType() == ip2->getIpAddressType())
-				&& !(val1.compare(val2));
+			&& (ip1->getType() == ip2->getType())
+			&& !(val1.compare(val2));
 }
 
 bool
@@ -414,9 +489,9 @@ Identifiers::sameAr(AccessRequest *const ar1, AccessRequest *const ar2)
 bool
 Identifiers::sameIdentity(Identity *const id1, Identity *const id2)
 {
-	if (sameAd(id1, id2) && (id1->getIdentityType() == id2->getIdentityType())) {
+	if (sameAd(id1, id2) && (id1->getType() == id2->getType())) {
 		// check the other type def if of type other
-		if (id1->getIdentityType() == other) {
+		if (id1->getType() == other) {
 			const string &othertypedef1 = id1->getOtherTypeDef();
 			const string &othertypedef2 = id2->getOtherTypeDef();
 

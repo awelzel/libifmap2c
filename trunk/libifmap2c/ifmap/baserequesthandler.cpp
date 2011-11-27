@@ -639,13 +639,15 @@ makeResultItem(XmlMarshalable *const xRi)
 		}
 	} catch (...) {
 
-		// if we have problems, make sure we do
-		// not loose the list...
-		mit = (*it)->getXmlChildren().begin();
-		mend = (*it)->getXmlChildren().end();
+		// if we have problems, make sure we delete
+		// the objects in the list...
+		mit = mlist.begin();
+		mend = mlist.end();
 		
 		for (/* */; mit != mend; mit++)
 			delete *mit;
+		
+		throw;
 	}
 
 	return new ResultItem(i1, i2, mlist);

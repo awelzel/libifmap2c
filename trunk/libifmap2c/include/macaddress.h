@@ -37,6 +37,8 @@ public:
 	const std::string& getValue() const;
 
 	MacAddress *clone(void) const;
+	
+	std::string str(void) const;
 
 private:
 	MacAddress(const std::string& val, const std::string& ad);

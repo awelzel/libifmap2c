@@ -32,21 +32,21 @@ namespace ifmap2c {
 
 class Device : public Identifier {
 
-	private:
-		Device(const std::string& val);
+private:
+	Device(const std::string& val);
 
-		std::string _value;
+	std::string _value;
 
-	public:
-		virtual ~Device() { };
+public:
+	virtual ~Device() { };
 
-		const std::string&
-		getValue() const;
+	const std::string& getValue() const;
 
-		static Device *
-		createDevice(const std::string& name);
+	static Device *createDevice(const std::string& name);
 
-		Device *clone(void) const;
+	Device *clone(void) const;
+
+	std::string str(void) const;
 };
 
 } // namespace

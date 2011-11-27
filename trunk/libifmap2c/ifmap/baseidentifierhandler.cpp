@@ -105,7 +105,7 @@ IFMAP2C_IH_TOXML_DEF(Identity, ix) {
 	ret->addXmlAttribute(STRP(IDENTITY_TYPE_ATTR_NAME,
 				id->getTypeString()));
 
-	if (id->getIdentityType() == other)
+	if (id->getType() == other)
 		ret->addXmlAttribute(STRP(IDENTITY_OTHER_DEF_ATTR_NAME,
 				id->getOtherTypeDef()));
 
@@ -120,10 +120,10 @@ IFMAP2C_IH_TOXML_DEF(IpAddress, id) {
 	handleAd(ret, ip);
 	ret->addXmlAttribute(STRP(IPADDR_VALUE_ATTR_NAME, ip->getValue()));
 	
-	if (ip->getIpAddressType() == ipv4) {
+	if (ip->getType() == ipv4) {
 		ret->addXmlAttribute(STRP(IPADDR_TYPE_ATTR_NAME,
 					IPADDR_TYPE_IPV4));
-	} else if (ip->getIpAddressType() == ipv6) {
+	} else if (ip->getType() == ipv6) {
 		ret->addXmlAttribute(STRP(IPADDR_TYPE_ATTR_NAME,
 					IPADDR_TYPE_IPV6));
 	} else {

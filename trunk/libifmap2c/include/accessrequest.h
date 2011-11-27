@@ -46,6 +46,8 @@ public:
 	const std::string& getName() const;
 
 	AccessRequest *clone(void) const;
+
+	std::string str(void) const;
 };
 
 } // namespace
