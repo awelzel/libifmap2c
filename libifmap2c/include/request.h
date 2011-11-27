@@ -51,6 +51,7 @@ public:
 	virtual XmlMarshalable *toXml(Request *const req) const = 0;
 	virtual Result *fromXml(XmlMarshalable *const xml) const = 0;
 	virtual bool canHandle(Request *const req) const = 0;
+	virtual ~RequestHandler() { }
 };
 
 class RequestHandlerError : public IfmapError {
@@ -69,6 +70,7 @@ public:
 	 * Get the appropiate RequestHandler for the given Request
 	 */
 	virtual RequestHandler *dispatch(Request *const req) const = 0;
+	virtual ~RequestHandlerDispatch() { }
 };
 
 } // namespace
