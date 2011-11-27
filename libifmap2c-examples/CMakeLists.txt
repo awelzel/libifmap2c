@@ -55,6 +55,7 @@ TARGET_LINK_LIBRARIES(example-mapc2 ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(test-update-twice ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(test-notify-event-twice ${LIBIFMAP2C_LIBRARIES})
 
+add_subdirectory(ibos)
 add_subdirectory(utils)
 add_subdirectory(tests)
 add_subdirectory(perf)
