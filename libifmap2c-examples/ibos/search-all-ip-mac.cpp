@@ -28,54 +28,25 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 
 // libifmap2c includes
 #include <libifmap2c/ssrc.h>
 #include <libifmap2c/identifiers.h>
-#include <libifmap2c/basicxmlmarshalable.h>
+#include <libifmap2c/tcgifmapmeta.h>
+
+#include "ibosglobalidentifier.h"
 
 #include "common.h"
 
 // make life easier
 using namespace ifmap2c;
+using namespace ifmap2cibos;
 using namespace std;
 
 #define GID_PREFIX "gid"
 #define GID_HREF   "https://192.168.1.20/ifmap-schema/global-identifiers"
-//#define GID_HREF   "http://myidents"
-
-#define STRP pair<string, string>
-
-class AllIp : public Identifier {
-
-public:
-	// Uhh... :(
-	Identifier *clone(void) const { return new AllIp(); }
-};
-
-class AllIpHandler : public IdentifierHandler {
-
-
-	XmlMarshalable *toXml(Identifier *const i) {
-		Identifier *ix =i;
-		ix = NULL;
-		XmlMarshalable *ret = new BasicXmlMarshalable("all-ip", EMPTY_VALUE,
-				STRP(GID_PREFIX, GID_HREF));
-		ret->addXmlNamespaceDefinition(STRP(GID_PREFIX, GID_HREF));
-
-		return ret;
-	}
-
-	AllIp *fromXml(XmlMarshalable *const i) {
-		(void)i;
-		throw RequestHandlerError("UNUSED?!");
-		return NULL;
-	}
-
-	bool canHandle(Identifier *const i) const {
-		return typeid(*i) == typeid(AllIp);
-	}
-};
+#define GID_NSPAIR STRP(GID_PREFIX, GID_HREF)
 
 static void usage(const char *prog)
 {
@@ -90,7 +61,8 @@ int main(int argc, char* argv[])
 	SearchRequest *sreq = NULL;
 	SearchResult *sres = NULL;
 	Identifier *allip = new AllIp();
-	IdentifierHandlerDispatch::registerHandler(new AllIpHandler());
+	IdentifierHandlerDispatch::registerHandler(
+			new AllIpHandler(GID_PREFIX, GID_HREF));
 
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
@@ -99,15 +71,44 @@ int main(int argc, char* argv[])
 	sreq = Requests::createSearchReq(
 			FILTER_MATCH_ALL,
 			2,
-			FILTER_MATCH_ALL,
+			"meta:ip-mac",
 			SEARCH_NO_MAX_RESULT_SIZE,
 			SEARCH_NO_TERMINAL_IDENTIFIERS,
 			allip);
+
+	sreq->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 	try {	
 		ssrc->newSession();
 
 		sres = ssrc->search(sreq);
+		
+		list<ResultItem *> rilist = sres->getResultItems();
+		list<ResultItem *>::const_iterator it, end;
+		it = rilist.begin();
+		end = rilist.end();
+
+		cout << "Received ip-mac links::"<< endl;
+
+		for (; it != end; it++) {
+			// skip empty ResultItems as we only want to see
+			// ip-mac
+			if ((*it)->getMetadata().size() == 0)
+				continue;
+
+			// only interested in links, everything else is
+			// bogus anyway
+			if (!(*it)->getIdentifier1() || !(*it)->getIdentifier2())
+				continue;
+
+			cout << "+--------------------------------------";
+			cout << "---------------------------------------\n| ";
+			cout << (*it)->getIdentifier1()->str() << " \t";
+			cout << (*it)->getIdentifier2()->str() << "\t\t";
+			cout << "#metadata=" << (*it)->getMetadata().size() << endl;
+		}
+		cout << "+--------------------------------------";
+		cout << "---------------------------------------" << endl;
 
 		ssrc->endSession();
 

@@ -21,6 +21,10 @@
 # in this Software without prior written authorization of the copyright holder.
 #
 
-ADD_EXECUTABLE(search-all-ip search-all-ip.cpp)
+include(.)
 
-TARGET_LINK_LIBRARIES(search-all-ip ${LIBIFMAP2C_LIBRARIES} common)
+ADD_EXECUTABLE(search-all-ip-mac search-all-ip-mac.cpp)
+ADD_EXECUTABLE(poll-all-ip-mac poll-all-ip-mac.cpp)
+
+TARGET_LINK_LIBRARIES(search-all-ip-mac ${LIBIFMAP2C_LIBRARIES} common)
+TARGET_LINK_LIBRARIES(poll-all-ip-mac ${LIBIFMAP2C_LIBRARIES} common)
