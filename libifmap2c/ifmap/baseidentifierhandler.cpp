@@ -31,8 +31,20 @@
 using namespace std;
 namespace ifmap2c {
 
+template<class T>
+T *checked_cast(Identifier *const i) {
+	T *ret = dynamic_cast<T *>(i);
+
+	if (!ret)
+		throw new IdentifierHandlerError(
+			"handler got wrong Identifier type");
+
+	return ret;
+}
+
 /* FIXME: Helpers... */
-static ifmap2c::XmlMarshalable *getFor(const string &name, const string &val = "")
+static ifmap2c::XmlMarshalable *getFor(const string &name,
+		const string &val = "")
 {
 	return new BasicXmlMarshalable(
 			name,
@@ -61,8 +73,7 @@ static bool cmpAttrName(const STRP& attr, const string& attrname)
 
 IFMAP2C_IH_TOXML_DEF(AccessRequest, id)
 {
-	AccessRequest *ar = dynamic_cast<AccessRequest *>(id);
-	if (!ar) throw "UH AR";
+	AccessRequest *ar = checked_cast<AccessRequest>(id);
 
 	XmlMarshalable *ret = getFor(ACCESSREQ_ELEMENT_NAME);
 	handleAd(ret, ar);
@@ -75,8 +86,7 @@ IFMAP2C_IH_TOXML_DEF(AccessRequest, id)
 
 IFMAP2C_IH_TOXML_DEF(Device, id)
 {
-	Device *dev = dynamic_cast<Device *>(id);
-	if (!dev) throw "UH DEV";
+	Device *dev = checked_cast<Device>(id);
 
 	XmlMarshalable *ret = getFor(DEVICE_ELEMENT_NAME);
 	ret->addXmlChild(getFor(DEVICE_NAME_ELEMENT, dev->getValue()));
@@ -85,8 +95,8 @@ IFMAP2C_IH_TOXML_DEF(Device, id)
 }
 
 IFMAP2C_IH_TOXML_DEF(Identity, ix) {
-	Identity *id = dynamic_cast<Identity *>(ix);
-	if (!id) throw "UH ID";
+
+	Identity *id = checked_cast<Identity>(ix);
 
 	XmlMarshalable *ret = getFor(IDENTITY_ELEMENT_NAME);
 	handleAd(ret, id);
@@ -103,8 +113,8 @@ IFMAP2C_IH_TOXML_DEF(Identity, ix) {
 }
 
 IFMAP2C_IH_TOXML_DEF(IpAddress, id) {
-	IpAddress *ip = dynamic_cast<IpAddress *>(id);
-	if (!ip) throw "UH IP";
+
+	IpAddress *ip = checked_cast<IpAddress>(id);
 
 	XmlMarshalable *ret = getFor(IPADDR_ELEMENT_NAME);
 	handleAd(ret, ip);
@@ -117,15 +127,15 @@ IFMAP2C_IH_TOXML_DEF(IpAddress, id) {
 		ret->addXmlAttribute(STRP(IPADDR_TYPE_ATTR_NAME,
 					IPADDR_TYPE_IPV6));
 	} else {
-		throw "UH unknown type :(";
+		throw IdentifierHandlerError("Unknown IP type");
 	}
 
 	return ret;
 }
 
 IFMAP2C_IH_TOXML_DEF(MacAddress, id) {
-	MacAddress *mac = dynamic_cast<MacAddress *>(id);
-	if (!mac) throw "UH MAC";
+
+	MacAddress *mac = checked_cast<MacAddress>(id);
 
 	XmlMarshalable *ret = getFor(MACADDR_ELEMENT_NAME);
 	handleAd(ret, mac);
