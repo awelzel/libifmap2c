@@ -37,7 +37,7 @@ public:
 
 	const std::string& getValue() const;
 
-	IpAddressType getIpAddressType() const;
+	IpAddressType getType() const;
 
 	static IpAddress * createIpv4Address(const std::string& val,
 			const std::string& ad = "");
@@ -46,6 +46,8 @@ public:
 			const std::string& ad = "");
 
 	IpAddress *clone(void) const;
+	
+	std::string str(void) const;
 
 private:
 

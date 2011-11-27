@@ -28,6 +28,7 @@
 #include "ifmaperror.h"
 #include <typeinfo>
 #include <list>
+#include <ostream>
 
 namespace ifmap2c {
 
@@ -36,6 +37,8 @@ class Identifier {
 public:
 	virtual ~Identifier();
 	virtual Identifier *clone(void) const = 0;
+
+	virtual std::string str(void) const = 0;
 };
 
 class BadIdentifier : public IfmapError {
@@ -105,6 +108,7 @@ public:
 	virtual XmlMarshalable *toXml(Identifier *const ident) = 0;
 	virtual Identifier *fromXml(XmlMarshalable *const xml) = 0;
 	virtual bool canHandle(Identifier * const parname) const = 0;
+	virtual ~IdentifierHandler();
 };
 
 class IdentifierHandlerError : public IfmapError {

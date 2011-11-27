@@ -54,7 +54,7 @@ public:
 			const std::string& name,
 			const std::string& ad = "");
 
-	IdentityType getIdentityType() const;
+	IdentityType getType() const;
 
 	const std::string& getTypeString() const;
 
@@ -67,6 +67,8 @@ public:
 	static const std::string identityTypeNames[];
 
 	static const std::map<std::string, IdentityType> identityTypes;
+	
+	std::string str(void) const;
 
 private:
 
