@@ -20,6 +20,7 @@
 # be used in advertising or otherwise to promote the sale, use or other dealings
 # in this Software without prior written authorization of the copyright holder.
 #
+ADD_EXECUTABLE(ar-ar ar-ar.cpp)
 ADD_EXECUTABLE(ip-mac ip-mac.cpp)
 ADD_EXECUTABLE(ar-mac ar-mac.cpp)
 ADD_EXECUTABLE(dev-ip dev-ip.cpp)
@@ -34,6 +35,7 @@ ADD_EXECUTABLE(ip-disc-by ip-disc-by.cpp)
 ADD_EXECUTABLE(mac-disc-by mac-disc-by.cpp)
 ADD_EXECUTABLE(role role.cpp)
 
+TARGET_LINK_LIBRARIES(ar-ar ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(ip-mac ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(ar-mac ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(dev-ip ${LIBIFMAP2C_LIBRARIES} common)
