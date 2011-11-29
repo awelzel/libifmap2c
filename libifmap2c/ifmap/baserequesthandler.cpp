@@ -708,12 +708,10 @@ static XmlMarshalable *
 seToXml(SubscribeElement *const se)
 {
 	SubscribeUpdate *su = NULL;
-	SubscribeDelete *sd = NULL;
 	XmlMarshalable *xSe;
 	
 	if (typeid(*se) == typeid(SubscribeDelete)) {
 		xSe = getXmlPeFor(SUBSCRIBE_DELETE_ELEMENT_NAME);
-		sd = checked_cast<SubscribeDelete>(se);
 	} else if (typeid(*se) == typeid(SubscribeUpdate)) {
 		xSe = getXmlPeFor(SUBSCRIBE_UPDATE_ELEMENT_NAME);
 		su = checked_cast<SubscribeUpdate>(se);
