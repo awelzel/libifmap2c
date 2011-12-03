@@ -159,7 +159,6 @@ void LowLevelCurlCommunication::generalInitialization(CURL *const handle,
 	curl_easy_setopt(handle, CURLOPT_CAPATH, capath.c_str());
 
 	curl_easy_setopt(handle, CURLOPT_SSLVERSION, CURL_SSLVERSION_DEFAULT);
-	curl_easy_setopt(handle, CURLOPT_SSL_CIPHER_LIST, "DEFAULT");
 
 	 // remove expect header FIXME: Check whether we can clean it
 	 // after using, or do we have to wait, till the handle isn't used
