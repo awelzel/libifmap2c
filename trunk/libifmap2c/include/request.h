@@ -25,13 +25,14 @@
 #ifndef REQUEST_H_
 #define REQUEST_H_
 
-#include "result.h"
-#include "xmlmarshalable.h"
-#include "ifmaperror.h"
-
 #include <list>
 #include <string>
 #include <typeinfo>
+
+#include "result.h"
+#include "xmlmarshalable.h"
+#include "xmlcommunicationerror.h"
+
 
 namespace ifmap2c {
 
@@ -54,11 +55,11 @@ public:
 	virtual ~RequestHandler() { }
 };
 
-class RequestHandlerError : public IfmapError {
+class RequestHandlerError : public XmlCommunicationError {
 
 public:
 	RequestHandlerError(const std::string& msg) 
-		: IfmapError("RequestHandlerError", msg)
+		: XmlCommunicationError("RequestHandlerError", msg)
 	{ };
 
 };

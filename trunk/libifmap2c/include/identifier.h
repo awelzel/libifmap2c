@@ -24,11 +24,12 @@
 
 #ifndef IDENTIFIER_H_
 #define IDENTIFIER_H_
-#include "xmlmarshalable.h"
-#include "ifmaperror.h"
-#include <typeinfo>
 #include <list>
 #include <ostream>
+#include <typeinfo>
+
+#include "xmlcommunication.h"
+#include "xmlmarshalable.h"
 
 namespace ifmap2c {
 
@@ -41,10 +42,10 @@ public:
 	virtual std::string str(void) const = 0;
 };
 
-class BadIdentifier : public IfmapError {
+class BadIdentifier : XmlCommunicationError {
 public:
 	BadIdentifier(const std::string& msg) 
-		: IfmapError("BadIdentifier", msg)
+		: XmlCommunicationError("BadIdentifier", msg)
 	{ };
 };
 
@@ -111,11 +112,11 @@ public:
 	virtual ~IdentifierHandler();
 };
 
-class IdentifierHandlerError : public IfmapError {
+class IdentifierHandlerError : public XmlCommunicationError {
 
 public:
 	IdentifierHandlerError(const std::string& msg) 
-		: IfmapError("IdentifierHandlerError", msg)
+		: XmlCommunicationError("IdentifierHandlerError", msg)
 	{ };
 };
 
