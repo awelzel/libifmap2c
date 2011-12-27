@@ -23,7 +23,7 @@
 
 find_package (Threads)
 
-#ADD_EXECUTABLE(test-identifiers test-identifiers.cpp)
+ADD_EXECUTABLE(test-identifiers test-identifiers.cpp)
 ADD_EXECUTABLE(test-max-poll-result-size-change test-max-poll-result-size-change.cpp)
 ADD_EXECUTABLE(test-notify test-notify.cpp)
 ADD_EXECUTABLE(test-poll-endsession test-poll-endsession.cpp)
@@ -42,7 +42,7 @@ ADD_EXECUTABLE(test-subgraph3 test-subgraph3.cpp)
 ADD_EXECUTABLE(test-subgraph4 test-subgraph4.cpp)
 ADD_EXECUTABLE(test-subgraph5 test-subgraph5.cpp)
 
-#TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)
+TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(test-poll-endsession  ${LIBIFMAP2C_LIBRARIES} common ${CMAKE_THREAD_LIBS_INIT})
 TARGET_LINK_LIBRARIES(test-poll-twice ${LIBIFMAP2C_LIBRARIES} common ${CMAKE_THREAD_LIBS_INIT})
 TARGET_LINK_LIBRARIES(test-notify ${LIBIFMAP2C_LIBRARIES} common ${CMAKE_THREAD_LIBS_INIT})

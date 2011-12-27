@@ -101,8 +101,8 @@ static void checkAr(SSRC *const ssrc)
 	ResultItem *ri1 = *sres1->getResultItems().begin();
 	ResultItem *ri2 = *sres2->getResultItems().begin();
 
-	AccessRequest *arrecv1 = ri1->getAccessRequest();
-	AccessRequest *arrecv2 = ri2->getAccessRequest();
+	AccessRequest *arrecv1 = dynamic_cast<AccessRequest *>(ri1->getIdentifier1());
+	AccessRequest *arrecv2 = dynamic_cast<AccessRequest *>(ri2->getIdentifier1());
 
 	if (arrecv1 == NULL || arrecv2 == NULL) {
 		cerr << "No AccessRequest in ResultItem!" << endl;
@@ -170,8 +170,8 @@ checkMac(SSRC *const ssrc)
 	ResultItem *ri1 = *sres1->getResultItems().begin();
 	ResultItem *ri2 = *sres2->getResultItems().begin();
 
-	MacAddress *macrecv1 = ri1->getMacAddress();
-	MacAddress *macrecv2 = ri2->getMacAddress();
+	MacAddress *macrecv1 = dynamic_cast<MacAddress *>(ri1->getIdentifier1());
+	MacAddress *macrecv2 = dynamic_cast<MacAddress *>(ri2->getIdentifier1());
 
 	if (macrecv1 == NULL || macrecv2 == NULL) {
 		cerr << "No MacAddress in ResultItem!" << endl;
@@ -218,7 +218,7 @@ checkDev(SSRC *const ssrc)
 	// get the first resultitem
 	ResultItem *ri1 = *sres1->getResultItems().begin();
 
-	Device *devrecv1 = ri1->getDevice();
+	Device *devrecv1 = dynamic_cast<Device *>(ri1->getIdentifier1());
 
 	if (devrecv1 == NULL) {
 		cerr << "No Device in ResultItem!" << endl;
@@ -238,7 +238,7 @@ compareIp(IpAddress *ip1, IpAddress *ip2)
 {
 	return !ip1->getValue().compare(ip2->getValue())
 		&& !ip1->getAdministrativeDomain().compare(ip2->getAdministrativeDomain())
-		&& (ip1->getIpAddressType() == ip2->getIpAddressType());
+		&& (ip1->getType() == ip2->getType());
 
 }
 
@@ -278,8 +278,8 @@ checkIPv4(SSRC *const ssrc)
 	ResultItem *ri1 = *sres1->getResultItems().begin();
 	ResultItem *ri2 = *sres2->getResultItems().begin();
 
-	IpAddress *iprecv1 = ri1->getIpAddress();
-	IpAddress *iprecv2 = ri2->getIpAddress();
+	IpAddress *iprecv1 = dynamic_cast<IpAddress *>(ri1->getIdentifier1());
+	IpAddress *iprecv2 = dynamic_cast<IpAddress *>(ri2->getIdentifier1());
 
 	if (iprecv1 == NULL || iprecv2 == NULL) {
 		cerr << "No IpAddresses in ResultItem!" << endl;
@@ -331,8 +331,8 @@ checkIPv6(SSRC *const ssrc)
 	ResultItem *ri1 = *sres1->getResultItems().begin();
 	ResultItem *ri2 = *sres2->getResultItems().begin();
 
-	IpAddress *iprecv1 = ri1->getIpAddress();
-	IpAddress *iprecv2 = ri2->getIpAddress();
+	IpAddress *iprecv1 = dynamic_cast<IpAddress *>(ri1->getIdentifier1());
+	IpAddress *iprecv2 = dynamic_cast<IpAddress *>(ri2->getIdentifier1());
 
 	if (iprecv1 == NULL || iprecv2 == NULL) {
 		cerr << "No IpAddresses in ResultItem!" << endl;
@@ -352,10 +352,10 @@ checkIPv6(SSRC *const ssrc)
 static bool
 compareIdentity(Identity *id1, Identity *id2)
 {
-	if (id1->getIdentityType() != id2->getIdentityType())
+	if (id1->getType() != id2->getType())
 		return false;
 
-	if (id1->getIdentityType() == other) {
+	if (id1->getType() == other) {
 		return !id1->getName().compare(id2->getName())
 			&& !id1->getAdministrativeDomain().compare(id2->getAdministrativeDomain())
 			&& !id1->getOtherTypeDef().compare(id2->getOtherTypeDef());
@@ -426,7 +426,7 @@ checkIdentity(SSRC *const ssrc)
 		}
 
 		resultitems[i] = *sresults[i]->getResultItems().begin();
-		recvidentities[i] = resultitems[i]->getIdentity();
+		recvidentities[i] = dynamic_cast<Identity *>(resultitems[i]->getIdentifier1());
 
 		if (recvidentities[i] == NULL) {
 			cerr << "No identities in ResultItem!" << endl;
