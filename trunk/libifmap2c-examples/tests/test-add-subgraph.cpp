@@ -200,7 +200,7 @@ main(int argc, char *argv[])
 		ssrc->publish(pr2);
 		checkAddedSubgraph(arc);
 		ssrc->endSession();
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {
 		cerr << e << endl;

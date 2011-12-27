@@ -125,7 +125,7 @@ main(int argc, char *argv[])
 		pres = arc->poll();
 		delete pres;
 		ssrc->endSession();
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {
 		cerr << e << endl;

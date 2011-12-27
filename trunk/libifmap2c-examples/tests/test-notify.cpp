@@ -123,7 +123,7 @@ pollThreadFunc(void *arg)
 				return (void*)1;
 			}
 			return (void*)0;
-		} catch (IfmapError e) {
+		} catch (XmlCommunicationError e) {
 			cerr << "[poll] " << e << endl;
 			break;
 		} catch (ErrorResult e) {
@@ -199,7 +199,7 @@ main(int argc, char *argv[])
 		usleep(SLEEPTIME);
 		ssrc->endSession();
 
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {
 		cerr << e << endl;

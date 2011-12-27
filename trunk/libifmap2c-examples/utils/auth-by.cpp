@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 		ssrc->newSession();
 		ssrc->publish(pubReq);
 		ssrc->endSession();
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {
 		cerr << e << endl;

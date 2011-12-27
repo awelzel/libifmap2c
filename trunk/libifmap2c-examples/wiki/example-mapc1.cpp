@@ -122,8 +122,8 @@ int main(int argc, char *argv[])
 		ssrc->endSession();
 
 	// If something goes wrong with the connection, marshalling
-	// requests / responses, an IfmapError is thrown.
-	} catch (IfmapError e) {
+	// requests / responses, an XmlCommunicationError is thrown.
+	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 
 	// ErrorResult is thrown, if a errorResult is received from
