@@ -103,6 +103,7 @@ createErrorResult(XmlMarshalable *const err)
 	string errCodeString;
 	string errString;
 	string errName;
+	map<string, ErrorCode>::const_iterator codeIt;
 
 	CSTRPLISTIT it = err->getXmlAttributes().begin();
 	CSTRPLISTIT end = err->getXmlAttributes().end();
@@ -120,32 +121,13 @@ createErrorResult(XmlMarshalable *const err)
 	if (errStrEle)
 		errString = errStrEle->getXmlElementValue();
 
-	// Oh god... FIXME
-	if (!errCodeString.compare(ErrorResult::errorCodeStrings[AccessDenied])) {
-		errCode = AccessDenied;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[Failure])) {
-		errCode = Failure;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidIdentifier])) {
-		errCode = InvalidIdentifier;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidIdentifierType])) {
-		errCode = InvalidIdentifierType;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[IdentifierTooLong])) {
-		errCode = IdentifierTooLong;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidMetadata])) {
-		errCode = InvalidMetadata;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidSchemaVersion])) {
-		errCode = InvalidSchemaVersion;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[InvalidSessionID])) {
-		errCode = InvalidSessionID;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[MetadataTooLong])) {
-		errCode = MetadataTooLong;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[SearchResultsTooBig])) {
-		errCode = SearchResultsTooBig;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[PollResultsTooBig])) {
-		errCode = PollResultsTooBig;
-	} else if (!errCodeString.compare(ErrorResult::errorCodeStrings[SystemError])) {
-		errCode = SystemError;
-	}
+	// Lookup the error code for this errCodeString
+	codeIt = ErrorResult::errorCodes.find(errCodeString);
+
+	if (codeIt == ErrorResult::errorCodes.end())
+		errCode = Unknown;
+	else
+		errCode = (*codeIt).second;
 
 	return new ErrorResult(errCode, errString, errName);
 }
