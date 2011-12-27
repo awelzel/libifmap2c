@@ -25,6 +25,7 @@
 #ifndef ERRORRESULT_H_
 #define ERRORRESULT_H_
 #include <string>
+#include <map>
 #include <ostream>
 
 namespace ifmap2c {
@@ -68,6 +69,8 @@ public:
 	const std::string& getName() const;
 
 	static const std::string errorCodeStrings[];
+	
+	static const std::map<std::string, ErrorCode> errorCodes;
 	
 	friend std::ostream& operator<<(std::ostream& output,
 			const ErrorResult& err);

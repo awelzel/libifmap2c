@@ -44,6 +44,27 @@ const string ErrorResult::errorCodeStrings[] = {
         "Unknown"
 };
 
+static const map<string, ErrorCode> loadCodes(void)
+{
+	map<string, ErrorCode> ret;
+	ret[ErrorResult::errorCodeStrings[AccessDenied]] = AccessDenied;
+	ret[ErrorResult::errorCodeStrings[Failure]] = Failure;
+	ret[ErrorResult::errorCodeStrings[InvalidIdentifier]] = InvalidIdentifier;
+	ret[ErrorResult::errorCodeStrings[InvalidIdentifierType]] = InvalidIdentifierType;
+	ret[ErrorResult::errorCodeStrings[IdentifierTooLong]] = IdentifierTooLong;
+	ret[ErrorResult::errorCodeStrings[InvalidMetadata]] = InvalidMetadata;
+	ret[ErrorResult::errorCodeStrings[InvalidSchemaVersion]] = InvalidSchemaVersion;
+	ret[ErrorResult::errorCodeStrings[InvalidSessionID]] = InvalidSessionID;
+	ret[ErrorResult::errorCodeStrings[MetadataTooLong]] = MetadataTooLong;
+	ret[ErrorResult::errorCodeStrings[SearchResultsTooBig]] = SearchResultsTooBig;
+	ret[ErrorResult::errorCodeStrings[PollResultsTooBig]] = PollResultsTooBig;
+	ret[ErrorResult::errorCodeStrings[Unknown]] = Unknown;
+
+	return ret;
+}
+
+const map<string, ErrorCode> ErrorResult::errorCodes(loadCodes());
+
 ErrorResult::ErrorResult() :
 	_errorCode(Unknown), _errorString(""), _name("")
 { }
