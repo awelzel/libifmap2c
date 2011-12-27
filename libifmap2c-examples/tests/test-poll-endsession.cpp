@@ -61,7 +61,7 @@ pollThreadFunc(void *arg)
 		arc->poll();
 	} catch (EndSessionResult e) {
 		return (void*)0;
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << "[pollThread] " << e << endl;
 	} catch (ErrorResult e) {
 		cerr << "[pollThread] " << e << endl;
@@ -105,7 +105,7 @@ main(int argc, char *argv[])
 		ssrc->endSession();
 		pthread_join(pollThread, &tRet);
 
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << "[mainThread] " << e << endl;
 	} catch (ErrorResult e) {
 		cerr << "[mainThread] " << e << endl;

@@ -181,7 +181,7 @@ main(int argc, char *argv[])
 			cerr << "LINK 2 4 not added?" << endl;
 		delete pres;
 		ssrc->endSession();
-	} catch (IfmapError e) {
+	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {
 		cerr << e << endl;
