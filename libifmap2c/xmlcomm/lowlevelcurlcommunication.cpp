@@ -23,7 +23,7 @@
  */
 
 #include "lowlevelcurlcommunication.h"
-#include "communicationerror.h"
+#include "xmlcommunicationerror.h"
 #include "soap.h"
 
 #include <iostream>

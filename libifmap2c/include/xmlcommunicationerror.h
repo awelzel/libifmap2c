@@ -22,31 +22,39 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef IFMAPERROR_H_
-#define IFMAPERROR_H_
+#ifndef XMLCOMMUNICATIONERROR_H_
+#define XMLCOMMUNICATIONERROR_H_
 #include <string>
 #include <ostream>
 
 namespace ifmap2c {
 
-class IfmapError {
+class XmlCommunicationError {
 
 public:
 	virtual const std::string& getMessage() const;
 	virtual const std::string& getErrorType() const;
 	
-	virtual ~IfmapError();
+	virtual ~XmlCommunicationError();
 	
-	friend std::ostream& operator<<(std::ostream& output, const IfmapError& err);
+	friend std::ostream& operator<<(std::ostream& output, const XmlCommunicationError& err);
 
 protected:
-	IfmapError(const std::string& type, const std::string& msg);
+	XmlCommunicationError(const std::string& type, const std::string& msg);
 
 private:
 	std::string _type;
 	std::string _message;
-	IfmapError();
+	XmlCommunicationError();
+};
+
+class CommunicationError : public XmlCommunicationError {
+
+public:
+	CommunicationError(const std::string& msg) :
+		XmlCommunicationError("CommunicationError", msg)
+	{ }
 };
 
 } // namespace
-#endif /* IFMAPERROR_H_ */
+#endif /* XMLCOMMUNICATIONERROR_H_ */

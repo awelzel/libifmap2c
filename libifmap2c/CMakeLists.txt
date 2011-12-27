@@ -55,7 +55,6 @@ ADD_LIBRARY(${PROJECT_NAME} SHARED
 	ifmap/searchresult.cpp
 	xmlcomm/xmlcommunication.cpp
 	xmlcomm/lowlevelcurlcommunication.cpp
-	xmlcomm/ifmaperror.cpp
 	xmlcomm/basicxmlmarshalable.cpp
 	xmlcomm/libxml2marshaller.cpp
 	xmlcomm/libxml2unmarshaller.cpp
@@ -80,7 +79,6 @@ INSTALL(FILES
 	include/accessrequest.h
 	include/arc.h
 	include/basicxmlmarshalable.h
-	include/communicationerror.h
 	include/device.h
 	include/endsessionrequest.h
 	include/endsessionresult.h
@@ -89,7 +87,6 @@ INSTALL(FILES
 	include/identifiers.h
 	include/identity.h
 	include/ifmapchannel.h
-	include/ifmaperror.h
 	include/ifmaprequest.h
 	include/ipaddress.h
 	include/lowlevelcommunication.h
@@ -119,6 +116,7 @@ INSTALL(FILES
 	include/typedefs.h
 	include/xmlbinding.h
 	include/xmlcommunication.h
+	include/xmlcommunicationerror.h
 	include/xmlmarshalable.h
 	DESTINATION include/lib${PROJECT_NAME}
 )

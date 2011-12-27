@@ -22,22 +22,17 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
-#ifndef IFMAPCOMMUNICATION_H_
-#define IFMAPCOMMUNICATION_H_
+#ifndef XMLCOMMUNICATION_H_
+#define XMLCOMMUNICATION_H_
 #include <string>
+#include <ostream>
 
-//FIXME: Get rid of ifmap dependencies if possible
-#include "communicationerror.h"
-#include "ifmaperror.h"
 #include "lowlevelcommunication.h"
-//#include "responseparseerror.h"
-//#include "responseparser.h"
 #include "request.h"
 #include "result.h"
 #include "xmlbinding.h"
 
 namespace ifmap2c {
-
 
 class XmlCommunication {
 
@@ -65,4 +60,4 @@ private:
 
 } // namespace
 
-#endif /* IFMAPCOMMUNICATION_H_ */
+#endif /* XMLCOMMUNICATION_H_ */

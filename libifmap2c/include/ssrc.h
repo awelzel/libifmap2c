@@ -113,7 +113,7 @@ public:
 	 * @param maxPollResSize optional value for the max-poll-result-size
 	 * 			 attribute
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	void newSession(const int maxPollResSize = NO_MAX_POLL_RES_SIZE);
@@ -132,7 +132,7 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	void endSession(const std::string& sessionId = "");
@@ -148,7 +148,7 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	void publish(PublishRequest *const pr,
@@ -167,7 +167,7 @@ public:
 	 * @return pointer to a SearchResult object which contains the answer
 	 *	   of the MAPS. The caller is responsible to delete the memory.
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	SearchResult *search(SearchRequest *const sr,
@@ -184,7 +184,7 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	void subscribe(SubscribeRequest *const sr,
@@ -198,7 +198,7 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	void renewSession(const std::string& sessionId = "");
@@ -217,7 +217,7 @@ public:
 	 *		    value obtained by getSessionId() will be used.
 	 *		    (Only use it if you know what you are doing.)
 	 *
-	 * \throw IfmapError
+	 * \throw XmlCommunicationError
 	 * \throw ErrorResult
 	 */
 	void purgePublisher(const std::string& publisherId = "",

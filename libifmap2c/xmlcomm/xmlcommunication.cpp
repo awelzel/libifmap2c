@@ -22,22 +22,45 @@
  * in this Software without prior written authorization of the copyright holder.
  */
 
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <string>
+
 #include "xmlcommunication.h"
 #include "request.h"
 #include "xmlcomm/lowlevelcurlcommunication.h"
 #include "typedefs.h"
 #include "result.h"
 
-#include <cstring>
-#include <iostream>
-#include <string>
-#include <cstdlib>
-
 using namespace std;
 
 #define NO_IN_OUT_DEBUG
 
 namespace ifmap2c {
+
+XmlCommunicationError::XmlCommunicationError(const std::string& type, const std::string& msg) : _type(type), _message(msg)
+{ }
+
+XmlCommunicationError::~XmlCommunicationError()
+{ }
+
+const std::string& XmlCommunicationError::getMessage() const
+{
+	return _message;
+}
+
+const std::string& XmlCommunicationError::getErrorType() const
+{
+	return _type;
+}
+
+std::ostream& operator<<(std::ostream& output, const XmlCommunicationError& err)
+{
+	output << err.getErrorType() << ": ";
+	output << err.getMessage();
+	return output;
+}
 
 XmlCommunication::XmlCommunication(
 		LowLevelCommunication *const lowLevelCom,

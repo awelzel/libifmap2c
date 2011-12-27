@@ -28,9 +28,7 @@
 
 #include "payload.h"
 #include "xmlmarshalable.h"
-
-// FIX this dependency!
-#include "ifmaperror.h"
+#include "xmlcommunicationerror.h"
 
 namespace ifmap2c {
 
@@ -73,17 +71,17 @@ public:
 };
 
 
-class XmlMarshalError : public IfmapError {
+class XmlMarshalError : public XmlCommunicationError {
 public:
 	XmlMarshalError(const std::string& msg = "") : 
-		IfmapError("XmlMarshalError", msg)
+		XmlCommunicationError("XmlMarshalError", msg)
 	{ }
 };
 
-class XmlUnmarshalError : public IfmapError {
+class XmlUnmarshalError : public XmlCommunicationError {
 public:
 	XmlUnmarshalError(const std::string& msg = "") : 
-		IfmapError("XmlUnmarshalError", msg)
+		XmlCommunicationError("XmlUnmarshalError", msg)
 	{ }
 };
 
