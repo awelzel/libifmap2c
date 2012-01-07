@@ -186,7 +186,6 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 {
 	PollResult *pres;
 	int i, j, count, expected;
-	int xxx = 0;
 	for_all_idents(i) {
 		for_all_idents(j) {
 			if (j <= i)
@@ -196,7 +195,6 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 
 			publishLink(idents[i], idents[j], ssrc);
 			pres = arc->poll();
-			xxx += 2;
 			
 			count = getCountOfMetadata(pres);
 
@@ -225,7 +223,6 @@ publishCompleteGraph(Identifier **idents, SSRC *ssrc, ARC *arc)
 		//getchar();
 		cout << endl;
 	}
-	cout << xxx << endl;
 }
 
 static void
