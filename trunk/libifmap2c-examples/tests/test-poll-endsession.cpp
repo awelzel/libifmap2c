@@ -93,7 +93,7 @@ main(int argc, char *argv[])
 		ret = pthread_create(&pollThread, NULL, pollThreadFunc,
 				(void*)arc);
 		if (ret) {
-			cerr << "[ERROR] starting thread" << endl;
+			cerr << "[ERROR] starting pollThread" << endl;
 			goto clean;
 		}
 
@@ -106,9 +106,9 @@ main(int argc, char *argv[])
 		pthread_join(pollThread, &tRet);
 
 	} catch (XmlCommunicationError e) {
-		cerr << "[mainThread] " << e << endl;
+		cerr << e << endl;
 	} catch (ErrorResult e) {
-		cerr << "[mainThread] " << e << endl;
+		cerr << e << endl;
 	}
 	if (tRet) {
 		cerr << "[ERROR] No EndSessionResult";
