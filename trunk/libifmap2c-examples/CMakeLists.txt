@@ -25,12 +25,22 @@ PROJECT(libifmap2c-examples)
 
 add_definitions(-Wall -Wextra -O3)
 
-SET (LIBIFMAP2C_INCLUDE_DIR "/usr/local/include")
-SET (LIBIFMAP2C_LIBRARIES "/usr/local/lib/libifmap2c.so")
+find_path(LIBIFMAP2C_INCLUDE_DIR libifmap2c/tcgifmapbase.h
+	  HINTS "/usr/local/include")
+
+find_library(LIBIFMAP2C_LIBRARY NAMES ifmap2c libifmap2c
+	     HINTS "/usr/local/lib")
+
+SET(LIBIFMAP2C_LIBRARIES ${LIBIFMAP2C_LIBRARY})
+SET(LIBIFMAP2C_INCLUDE_DIRS ${LIBIFMAP2C_INCLUDE_DIR})
+
+
+MESSAGE(STATUS "libifmap2c include " ${LIBIFMAP2C_INCLUDE_DIRS})
+MESSAGE(STATUS "libifmap2c library " ${LIBIFMAP2C_LIBRARIES})
 
 INCLUDE_DIRECTORIES(
 	"common/"
-	"${LIBIFMAP2C_INCLUDE_DIR}")
+	"${LIBIFMAP2C_INCLUDE_DIRS}")
 
 # common functionality as a static library
 ADD_LIBRARY(common STATIC common/common.cpp)
