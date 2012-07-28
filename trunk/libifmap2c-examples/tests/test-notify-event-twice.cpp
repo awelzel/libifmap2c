@@ -38,6 +38,7 @@
 #include <cstdlib>
 #include <list>
 
+#include "common.h"
 
 using namespace std;
 using namespace ifmap2c;
@@ -70,32 +71,32 @@ checkOnlyIp(PollResult *const pollres, IpAddress *const ip)
 	list<SearchResult *> dresults = pollres->getDeleteResults();
 	list<SearchResult *> nresults = pollres->getNotifyResults();
 	if (sresults.size() != 1) {
-		cout << " [ERROR: Wrong number of SearchResults] ";
+		cerr << " [ERROR: Wrong number of SearchResults] ";
 		return;
 	}
 	
 	if ((uresults.size() != 0) || (dresults.size() != 0) ||
 			(nresults.size() != 0)) {
-		cout << " [ERROR: Other things than the SearchResult] "; 
+		cerr << " [ERROR: Other things than the SearchResult] "; 
 		return;
 	}
 
 	SearchResult *sres = *sresults.begin();
 	if (sres->getResultItems().size() != 1) {
-		cout << " [ERROR: Wrong number of ResultItems] ";
+		cerr << " [ERROR: Wrong number of ResultItems] ";
 		return;
 	}
 
 	RILIST rlist = sres->getResultItemsByIdentifier(ip);
 	if (rlist.size() == 1) {
 		if (rlist.front()->getMetadata().size() != 0) {
-			cout << " [ERROR: Metadata for IP?!] ";
+			cerr << " [ERROR: Metadata for IP?!] ";
 		}
 	} else {
-		cout << "[ERROR: No ResultItem for the IP] "; 
+		cerr << "[ERROR: No ResultItem for the IP] "; 
 		return;
 	}
-	cout << " [SearchResult is good] ";
+//	cout << " [SearchResult is good]" << endl;
 	return;
 }
 
@@ -110,26 +111,26 @@ checkForTwoEvents(PollResult *const pollres, IpAddress *const ip)
 	list<SearchResult *> nresults = pollres->getNotifyResults();
 	
 	if (nresults.size() != 1) {
-		cout << " [ERROR: Wrong number of SearchResults] ";
+		cerr << " [ERROR: Wrong number of SearchResults] ";
 		return;
 	}
 	
 	if ((sresults.size() != 0) || (uresults.size() != 0) ||
 			(dresults.size() != 0)) {
-		cout << " [ERROR: Other things than the SearchResult] "; 
+		cerr << " [ERROR: Other things than the SearchResult] "; 
 		return;
 	}
 
 	SearchResult *nres = *nresults.begin();
 	if (nres->getResultItems().size() != 1) {
-		cout << " [ERROR: Wrong number of ResultItems] ";
+		cerr << " [ERROR: Wrong number of ResultItems] ";
 		return;
 	}
 
 	RILIST rlist = nres->getResultItemsByIdentifier(ip);
 	if (rlist.size() == 1) {
 		if (rlist.front()->getMetadata().size() != 2) {
-			cout << " [ERROR: Wrong Metadata count for IP] ";
+			cerr << " [ERROR: Wrong Metadata count for IP] ";
 			return;
 		} else {
 			list<XmlMarshalable *> found =
@@ -138,15 +139,15 @@ checkForTwoEvents(PollResult *const pollres, IpAddress *const ip)
 				"simpleEvent",
 				"http://mynamespace.com");
 			if (found.size() != 2) {
-				cout << " [ERROR: Not the events!] ";
+				cerr << " [ERROR: Not the events!] ";
 				return;
 			}
 		}
 	} else {
-		cout << " [ERROR: No ResultItem for the IP] ";
+		cerr << " [ERROR: No ResultItem for the IP] ";
 		return;
 	}
-	cout << " [NotifyResult is good] ";
+//	cout << " [NotifyResult is good] ";
 	return;
 }
 
@@ -161,26 +162,26 @@ checkForOneEvent(PollResult *const pollres, IpAddress *const ip)
 	list<SearchResult *> nresults = pollres->getNotifyResults();
 	
 	if (nresults.size() != 1) {
-		cout << " [ERROR: Wrong number of SearchResults] ";
+		cerr << " [ERROR: Wrong number of SearchResults] ";
 		return;
 	}
 	
 	if ((sresults.size() != 0) || (uresults.size() != 0) ||
 			(dresults.size() != 0)) {
-		cout << " [ERROR: Other things than the SearchResult] "; 
+		cerr << " [ERROR: Other things than the SearchResult] "; 
 		return;
 	}
 
 	SearchResult *nres = *nresults.begin();
 	if (nres->getResultItems().size() != 1) {
-		cout << " [ERROR: Wrong number of ResultItems] ";
+		cerr << " [ERROR: Wrong number of ResultItems] ";
 		return;
 	}
 
 	RILIST rlist = nres->getResultItemsByIdentifier(ip);
 	if (rlist.size() == 1) {
 		if (rlist.front()->getMetadata().size() != 1) {
-			cout << " [ERROR: Wrong Metadata count for IP] ";
+			cerr << " [ERROR: Wrong Metadata count for IP] ";
 			return;
 		} else {
 			list<XmlMarshalable *> found =
@@ -189,15 +190,15 @@ checkForOneEvent(PollResult *const pollres, IpAddress *const ip)
 				"simpleEvent",
 				"http://mynamespace.com");
 			if (found.size() != 1) {
-				cout << " [ERROR: Not the events!] ";
+				cerr << " [ERROR: Not the events!] ";
 				return;
 			}
 		}
 	} else {
-		cout << " [ERROR: No ResultItem for the IP] ";
+		cerr << " [ERROR: No ResultItem for the IP] ";
 		return;
 	}
-	cout << " [NotifyResult is good] ";
+//	cout << " [NotifyResult is good] ";
 	return;
 }
 
@@ -211,11 +212,11 @@ usage(const char *const name)
 int
 main(int argc, char *argv[])
 {
-	if (argc != 5)
-		usage(argv[0]);
+	char *url, *user, *pass, *capath;
+	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
+			&pass, &capath);
 
-	// create ssrc object which is used for synchronous communication
-	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 	ARC *arc = ssrc->getARC();
 
 	// prepare a publish request to ip-address identifier with
@@ -256,91 +257,60 @@ main(int argc, char *argv[])
 	SubscribeRequest *subreq = Requests::createSubscribeReq(subcreate);
 
 	try {
-		cout << "Doing newSession\t";
 		ssrc->newSession();
-		cout << "Ok" << endl;
 
-		cout << "Doing subscribe\t\t";
 		ssrc->subscribe(subreq);
-		cout << "Ok" << endl;
 
-		cout << "Doing first poll\t";
 		PollResult *pollres = arc->poll();
 		checkOnlyIp(pollres, ip);
 		delete pollres;
-		cout << "Ok" << endl;
 
-		cout << "Doing publish 1\t\t";
 		ssrc->publish(pr1);
-		cout << "Ok" << endl;
 
-		cout << "Doing second poll\t";
 		pollres = arc->poll();
-		//checkForTwoEvents(pollres, ip);
+		checkForTwoEvents(pollres, ip);
 		delete pollres;
-		cout << "Ok" << endl;
 		
-		cout << "Doing publish 2\t\t";
 		ssrc->publish(pr2);
-		cout << "Ok" << endl;
 		
-		cout << "Doing third poll\t";
 		pollres = arc->poll();
 		checkForTwoEvents(pollres, ip);
 		delete pollres;
-		cout << "Ok" << endl;
 		
-		cout << "Doing publish 3\t\t";
 		ssrc->publish(pr3);
-		cout << "Ok" << endl;
 
-		cout << "Doing fourth poll\t";
 		pollres = arc->poll();
 		checkForOneEvent(pollres, ip);
 		delete pollres;
-		cout << "Ok" << endl;
 		
-		cout << "Doing publish 4\t\t";
 		ssrc->publish(pr4);
-		cout << "Ok" << endl;
 
-		cout << "Doing fifth poll\t";
 		pollres = arc->poll();
 		checkForOneEvent(pollres, ip);
 		delete pollres;
-		cout << "Ok" << endl;
 		
-		cout << "Doing publish 5\t\t";
 		ssrc->publish(pr3);
-		cout << "Ok" << endl;
 
-		cout << "Doing publish 6\t\t";
 		ssrc->publish(pr4);
-		cout << "Ok" << endl;
 
-		cout << "Doing sixth poll\t";
 		pollres = arc->poll();
 		checkForTwoEvents(pollres, ip);
 		delete pollres;
-		cout << "Ok" << endl;
 
-		cout << "Doing endSession\t";
 		ssrc->endSession();
-		cout << "Ok" << endl;
 
 	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {
 		cerr << e << endl;
 	}
-
+	
 	delete pr1;
 	delete pr2;
 	delete pr3;
 	delete pr4;
 	delete subreq;
 	
-	// this closes the TCP connections
 	delete arc;
 	delete ssrc;
 	return 0;

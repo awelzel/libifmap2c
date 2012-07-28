@@ -21,7 +21,7 @@
  * be used in advertising or otherwise to promote the sale, use or other dealings
  * in this Software without prior written authorization of the copyright holder.
  *
- * There was a bug reported in 0.2.0, reproduce it...
+ * There was a bug reported in irond 0.2.0, reproduce it...
  */
 
 
@@ -34,6 +34,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <list>
+
+#include "common.h"
 
 
 using namespace std;
@@ -63,11 +65,11 @@ usage(const char *const name)
 int
 main(int argc, char *argv[])
 {
-	if (argc != 5)
-		usage(argv[0]);
+	char *url, *user, *pass, *capath;
+	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
+			&pass, &capath);
 
-	// create ssrc object which is used for synchronous communication
-	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 	XmlMarshalable *single = new SingleValueMetadata();
 	XmlMarshalable *ipmac = Metadata::createIpMac();
 	IpAddress *ip = Identifiers::createIPv4("192.168.1.11");
@@ -97,21 +99,10 @@ main(int argc, char *argv[])
 	pr2->addXmlNamespaceDefinition(TCG_META_NSPAIR);
 
 	try {
-		cout << "Doing newSession\t";
 		ssrc->newSession();
-		cout << "Ok" << endl;
-		cout << "Doing publish1\t\t";
 		ssrc->publish(pr1);
-		cout << "Ok" << endl;
-		
-		cout << "Doing publish2\t\t";
 		ssrc->publish(pr2);
-		cout << "Ok" << endl;
-
-		cout << "Doing endSession\t";
 		ssrc->endSession();
-		cout << "Ok" << endl;
-
 	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
 	} catch (ErrorResult e) {

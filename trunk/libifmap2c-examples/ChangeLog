@@ -1,3 +1,8 @@
+0.4.0
+        * Adapt code to compile with 0.4.0
+
+	* Add some random testing files and move them into tests.
+
 0.3.0
 	* Adapted code to compile with 0.3.0, simplify exception handling,
 	  split things a bit.

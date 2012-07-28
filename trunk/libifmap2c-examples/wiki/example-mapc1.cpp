@@ -37,6 +37,8 @@
 #include <libifmap2c/identifiers.h>
 #include <libifmap2c/metadata.h>
 
+#include <common.h>
+
 
 // libifmap2c namespace
 using namespace ifmap2c;
