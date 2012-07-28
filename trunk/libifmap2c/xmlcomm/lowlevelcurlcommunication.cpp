@@ -183,6 +183,11 @@ void LowLevelCurlCommunication::generalInitialization(CURL *const handle,
 	// error buffer
 	*errBuf = new char[CURL_ERROR_SIZE];
 	*statBuf = new char[MAX_STATUS_LEN];
+	
+	// Initialize first byte to 0, otherwise we have compare
+	// uninitialized data in doRequest()
+	(*statBuf)[0] = 0;
+
 	curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, *errBuf);
 	curl_easy_setopt(handle, CURLOPT_WRITEHEADER, *statBuf);
 }
