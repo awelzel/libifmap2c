@@ -46,6 +46,7 @@
 
 extern "C" {
 	#include <pthread.h>
+	#include <unistd.h>
 }
 
 #include "common.h"

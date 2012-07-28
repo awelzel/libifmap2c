@@ -41,6 +41,7 @@ ADD_EXECUTABLE(test-subgraph2 test-subgraph2.cpp)
 ADD_EXECUTABLE(test-subgraph3 test-subgraph3.cpp)
 ADD_EXECUTABLE(test-subgraph4 test-subgraph4.cpp)
 ADD_EXECUTABLE(test-subgraph5 test-subgraph5.cpp)
+ADD_EXECUTABLE(test-close-conn test-close-conn.cpp)
 
 TARGET_LINK_LIBRARIES(test-identifiers ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(test-poll-endsession  ${LIBIFMAP2C_LIBRARIES} common ${CMAKE_THREAD_LIBS_INIT})
@@ -60,3 +61,5 @@ TARGET_LINK_LIBRARIES(test-subgraph2 ${LIBIFMAP2C_LIBRARIES} common testcommon)
 TARGET_LINK_LIBRARIES(test-subgraph3 ${LIBIFMAP2C_LIBRARIES} common testcommon)
 TARGET_LINK_LIBRARIES(test-subgraph4 ${LIBIFMAP2C_LIBRARIES} common testcommon)
 TARGET_LINK_LIBRARIES(test-subgraph5 ${LIBIFMAP2C_LIBRARIES} common testcommon)
+TARGET_LINK_LIBRARIES(test-close-conn ${LIBIFMAP2C_LIBRARIES} common
+	testcommon)

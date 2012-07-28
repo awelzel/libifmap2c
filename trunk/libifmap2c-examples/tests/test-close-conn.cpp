@@ -34,16 +34,21 @@
 #include <libifmap2c/metadata.h>
 
 #include <iostream>
-#include <cstdlib>
 #include <list>
 
+#include <cstdlib>
+extern "C" {
+	#include <unistd.h>
+}
+
+#include "common.h"
 
 using namespace std;
 using namespace ifmap2c;
 
 // needs to be > 0
-#define DISCONNECTS 5
-#define SLEEP_TIME 2
+#define DISCONNECTS 1
+#define SLEEP_TIME 50000
 
 static void
 usage(const char *const name)
@@ -55,18 +60,18 @@ usage(const char *const name)
 int
 main(int argc, char *argv[])
 {
-	if (argc != 5)
-		usage(argv[0]);
+	char *url, *user, *pass, *capath;
+	
+	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
+			&pass, &capath);
 
 	// create ssrc object which is used for synchronous communication
-	SSRC *ssrc = SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
+	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 
 	string sessionId;
 
 	try {
-		cout << "Doing newSession\t\t";
 		ssrc->newSession();
-		cout << "Ok" << endl;
 
 		// store the session-id for later requests, as we use
 		// a new SSRC instance which does not know about it
@@ -75,38 +80,34 @@ main(int argc, char *argv[])
 		for (int i = 0; i < (DISCONNECTS - 1); i++) {
 
 			// Calling the destructor deletes the connection
-			cout << "Dropping TCP connection\t\t";
 			delete ssrc;
-			cout << "Done! (Now sleeping for " << SLEEP_TIME << " seconds)\n";
-			sleep(SLEEP_TIME); 
+			usleep(SLEEP_TIME); 
 
 			// the session should still exists.
 			// create a new SSRC
-			cout << "Creating new SSRC\t\t";
-			ssrc =  SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
-			cout << "Done!\n";
+			ssrc = SSRC::createSSRC(url, user, pass, capath);
 
 			// do a renewsession request, explicitly set the
-			// sessionId, as we don't run a newSession on this
+			// sessionId, as we didn't run a newSession on this
 			// SSRC.
-			cout << "Running renewSession\t\t";
 			ssrc->renewSession(sessionId);
-			cout << "Done!\n";
 		}
 
 		// Disconnect and sleep for the last time
-		cout << "Dropping TCP connection\t\t";
 		delete ssrc;
-		cout << "Done! (Now sleeping for " << SLEEP_TIME << " seconds)\n";
-		sleep(SLEEP_TIME); 
+		usleep(SLEEP_TIME); 
 		
-		cout << "Creating new SSRC\t\t";
-		ssrc =  SSRC::createSSRC(argv[1], argv[2], argv[3],argv[4]);
-		cout << "Done!\n";
+		ssrc = SSRC::createSSRC(url, user, pass, capath);
 
-		cout << "Doing endSession\t\t";
+		// Ending the session
 		ssrc->endSession(sessionId);
-		cout << "Ok" << endl;
+		try {
+			ssrc->renewSession(sessionId);
+			cerr << __FILE__ << " renewSession() worked?" << endl;
+		
+		} catch (const ErrorResult &e) {
+			// this is expected
+		}
 
 	} catch (XmlCommunicationError e) {
 		cerr << e << endl;
