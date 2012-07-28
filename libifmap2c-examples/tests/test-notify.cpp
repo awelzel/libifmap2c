@@ -148,6 +148,7 @@ main(int argc, char *argv[])
 	SubscribeRequest *sr;
 	Identifier *id;
 	pthread_t pollThread;
+	bool threadStarted = false;
 	void *tRet = 0;
 	int ret;
 
@@ -192,6 +193,8 @@ main(int argc, char *argv[])
 			cerr << "[ERROR] starting thread" << endl;
 			goto clean;
 		}
+
+		threadStarted = true;
 		ssrc->subscribe(sr);
 		usleep(SLEEPTIME);
 		ssrc->publish(pr1);
@@ -209,7 +212,9 @@ main(int argc, char *argv[])
 	if (tRet)
 		cerr << "Bad metadata count received" << endl;
 clean:
-	pthread_join(pollThread, NULL);
+	if (threadStarted)
+		pthread_join(pollThread, NULL);
+
 	delete pr1; delete pr2; delete sr;
 	delete arc;
 	delete ssrc;
