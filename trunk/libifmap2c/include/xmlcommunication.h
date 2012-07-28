@@ -52,9 +52,6 @@ private:
 	XmlUnmarshaller *const _xmlUnmarshaller;
 	RequestHandlerDispatch *const _requestHandlerDispatch;
 
-	/**
-	 *
-	 */
 	XmlMarshalable *xmlRequest(XmlMarshalable *const xmlMsg);
 };
 
