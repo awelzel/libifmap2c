@@ -23,7 +23,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(libifmap2c-examples)
 
-add_definitions(-g -Wall -Wextra -O3)
+add_definitions(-Wall -Wextra -O3)
 
 SET (LIBIFMAP2C_INCLUDE_DIR "/usr/local/include")
 SET (LIBIFMAP2C_LIBRARIES "/usr/local/lib/libifmap2c.so")
@@ -37,23 +37,15 @@ ADD_LIBRARY(common STATIC common/common.cpp)
 ADD_LIBRARY(testcommon STATIC common/testcommon.cpp)
 
 
-#ADD_EXECUTABLE(subTest subTest.cpp)
 ADD_EXECUTABLE(pdp-dhcp-example pdp-dhcp-example.cpp)
-ADD_EXECUTABLE(errorprint errorprint.cpp)
 ADD_EXECUTABLE(metadata-examples metadata-examples.cpp)
 ADD_EXECUTABLE(example-mapc1 wiki/example-mapc1.cpp)
 ADD_EXECUTABLE(example-mapc2 wiki/example-mapc2.cpp)
-ADD_EXECUTABLE(test-update-twice test-update-twice.cpp)
-ADD_EXECUTABLE(test-notify-event-twice test-notify-event-twice.cpp)
 
-#TARGET_LINK_LIBRARIES(subTest ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(pdp-dhcp-example ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(metadata-examples ${LIBIFMAP2C_LIBRARIES} common)
 TARGET_LINK_LIBRARIES(example-mapc1 ${LIBIFMAP2C_LIBRARIES})
 TARGET_LINK_LIBRARIES(example-mapc2 ${LIBIFMAP2C_LIBRARIES})
-TARGET_LINK_LIBRARIES(test-update-twice ${LIBIFMAP2C_LIBRARIES})
-TARGET_LINK_LIBRARIES(test-notify-event-twice ${LIBIFMAP2C_LIBRARIES})
-TARGET_LINK_LIBRARIES(errorprint ${LIBIFMAP2C_LIBRARIES} common)
 
 add_subdirectory(ibos)
 add_subdirectory(utils)

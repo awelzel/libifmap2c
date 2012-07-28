@@ -61,11 +61,9 @@ int
 main(int argc, char *argv[])
 {
 	char *url, *user, *pass, *capath;
-	
 	checkAndLoadParameters(argc, argv, 0, usage, &url, &user,
 			&pass, &capath);
 
-	// create ssrc object which is used for synchronous communication
 	SSRC *ssrc = SSRC::createSSRC(url, user, pass, capath);
 
 	string sessionId;

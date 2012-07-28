@@ -1,3 +1,21 @@
+0.4.0 alpha - 28.07.2012
+
+  The "Lets break things, again" release"
+
+Changes:
+  * Refactor architecture such that it is possible to register handlers
+    for custom identifiers and request.
+    See, IdentifierHandlerDispatch::registerHandler(),
+    RequestHandlerDispatch::registerHandler() and  the examples in
+    in libifmap2c-examples/ibos
+
+  * ResultItem objects only provide getIdentifier1() and getIdentifer2().
+    Drop the type specific getters. It requires a more work on top of
+    the lib, but in the end is the cleaner approach.
+
+  * IfmapError does not exist any more. Replace with XmlCommunicationError
+    instead.
+
 0.3.0 - 10.07.2010
 
   The "Lets break things" release ;)
