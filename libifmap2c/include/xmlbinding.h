@@ -54,6 +54,8 @@ public:
 class XmlUnmarshaller {
 
 public:
+	virtual ~XmlUnmarshaller() { }
+
 	/**
 	 * Unmarshal memory to a XmlMarshalable object
 	 *
