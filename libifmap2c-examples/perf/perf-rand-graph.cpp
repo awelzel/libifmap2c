@@ -60,7 +60,7 @@ static char *url, *user, *pass, *capath;
 static Identifier **idents;
 static XmlMarshalable *ipmac;
 
-#define for_all_idents(value)	for ((value) = 0; (unsigned int)(value) < nodes; (value)++)
+#define for_all_idents(value)	for ((value) = 0; int(value) < nodes; (value)++)
 
 static void
 usage(const char *name)
