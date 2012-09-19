@@ -42,13 +42,13 @@ extern "C" {
 }
 
 #include "common.h"
+#include "testcommon.h"
 
 using namespace std;
 using namespace ifmap2c;
 
 // needs to be > 0
 #define DISCONNECTS 1
-#define SLEEP_TIME 50000
 
 static void
 usage(const char *const name)
@@ -79,7 +79,7 @@ main(int argc, char *argv[])
 
 			// Calling the destructor deletes the connection
 			delete ssrc;
-			usleep(SLEEP_TIME); 
+			usleep(SLEEPTIME); 
 
 			// the session should still exists.
 			// create a new SSRC
@@ -93,7 +93,7 @@ main(int argc, char *argv[])
 
 		// Disconnect and sleep for the last time
 		delete ssrc;
-		usleep(SLEEP_TIME); 
+		usleep(SLEEPTIME); 
 		
 		ssrc = SSRC::createSSRC(url, user, pass, capath);
 

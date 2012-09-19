@@ -41,8 +41,7 @@ extern "C" {
 }
 
 #include "common.h"
-
-#define SLEEPTIME 250000
+#include "testcommon.h"
 
 using namespace std;
 using namespace ifmap2c;

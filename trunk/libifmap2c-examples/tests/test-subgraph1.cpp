@@ -130,8 +130,8 @@ main(int argc, char *argv[])
 		
 		pres = arc->poll();
 
-		if (cntUp(pres) != 0 || cntDe(pres) != 0 || cntNo(pres) != 0)
-			cerr << "first poll result with non-search result" << endl;
+		if (cntAll(pres) != cntSe(pres))
+			cerr << "non-search result first poll" << endl;
 
 		if (cntSe(pres) != 1)
 			cerr << "unexpected initial poll result" << endl;
@@ -157,11 +157,13 @@ main(int argc, char *argv[])
 
 		pres = arc->poll();
 		
-		if (cntUp(pres) != 0 || cntSe(pres) != 0 || cntNo(pres) != 0)
+		if (cntAll(pres) != cntDe(pres))
 			cerr << "second poll result with non-delete result" << endl;
 
-		if (cntRi(pres, DELETE) != 1)
-			cerr << "unexpected RI# for delete-result" << endl;
+		if (cntRi(pres, DELETE) != 1) {
+			cerr << "unexpected RI# for delete-result: ";
+			cerr << cntRi(pres, DELETE) << endl;
+		}
 
 		if (cntRi(pres, ars[2], ars[4], DELETE, 1) != 1)
 			cerr << "LINK 2 4 not deleted?" << endl;
