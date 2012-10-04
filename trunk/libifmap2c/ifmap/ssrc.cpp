@@ -214,9 +214,9 @@ SSRC::purgePublisher(const string& pId, const string& sId)
 		_xmlCommunication->genericRequest(ppr);
 	} catch (...) {
 		delete ppr;
+		throw;
 	}
 	delete ppr;
-
 }
 
 const string&
