@@ -8,6 +8,8 @@
 
 #include <string>
 
+#define SLEEPTIME 1000000
+
 enum ResultType {
 	SEARCH,
 	UPDATE,
@@ -16,6 +18,10 @@ enum ResultType {
 };
 
 
+int cntLinkMd(ifmap2c::ResultItem *ri);
+int cntIdentMd(ifmap2c::PollResult *pr);
+int cntMd(ifmap2c::ResultItem *ri);
+int cntMd(ifmap2c::PollResult *pr);
 int cntRi(ifmap2c::PollResult *pr, ifmap2c::Identifier *i1, ResultType x);
 
 int cntRi(ifmap2c::PollResult *pr, ifmap2c::Identifier *i1, ResultType x, int mdCnt);
@@ -45,6 +51,7 @@ int checkContainsOnly(ifmap2c::PollResult *pr, ResultType type, std::string msg,
 int checkRiCnt(ifmap2c::PollResult *pr, ResultType type, std::string msg, int expected);
 
 size_t cntRe(ifmap2c::PollResult *pr, ResultType type);
+size_t cntAll(ifmap2c::PollResult *pr);
 size_t cntUp(ifmap2c::PollResult *pr);
 size_t cntDe(ifmap2c::PollResult *pr);
 size_t cntNo(ifmap2c::PollResult *pr);
