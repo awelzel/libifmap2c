@@ -41,6 +41,12 @@ cntRe(ifmap2c::PollResult *pr, ResultType type)
 }
 
 size_t
+cntAll(ifmap2c::PollResult *pr)
+{
+	return cntUp(pr) + cntDe(pr) + cntSe(pr) + cntNo(pr);
+}
+
+size_t
 cntUp(ifmap2c::PollResult *pr)
 {
 	return cntRe(pr, UPDATE);
@@ -124,7 +130,6 @@ cntRi(SRLIST toSearch, Identifier *i1, Identifier *i2, int cnt)
 	return ret;
 
 }
-
 
 int
 cntRi(PollResult *pr, Identifier *i1, Identifier *i2, ResultType x, int cnt)
