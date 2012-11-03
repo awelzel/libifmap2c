@@ -35,6 +35,7 @@
 #include <string>
 #include <sstream>
 #include <cstdio>
+#include <time.h>
 
 #include "common.h"
 #include "testcommon.h"
@@ -154,7 +155,7 @@ main(int argc, char *argv[])
 
 
 	// Initialize pseudo random number generator with number of nodes
-	srand(nodes);
+	srandom(time(NULL));
 
 
 
@@ -174,9 +175,9 @@ main(int argc, char *argv[])
 			Identifier *i1;
 			Identifier *i2;
 			bool doPoll = false;
-			j = rand() % nodes;
-			k = rand() % nodes;
-			mdIdx = rand() % countMdTypes;
+			j = random() % nodes;
+			k = random() % nodes;
+			mdIdx = random() % countMdTypes;
 			
 			if (j == k)
 				k = (k + 1) % nodes;
@@ -185,7 +186,7 @@ main(int argc, char *argv[])
 			i2 = idents[k];
 
 
-			if ((rand() % 100) < percentage) {
+			if ((random() % 100) < percentage) {
 				// do delete
 				pe = Requests::createPublishDelete(FILTER_MATCH_ALL,
 								   i1->clone(), i2->clone());
