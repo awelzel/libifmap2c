@@ -59,7 +59,7 @@ usage(const char *name)
 
 
 typedef pair<string, string> STRP;
-static STRP mdNs("myns", "http://mynamespace.com");
+static STRP mdNs("n", "h:/xzx");
 
 /* A metadata class with variable element name and cardinality multiValue */
 class MyMetadata : public BasicXmlMarshalable {
@@ -107,13 +107,13 @@ main(int argc, char *argv[])
 		
 		snprintf(tmpBuf, sizeof(tmpBuf), "192.168.%d.%d",
 				(i / 256) % 256, i % 256);
-		ips[i] = Identifiers::createIPv4(tmpBuf);
+		ips[i] = Identifiers::createIPv4(tmpBuf, user);
 	}
 	
 	/* prepare all metadata types addresses */
 	for (int i = 0; i < countMdTypes; i++) {
 		
-		snprintf(tmpBuf, sizeof(tmpBuf), "mdType%d", i);
+		snprintf(tmpBuf, sizeof(tmpBuf), "t%d", i);
 		mds[i] = new MyMetadata(tmpBuf);
 	}
 
@@ -140,12 +140,15 @@ main(int argc, char *argv[])
 			plist.clear();
 
 			ssrc->publish(pr);
+			cout << ".";
+			cout.flush();
 
 			delete pr;
 			pr = NULL;
 		}
 
 		ssrc->endSession();
+		cout << endl;
 
 	} catch (XmlCommunicationError e) {
 		cerr << e << endl;

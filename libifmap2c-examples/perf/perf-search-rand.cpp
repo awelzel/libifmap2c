@@ -142,10 +142,13 @@ do_search(SSRC *ssrc, IpAddress *ips[])
 			cout << "---" << endl;
 		}
 		*/
+		cout << ".";
+		cout.flush();
 
 		delete sr;
 		delete res;
 	}
+	cout << endl;
 
 }
 
