@@ -370,6 +370,7 @@ compareIdentity(Identity *id1, Identity *id2)
 static void
 checkIdentity(SSRC *const ssrc)
 {
+	std::string distinguished = "CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=COM"; // thanks msdn
 	std::string identname = "Aidentity";
 	std::string hiphit = "1:2:3:4:c:d:e:f";
 	std::string sipuri = "sip:ident@localhost:8842";
@@ -389,8 +390,8 @@ checkIdentity(SSRC *const ssrc)
 
 	identities[0] = Identifiers::createIdentity(aik_name, identname);
 	identities[1] = Identifiers::createIdentity(aik_name, identname, admind);
-	identities[2] = Identifiers::createIdentity(distinguished_name, identname);
-	identities[3] = Identifiers::createIdentity(distinguished_name, identname, admind);
+	identities[2] = Identifiers::createIdentity(distinguished_name, distinguished);
+	identities[3] = Identifiers::createIdentity(distinguished_name, distinguished, admind);
 	identities[4] = Identifiers::createIdentity(dns_name, identname);
 	identities[5] = Identifiers::createIdentity(dns_name, identname, admind);
 	identities[6] = Identifiers::createIdentity(email_address, email);
