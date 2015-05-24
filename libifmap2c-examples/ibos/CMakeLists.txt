@@ -21,8 +21,6 @@
 # in this Software without prior written authorization of the copyright holder.
 #
 
-include(.)
-
 ADD_EXECUTABLE(search-all-ip-mac search-all-ip-mac.cpp)
 ADD_EXECUTABLE(poll-all-ip-mac poll-all-ip-mac.cpp)
 
